@@ -1,8 +1,10 @@
 package com.codegym.faceblog.service;
 
+import java.util.Optional;
+
 public interface GeneralService<T> {
     Iterable<T> findAll();
-    T findById(Long id);
+    Optional<T> findById(Long id);
     T save(T t);
     void deleteById(Long id);
 }
