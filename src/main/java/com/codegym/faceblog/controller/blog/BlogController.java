@@ -17,4 +17,9 @@ public class BlogController {
         modelAndView.addObject("blogs", blogService.findAll());
         return modelAndView;
     }
+
+    @GetMapping("/admin")
+    public ModelAndView showAdminPage() {
+        return new ModelAndView("/admin-test");
+    }
 }
