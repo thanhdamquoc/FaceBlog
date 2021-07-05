@@ -36,6 +36,9 @@ dependencies {
 //    Ajax
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.12.1'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.12.1'
+//    Validation
+    implementation group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
+    implementation group: 'org.hibernate', name: 'hibernate-validator', version: '6.0.10.Final'
 }
 
 test {
