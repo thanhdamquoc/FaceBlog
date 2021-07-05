@@ -1,7 +1,9 @@
 package com.codegym.faceblog.model;
 
-import javax.persistence.*;
+import lombok.Data;
 
+import javax.persistence.*;
+@Data
 @Entity
 public class CommentReaction {
     @Id

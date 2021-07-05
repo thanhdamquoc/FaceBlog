@@ -3,9 +3,10 @@ package com.codegym.faceblog.service.commentReaction;
 import com.codegym.faceblog.model.CommentReaction;
 import com.codegym.faceblog.repository.CommentReactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-
+@Service
 public class CommentReactionServiceImpl implements CommentReactionService {
     @Autowired
     CommentReactionRepository commentReactionRepository;

@@ -3,9 +3,10 @@ package com.codegym.faceblog.service.comment;
 import com.codegym.faceblog.model.Comment;
 import com.codegym.faceblog.repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-
+@Service
 public class CommentSerivceImpl implements CommentService {
     @Autowired
     CommentRepository commentRepository;
