@@ -26,11 +26,6 @@ public class LoginRestController {
     @Autowired
     private UserService userService;
 
-    @GetMapping
-    public ModelAndView showLoginPage() {
-        return new ModelAndView("/login");
-    }
-
     @PostMapping
     public ResponseEntity<?> login(@RequestBody User user) {
         Authentication authentication = authenticationManager.authenticate(

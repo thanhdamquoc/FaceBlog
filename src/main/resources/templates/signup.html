@@ -1,21 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
+<div><span id="sign-up-message"></span></div>
 <input type="text" placeholder="Username" id="username">
+<input type="text" placeholder="Full name" id="full-name">
 <input type="password" placeholder="Password" id="password">
-<button type="button" onclick="login()">Login</button>
+<button type="button" onclick="login()">Sign Up</button>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
     function login() {
         let username = $('#username').val();
+        let fullName = $('#full-name').val();
         let password = $('#password').val();
         let user = {
             username: username,
+            fullName: fullName,
             password: password,
         }
         $.ajax({
@@ -25,11 +28,10 @@
             },
             type: "POST",
             data: JSON.stringify(user),
-            url: "/login",
+            url: "/users",
             success: function (data) {
-                console.log("login successfully");
-                localStorage.setItem("token", data.token);
-                window.location.href = "/";
+                console.log("new user created successfully");
+                $('#sign-up-message').html('Sign up successfully!');
             }
         });
     }
