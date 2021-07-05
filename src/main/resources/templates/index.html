@@ -13,7 +13,11 @@
 
     <link href="/templateHome/css/google-plus.css" rel="stylesheet">
     <script>
-        window.onload = function showListBlog() {
+        window.onload = function (){
+            showListBlog()
+        };
+
+        function showListBlog() {
             $.ajax({
                 type: "GET",
                 url: "/blogs",
@@ -29,11 +33,28 @@
 
         function getBlog(listBlog) {
             return `<div class="panel panel-default" >
-            <div className="panel-heading"><a href="#" className="pull-right" >View all</a> <h4>${listBlog.date}</h4></div>
                 <div className="panel-body">
-                    <img src="/templateHome/img/150x150.gif" className="img-circle pull-left">
-                    <a href="#">${listBlog.user.username}</span></a>
-                    <div className="clearfix"></div>
+                <div class="media">
+                            <a class="thumbnail pull-left" href="#">
+                                <img class="media-object" src="assets/img/a13ac7aed64918b6354f48da59490e3a.jpg">
+                            </a>
+                            <div class="media-body">
+                                <h4 class="media-heading">${listBlog.user.username}</h4>
+                                <p><span class="label label-info">10 photos</span> <span class="label label-primary">89 followers</span>
+                                </p>
+                                <p>
+                                    <a href="#" class="btn btn-xs btn-default">
+                                        <span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-messenger" viewBox="0 0 16 16">
+                                                 <path d="M0 7.76C0 3.301 3.493 0 8 0s8 3.301 8 7.76-3.493 7.76-8 7.76c-.81 0-1.586-.107-2.316-.307a.639.639 0 0 0-.427.03l-1.588.702a.64.64 0 0 1-.898-.566l-.044-1.423a.639.639 0 0 0-.215-.456C.956 12.108 0 10.092 0 7.76zm5.546-1.459-2.35 3.728c-.225.358.214.761.551.506l2.525-1.916a.48.48 0 0 1 .578-.002l1.869 1.402a1.2 1.2 0 0 0 1.735-.32l2.35-3.728c.226-.358-.214-.761-.551-.506L9.728 7.381a.48.48 0 0 1-.578.002L7.281 5.98a1.2 1.2 0 0 0-1.735.32z"/></svg>
+                                        </span>Message</a>
+                                    <a href="#" class="btn btn-xs btn-default">
+                                        <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/></svg>
+                                        </span> Favorite</a>
+                                </p>
+                            </div>
+                        </div>
                     <hr>
 
                     <p>${listBlog.content}</p>
@@ -43,7 +64,7 @@
                         <div className="input-group">
                             <div className="input-group-btn">
                                 <button className="btn btn-default">+1</button>
-                                <button className="btn btn-default"><i className="glyphicon glyphicon-share"></i></button>
+                                <button className="btn btn-default"></button>
                             </div>
                             <input className="form-control" placeholder="Add a comment.." type="text">
                         </div>
@@ -51,6 +72,27 @@
                 </div>
             </div>`
         }
+
+        function createBlog() {
+            let content = $('#status').val();
+            let blog = {
+                content: content,
+            };
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                type: "POST",
+                data: JSON.stringify(blog),
+                url: "/blogs",
+                success: function(data) {
+                    console.log(data);
+                    showListBlog();
+                }
+            });
+        }
+
 
     </script>
 
@@ -137,10 +179,10 @@
                 <form class="form-horizontal" role="form">
                     <h4>what's on your mind</h4>
                     <div class="form-group" style="padding:14px;">
-                        <textarea class="form-control" placeholder="Update your status"></textarea>
+                        <textarea id="status" class="form-control" placeholder="Update your status"></textarea>
                     </div>
 
-                    <button class="btn btn-success pull-right" type="button">Post</button>
+                    <button onclick="createBlog()" class="btn btn-success pull-right" type="button">Post</button>
                     <ul class="list-inline">
                         <li><a href="#">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -173,8 +215,20 @@
                     </h4>
                     </div>
                     <div class="panel-body">
-                        <img src="/templateHome/img/150x150.gif" class="img-circle pull-left">
-                        <a href="#"><span id="userName"></span></a>
+                        <a class="thumbnail pull-left" href="#">
+                            <img class="media-object" src="assets/img/a13ac7aed64918b6354f48da59490e3a.jpg">
+                        </a>
+                        <div class="media-body">
+                            <h4 class="media-heading"><a href="#"><span id="userName"></span></a></h4>
+                            \t\t<p><span class="label label-info">10 photos</span> <span class="label label-primary">89 followers</span>
+                        </p>
+                            <p>
+                                <a href="#" class="btn btn-xs btn-default"><span
+                                        class="glyphicon glyphicon-comment"></span> Message</a>
+                                <a href="#" class="btn btn-xs btn-default"><span
+                                        class="glyphicon glyphicon-heart"></span> Favorite</a>
+                            </p>
+                        </div>
                         <div class="clearfix"></div>
                         <hr>
 

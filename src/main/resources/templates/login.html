@@ -91,6 +91,7 @@
             success: function (data) {
                 console.log("login successfully");
                 localStorage.setItem("token", data.token);
+                localStorage.setItem("loginUserId", data.id);
                 window.location.href = "/";
             }
         });
