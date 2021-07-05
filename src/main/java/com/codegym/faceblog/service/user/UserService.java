@@ -2,6 +2,10 @@ package com.codegym.faceblog.service.user;
 
 import com.codegym.faceblog.model.User;
 import com.codegym.faceblog.service.GeneralService;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
-public interface UserService extends GeneralService<User> {
+import java.util.Optional;
+
+public interface UserService extends GeneralService<User>, UserDetailsService {
+    Optional<User> findByUsername(String username);
 }
