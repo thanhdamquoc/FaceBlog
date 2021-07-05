@@ -3,23 +3,19 @@ package com.codegym.faceblog.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Data
-public class User {
+public class Blog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
-    private String username;
-
-    private String password;
-
-    private String fullName;
+    private String content;
 
     @ManyToOne
-    private Role role;
+    private User user;
 
-    private String profilePicture;
+    private Date date;
 }
