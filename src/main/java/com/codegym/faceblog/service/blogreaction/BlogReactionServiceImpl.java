@@ -1,6 +1,8 @@
 package com.codegym.faceblog.service.blogreaction;
 
+import com.codegym.faceblog.model.Blog;
 import com.codegym.faceblog.model.BlogReaction;
+import com.codegym.faceblog.model.User;
 import com.codegym.faceblog.repository.BlogReactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,5 +32,10 @@ public class BlogReactionServiceImpl implements BlogReactionService{
     @Override
     public void deleteById(Long id) {
         blogReactionRepository.deleteById(id);
+    }
+
+    @Override
+    public Optional<BlogReaction> findAllByUserAndByBlog(User user, Blog blog) {
+        return blogReactionRepository.findAllByUserAndByBlog(user, blog);
     }
 }
