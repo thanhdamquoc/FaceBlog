@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/comment")
-public class commentController {
+public class CommentController {
     @Autowired
     BlogService blogService;
 }
