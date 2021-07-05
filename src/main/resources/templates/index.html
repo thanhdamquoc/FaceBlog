@@ -6,15 +6,53 @@
     <title>Google Plus Bootstrap Theme Demo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="/templateHome/css/bootstrap.css">
-
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <!--[if lt IE 9]>
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
     <link href="/templateHome/css/google-plus.css" rel="stylesheet">
-    <style>
+    <script>
+        window.onload = function showListBlog() {
+            $.ajax({
+                type: "GET",
+                url: "/blogs",
+                success: function (listBlog) {
+                    let contentBlog = "";
+                    for (let i = 0; i < listBlog.length; i++) {
+                        contentBlog += getBlog(listBlog[i])
+                    }
+                    document.getElementById('contentList').innerHTML = contentBlog;
+                }
+            })
+        }
 
-    </style>
+        function getBlog(listBlog) {
+            return `<div class="panel panel-default" >
+            <div className="panel-heading"><a href="#" className="pull-right" >View all</a> <h4>${listBlog.date}</h4></div>
+                <div className="panel-body">
+                    <img src="/templateHome/img/150x150.gif" className="img-circle pull-left">
+                    <a href="#">${listBlog.user.username}</span></a>
+                    <div className="clearfix"></div>
+                    <hr>
+
+                    <p>${listBlog.content}</p>
+
+                    <hr>
+                    <form>
+                        <div className="input-group">
+                            <div className="input-group-btn">
+                                <button className="btn btn-default">+1</button>
+                                <button className="btn btn-default"><i className="glyphicon glyphicon-share"></i></button>
+                            </div>
+                            <input className="form-control" placeholder="Add a comment.." type="text">
+                        </div>
+                    </form>
+                </div>
+            </div>`
+        }
+
+    </script>
 
 </head>
 
@@ -45,16 +83,25 @@
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="http://usebootstrap.com/theme/google-plus" target="_ext">User Blog</a></li>
 
-                <li><a class="" href="#" id="btnToggle"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-messenger" viewBox="0 0 16 16">
-                    <path d="M0 7.76C0 3.301 3.493 0 8 0s8 3.301 8 7.76-3.493 7.76-8 7.76c-.81 0-1.586-.107-2.316-.307a.639.639 0 0 0-.427.03l-1.588.702a.64.64 0 0 1-.898-.566l-.044-1.423a.639.639 0 0 0-.215-.456C.956 12.108 0 10.092 0 7.76zm5.546-1.459-2.35 3.728c-.225.358.214.761.551.506l2.525-1.916a.48.48 0 0 1 .578-.002l1.869 1.402a1.2 1.2 0 0 0 1.735-.32l2.35-3.728c.226-.358-.214-.761-.551-.506L9.728 7.381a.48.48 0 0 1-.578.002L7.281 5.98a1.2 1.2 0 0 0-1.735.32z"/>
-                </svg></a></li>
-                <li><a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bell-fill" viewBox="0 0 16 16">
-                    <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z"/>
-                </svg></i></a></li>
+                <li><a class="" href="#" id="btnToggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                         class="bi bi-messenger" viewBox="0 0 16 16">
+                        <path d="M0 7.76C0 3.301 3.493 0 8 0s8 3.301 8 7.76-3.493 7.76-8 7.76c-.81 0-1.586-.107-2.316-.307a.639.639 0 0 0-.427.03l-1.588.702a.64.64 0 0 1-.898-.566l-.044-1.423a.639.639 0 0 0-.215-.456C.956 12.108 0 10.092 0 7.76zm5.546-1.459-2.35 3.728c-.225.358.214.761.551.506l2.525-1.916a.48.48 0 0 1 .578-.002l1.869 1.402a1.2 1.2 0 0 0 1.735-.32l2.35-3.728c.226-.358-.214-.761-.551-.506L9.728 7.381a.48.48 0 0 1-.578.002L7.281 5.98a1.2 1.2 0 0 0-1.735.32z"/>
+                    </svg>
+                </a></li>
+                <li><a href="#">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                         class="bi bi-bell-fill" viewBox="0 0 16 16">
+                        <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z"/>
+                    </svg>
+                    </i></a></li>
                 <li class="">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gear-fill" viewBox="0 0 16 16">
-                        <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"/>
-                    </svg></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                             class="bi bi-gear-fill" viewBox="0 0 16 16">
+                            <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"/>
+                        </svg>
+                    </a>
                     <ul class="dropdown-menu">
                         <li><a href="#">User Name</a></li>
                         <li><a href="#">Setting</a></li>
@@ -66,40 +113,6 @@
         </div>
     </div>
 </div>
-<!--<div class="navbar navbar-default" id="subnav">-->
-<!--    <div class="col-md-12">-->
-<!--        <div class="navbar-header">-->
-
-<!--            <a href="#" style="margin-left:15px;" class="navbar-btn btn btn-default btn-plus dropdown-toggle"-->
-<!--               data-toggle="dropdown"><i class="glyphicon glyphicon-home" style="color:#dd1111;"></i> Home <small><i-->
-<!--                    class="glyphicon glyphicon-chevron-down"></i></small></a>-->
-<!--            <ul class="nav dropdown-menu">-->
-<!--                <li><a href="#"><i class="glyphicon glyphicon-user" style="color:#1111dd;"></i> Profile</a></li>-->
-<!--                <li><a href="#"><i class="glyphicon glyphicon-dashboard" style="color:#0000aa;"></i> Dashboard</a></li>-->
-<!--                <li><a href="#"><i class="glyphicon glyphicon-inbox" style="color:#11dd11;"></i> Pages</a></li>-->
-<!--                <li class="nav-divider"></li>-->
-<!--                <li><a href="#"><i class="glyphicon glyphicon-cog" style="color:#dd1111;"></i> Settings</a></li>-->
-<!--                <li><a href="#"><i class="glyphicon glyphicon-plus"></i> More..</a></li>-->
-<!--            </ul>-->
-
-
-<!--            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse2">-->
-<!--                <span class="sr-only">Toggle navigation</span>-->
-<!--                <span class="icon-bar"></span>-->
-<!--                <span class="icon-bar"></span>-->
-<!--                <span class="icon-bar"></span>-->
-<!--            </button>-->
-
-<!--        </div>-->
-<!--        <div class="collapse navbar-collapse" id="navbar-collapse2">-->
-<!--            <ul class="nav navbar-nav navbar-right">-->
-<!--                <li class="active"><a href="#">Posts</a></li>-->
-<!--                <li><a href="#loginModal" role="button" data-toggle="modal">Login</a></li>-->
-<!--                <li><a href="#aboutModal" role="button" data-toggle="modal">About</a></li>-->
-<!--            </ul>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
 
 <!--main-->
 <div class="container" id="main">
@@ -116,23 +129,6 @@
                 </div>
             </div>
 
-            <!--            <div class="panel panel-default">-->
-            <!--                <div class="panel-heading"><a href="#" class="pull-right">View all</a> <h4>More Templates</h4></div>-->
-            <!--                <div class="panel-body">-->
-            <!--                    <img src="/templateHome/img/150x150.gif" class="img-circle pull-right"> <a href="#">Free-->
-            <!--                    @Bootply</a>-->
-            <!--                    <div class="clearfix"></div>-->
-            <!--                    There a load of new free Bootstrap 3 ready templates at-->
-            <!--                    Bootply. All of these templates are free and don't require extensive-->
-            <!--                    customization to the Bootstrap baseline.-->
-            <!--                    <hr>-->
-            <!--                    <ul class="list-unstyled">-->
-            <!--                        <li><a href="http://usebootstrap.com/theme/google-plus">Dashboard</a></li>-->
-            <!--                        <li><a href="http://usebootstrap.com/theme/google-plus">Darkside</a></li>-->
-            <!--                        <li><a href="http://usebootstrap.com/theme/google-plus">Greenfield</a></li>-->
-            <!--                    </ul>-->
-            <!--                </div>-->
-            <!--            </div>-->
 
         </div>
         <div class="col-sm-6 col-md-8">
@@ -146,38 +142,58 @@
 
                     <button class="btn btn-success pull-right" type="button">Post</button>
                     <ul class="list-inline">
-                        <li><a href="#"><i class="glyphicon glyphicon-align-left"></i></a></li>
-                        <li><a href="#"><i class="glyphicon glyphicon-align-center"></i></a></li>
-                        <li><a href="#"><i class="glyphicon glyphicon-align-right"></i></a></li>
+                        <li><a href="#">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-camera-video-fill" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                      d="M0 5a2 2 0 0 1 2-2h7.5a2 2 0 0 1 1.983 1.738l3.11-1.382A1 1 0 0 1 16 4.269v7.462a1 1 0 0 1-1.406.913l-3.111-1.382A2 2 0 0 1 9.5 13H2a2 2 0 0 1-2-2V5z"/>
+                            </svg>
+                        </a></li>
+                        <li><a href="#">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-file-earmark-image-fill" viewBox="0 0 16 16">
+                                <path d="M4 0h5.293A1 1 0 0 1 10 .293L13.707 4a1 1 0 0 1 .293.707v5.586l-2.73-2.73a1 1 0 0 0-1.52.127l-1.889 2.644-1.769-1.062a1 1 0 0 0-1.222.15L2 12.292V2a2 2 0 0 1 2-2zm5.5 1.5v2a1 1 0 0 0 1 1h2l-3-3zm-1.498 4a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0z"/>
+                                <path d="M10.564 8.27 14 11.708V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-.293l3.578-3.577 2.56 1.536 2.426-3.395z"/>
+                            </svg>
+                        </a></li>
+                        <li><a href="#">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-emoji-laughing-fill" viewBox="0 0 16 16">
+                                <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zM7 6.5c0 .501-.164.396-.415.235C6.42 6.629 6.218 6.5 6 6.5c-.218 0-.42.13-.585.235C5.164 6.896 5 7 5 6.5 5 5.672 5.448 5 6 5s1 .672 1 1.5zm5.331 3a1 1 0 0 1 0 1A4.998 4.998 0 0 1 8 13a4.998 4.998 0 0 1-4.33-2.5A1 1 0 0 1 4.535 9h6.93a1 1 0 0 1 .866.5zm-1.746-2.765C10.42 6.629 10.218 6.5 10 6.5c-.218 0-.42.13-.585.235C9.164 6.896 9 7 9 6.5c0-.828.448-1.5 1-1.5s1 .672 1 1.5c0 .501-.164.396-.415.235z"/>
+                            </svg>
+                        </a></li>
                     </ul>
                 </form>
             </div>
 
-            <div class="panel panel-default">
-                <div class="panel-heading"><a href="#" class="pull-right">View all</a> <h4>Blog name</h4></div>
-                <div class="panel-body">
-                    <img src="/templateHome/img/150x150.gif" class="img-circle pull-right"> <a href="#">Keyword:
-                    Bootstrap</a>
-                    <div class="clearfix"></div>
-                    <hr>
+            <!--Content-->
+            <div id="contentList">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><a href="#" class="pull-right">View all</a> <h4><span id="date"></span>
+                    </h4>
+                    </div>
+                    <div class="panel-body">
+                        <img src="/templateHome/img/150x150.gif" class="img-circle pull-left">
+                        <a href="#"><span id="userName"></span></a>
+                        <div class="clearfix"></div>
+                        <hr>
 
-                    <p>If you're looking for help with Bootstrap code, the <code>twitter-bootstrap</code> tag at <a
-                            href="http://stackoverflow.com/questions/tagged/twitter-bootstrap">Stackoverflow</a> is a
-                        good place to find answers.</p>
+                        <p><span id="contentBlog"></span></p>
 
-                    <hr>
-                    <form>
-                        <div class="input-group">
-                            <div class="input-group-btn">
-                                <button class="btn btn-default">+1</button>
-                                <button class="btn btn-default"><i class="glyphicon glyphicon-share"></i></button>
+                        <hr>
+                        <form>
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-default">+1</button>
+                                    <button class="btn btn-default"><i class="glyphicon glyphicon-share"></i></button>
+                                </div>
+                                <input class="form-control" placeholder="Add a comment.." type="text">
                             </div>
-                            <input class="form-control" placeholder="Add a comment.." type="text">
-                        </div>
-                    </form>
-
+                        </form>
+                    </div>
                 </div>
             </div>
+
 
         </div>
         <div class="col-sm-6 col-md-2">
