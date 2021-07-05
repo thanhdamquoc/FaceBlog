@@ -11,6 +11,8 @@ public class BlogController {
     @Autowired
     private BlogService blogService;
 
+
+
     @GetMapping
     public ModelAndView showIndex() {
         ModelAndView modelAndView = new ModelAndView("index");
