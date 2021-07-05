@@ -13,7 +13,7 @@ public class BlogController {
 
     @GetMapping
     public ModelAndView showIndex() {
-        ModelAndView modelAndView = new ModelAndView("admin");
+        ModelAndView modelAndView = new ModelAndView("index");
         modelAndView.addObject("blogs", blogService.findAll());
         return modelAndView;
     }
