@@ -91,6 +91,9 @@
             success: function (data) {
                 console.log("login successfully");
                 localStorage.setItem("token", data.token);
+                localStorage.setItem("userId", data.id);
+                localStorage.setItem("username", data.username);
+                localStorage.setItem("fullName", data.fullName);
                 window.location.href = "/";
             }
         });

@@ -1,9 +1,11 @@
 package com.codegym.faceblog.controller.blog;
 
 import com.codegym.faceblog.service.blog.BlogService;
+import com.codegym.faceblog.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -11,7 +13,8 @@ public class BlogController {
     @Autowired
     private BlogService blogService;
 
-
+    @Autowired
+    private UserService userService;
 
     @GetMapping
     public ModelAndView showIndex() {
@@ -20,8 +23,8 @@ public class BlogController {
         return modelAndView;
     }
 
-    @GetMapping("/admin")
-    public ModelAndView showAdminPage() {
-        return new ModelAndView("/admin-test");
+    @GetMapping("/{username}")
+    public ModelAndView showPersonalWall(@PathVariable String username) {
+        return new ModelAndView("personal-wall","user",userService.findByUsername(username).get());
     }
 }
