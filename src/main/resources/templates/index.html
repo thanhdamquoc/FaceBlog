@@ -33,8 +33,10 @@
         }
 
         function getBlog(listBlog) {
-            return
-            `<div className="panel panel-default">
+
+
+            return "" +
+                `<div className="panel panel-default">
                 <div className="panel-body">
                     <div className="well well-sm">
                         <div className="media">
@@ -44,9 +46,7 @@
                             </a>
                             <div className="media-body">
                                 <h4 className="media-heading">${listBlog.user.username}</h4>
-                                <p><span className="label label-info">10 photos</span> <span
-                                    className="label label-primary">89 followers</span>
-                                </p>
+
                                 <p>
                                     <a href="#" className="btn btn-xs btn-default">
                                         <span>
@@ -67,7 +67,6 @@
                         </div>
                     </div>
                     <hr>
-
                         <p>${listBlog.content}</p>
 
                         <hr>
@@ -81,7 +80,6 @@
                                     <input className="form-control" placeholder="Add a comment.." type="text">
                                 </div>
                             </form>
-
                 </div>
             </div>`
         }
@@ -222,172 +220,175 @@
             </div>
 
 
-        <!--content-->
-        <div id="contentList">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <div class="well well-sm">
-                        <div class="media">
-                            <a class="thumbnail pull-left" href="#">
-                                <img class="media-object" src="/templateHome/img/a13ac7aed64918b6354f48da59490e3a.jpg">
-                            </a>
-                            <div class="media-body">
-                                <h4 class="media-heading">Jose Kinsella</h4>
-                                <p><span class="label label-info">10 photos</span> <span class="label label-primary">89 followers</span>
-                                </p>
-                                <p>
-                                    <a href="#" class="btn btn-xs btn-default">
+            <!--content-->
+            <div id="contentList">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="well well-sm">
+                            <div class="media">
+                                <a class="thumbnail pull-left" href="#">
+                                    <img class="media-object"
+                                         src="/templateHome/img/a13ac7aed64918b6354f48da59490e3a.jpg">
+                                </a>
+                                <div class="media-body">
+                                    <h4 class="media-heading">Jose Kinsella</h4>
+                                    <p><span class="label label-info">10 photos</span> <span
+                                            class="label label-primary">89 followers</span>
+                                    </p>
+                                    <p>
+                                        <a href="#" class="btn btn-xs btn-default">
                                         <span>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                  fill="currentColor" class="bi bi-messenger" viewBox="0 0 16 16">
                                                      <path d="M0 7.76C0 3.301 3.493 0 8 0s8 3.301 8 7.76-3.493 7.76-8 7.76c-.81 0-1.586-.107-2.316-.307a.639.639 0 0 0-.427.03l-1.588.702a.64.64 0 0 1-.898-.566l-.044-1.423a.639.639 0 0 0-.215-.456C.956 12.108 0 10.092 0 7.76zm5.546-1.459-2.35 3.728c-.225.358.214.761.551.506l2.525-1.916a.48.48 0 0 1 .578-.002l1.869 1.402a1.2 1.2 0 0 0 1.735-.32l2.35-3.728c.226-.358-.214-.761-.551-.506L9.728 7.381a.48.48 0 0 1-.578.002L7.281 5.98a1.2 1.2 0 0 0-1.735.32z"/></svg>
                                         </span> Message</a>
-                                    <a href="#" class="btn btn-xs btn-default">
+                                        <a href="#" class="btn btn-xs btn-default">
                                         <span>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                  fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
                                                 <path fill-rule="evenodd"
                                                       d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/></svg>
                                         </span> Favorite</a>
-                                </p>
+                                    </p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <hr>
+                        <hr>
 
-                    <p>If you're looking for help with Bootstrap code, the <code>twitter-bootstrap</code> tag at <a
-                            href="http://stackoverflow.com/questions/tagged/twitter-bootstrap">Stackoverflow</a> is a
-                        good place to find answers.</p>
+                        <p>If you're looking for help with Bootstrap code, the <code>twitter-bootstrap</code> tag at <a
+                                href="http://stackoverflow.com/questions/tagged/twitter-bootstrap">Stackoverflow</a> is
+                            a
+                            good place to find answers.</p>
 
-                    <hr>
-                    <form>
-                        <div class="input-group">
-                            <div class="input-group-btn">
-                                <button class="btn btn-default">+1</button>
-                                <button class="btn btn-default"><i class="glyphicon glyphicon-share"></i></button>
-                            </div>
-                            <input class="form-control" placeholder="Add a comment.." type="text">
-                        </div>
-                    </form>
-
-                </div>
-            </div>
-        </div>
-
-
-    </div>
-    <div class="col-sm-6 col-md-2">
-
-        <div class="panel panel-default">
-            <div class="panel-heading"><a href="#" class="pull-right">View all</a> <h4>Top Blog</h4></div>
-            <div class="panel-body">
-                <div class="list-group">
-                    <a href="http://usebootstrap.com/theme/google-plus" class="list-group-item active">Blog 1</a>
-                    <a href="http://usebootstrap.com/theme/google-plus" class="list-group-item">Blog 2</a>
-                    <a href="http://usebootstrap.com/theme/google-plus" class="list-group-item">Blog 3</a>
-                    <a href="http://usebootstrap.com/theme/google-plus" class="list-group-item">Blog 4</a>
-                    <a href="http://usebootstrap.com/theme/google-plus" class="list-group-item">Blog 5</a>
-                    <a href="http://usebootstrap.com/theme/google-plus" class="list-group-item">Blog 6</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="panel panel-default">
-            <div class="panel-heading"><a href="#" class="pull-right">View all</a> <h4>Portlet Heading</h4></div>
-            <div class="panel-body">
-                <ul class="list-group">
-                    <li class="list-group-item">Modals</li>
-                    <li class="list-group-item">Sliders / Carousel</li>
-                    <li class="list-group-item">Thumbnails</li>
-                </ul>
-            </div>
-        </div>
-        <!--/main-->
-
-
-        <!--login modal-->
-        <div style="display: none;" id="loginModal" class="modal fade" tabindex="-1" role="dialog"
-             aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">�</button>
-                        <h2 class="text-center"><img src="templateHome/img/photo_002.png" class="img-circle"><br>Login
-                        </h2>
-                    </div>
-                    <div class="modal-body">
-                        <form class="form col-md-12 center-block">
-                            <div class="form-group">
-                                <input class="form-control input-lg" placeholder="Email" type="text">
-                            </div>
-                            <div class="form-group">
-                                <input class="form-control input-lg" placeholder="Password" type="password">
-                            </div>
-                            <div class="form-group">
-                                <button class="btn btn-primary btn-lg btn-block">Sign In</button>
-                                <span class="pull-right"><a href="#">Register</a></span><span><a
-                                    href="#">Need help?</a></span>
+                        <hr>
+                        <form>
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-default">+1</button>
+                                    <button class="btn btn-default"><i class="glyphicon glyphicon-share"></i></button>
+                                </div>
+                                <input class="form-control" placeholder="Add a comment.." type="text">
                             </div>
                         </form>
+
                     </div>
-                    <div class="modal-footer">
-                        <div class="col-md-12">
-                            <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="col-sm-6 col-md-2">
+
+            <div class="panel panel-default">
+                <div class="panel-heading"><a href="#" class="pull-right">View all</a> <h4>Top Blog</h4></div>
+                <div class="panel-body">
+                    <div class="list-group">
+                        <a href="http://usebootstrap.com/theme/google-plus" class="list-group-item active">Blog 1</a>
+                        <a href="http://usebootstrap.com/theme/google-plus" class="list-group-item">Blog 2</a>
+                        <a href="http://usebootstrap.com/theme/google-plus" class="list-group-item">Blog 3</a>
+                        <a href="http://usebootstrap.com/theme/google-plus" class="list-group-item">Blog 4</a>
+                        <a href="http://usebootstrap.com/theme/google-plus" class="list-group-item">Blog 5</a>
+                        <a href="http://usebootstrap.com/theme/google-plus" class="list-group-item">Blog 6</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading"><a href="#" class="pull-right">View all</a> <h4>Portlet Heading</h4></div>
+                <div class="panel-body">
+                    <ul class="list-group">
+                        <li class="list-group-item">Modals</li>
+                        <li class="list-group-item">Sliders / Carousel</li>
+                        <li class="list-group-item">Thumbnails</li>
+                    </ul>
+                </div>
+            </div>
+            <!--/main-->
+
+
+            <!--login modal-->
+            <div style="display: none;" id="loginModal" class="modal fade" tabindex="-1" role="dialog"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">�</button>
+                            <h2 class="text-center"><img src="templateHome/img/photo_002.png" class="img-circle"><br>Login
+                            </h2>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form col-md-12 center-block">
+                                <div class="form-group">
+                                    <input class="form-control input-lg" placeholder="Email" type="text">
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control input-lg" placeholder="Password" type="password">
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-primary btn-lg btn-block">Sign In</button>
+                                    <span class="pull-right"><a href="#">Register</a></span><span><a
+                                        href="#">Need help?</a></span>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="col-md-12">
+                                <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
 
-        <!--about modal-->
-        <div style="display: none;" id="aboutModal" class="modal fade" tabindex="-1" role="dialog"
-             aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">�</button>
-                        <h2 class="text-center">About</h2>
-                    </div>
-                    <div class="modal-body">
-                        <div class="col-md-12 text-center">
-                            <a href="http://usebootstrap.com/theme/google-plus">This Bootstrap Template</a><br>was
-                            made with <i class="glyphicon glyphicon-heart"></i> by <a
-                                href="http://usebootstrap.com/theme/google-plus">Bootply</a>
-                            <br><br>
-                            <a href="https://github.com/iatek/bootstrap-google-plus">GitHub Fork</a>
+            <!--about modal-->
+            <div style="display: none;" id="aboutModal" class="modal fade" tabindex="-1" role="dialog"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">�</button>
+                            <h2 class="text-center">About</h2>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn" data-dismiss="modal" aria-hidden="true">OK</button>
+                        <div class="modal-body">
+                            <div class="col-md-12 text-center">
+                                <a href="http://usebootstrap.com/theme/google-plus">This Bootstrap Template</a><br>was
+                                made with <i class="glyphicon glyphicon-heart"></i> by <a
+                                    href="http://usebootstrap.com/theme/google-plus">Bootply</a>
+                                <br><br>
+                                <a href="https://github.com/iatek/bootstrap-google-plus">GitHub Fork</a>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn" data-dismiss="modal" aria-hidden="true">OK</button>
+                        </div>
                     </div>
                 </div>
             </div>
+
+
+            <script type="text/javascript" src="/templateHome/js/jquery.js"></script>
+            <script type="text/javascript" src="/templateHome/js/bootstrap.js"></script>
+
+            <script type="text/javascript">
+
+                // $(document).ready(function() {
+                //
+                //   $('#btnToggle').click(function(){
+                //     if ($(this).hasClass('on')) {
+                //       $('#main .col-md-6').addClass('col-md-4').removeClass('col-md-6');
+                //       $(this).removeClass('on');
+                //     }
+                //     else {
+                //       $('#main .col-md-4').addClass('col-md-6').removeClass('col-md-4');
+                //       $(this).addClass('on');
+                //     }
+                //   });
+                // });
+
+            </script>
         </div>
-
-
-        <script type="text/javascript" src="/templateHome/js/jquery.js"></script>
-        <script type="text/javascript" src="/templateHome/js/bootstrap.js"></script>
-
-        <script type="text/javascript">
-
-            // $(document).ready(function() {
-            //
-            //   $('#btnToggle').click(function(){
-            //     if ($(this).hasClass('on')) {
-            //       $('#main .col-md-6').addClass('col-md-4').removeClass('col-md-6');
-            //       $(this).removeClass('on');
-            //     }
-            //     else {
-            //       $('#main .col-md-4').addClass('col-md-6').removeClass('col-md-4');
-            //       $(this).addClass('on');
-            //     }
-            //   });
-            // });
-
-        </script>
     </div>
-</div>
 </div>
 </body>
 </html>
