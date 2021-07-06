@@ -369,17 +369,18 @@
 </div>
 
 <!-- Blog React Modal -->
-<div class="modal fade" id="blog-react-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">React to Blog</h5>
-            </div>
-            <div class="modal-body" id="blog-react-modal-body">
-            </div>
-        </div>
-    </div>
-</div>
+
+<!--<div class="modal fade" id="blog-react-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">-->
+<!--    <div class="modal-dialog">-->
+<!--        <div class="modal-content">-->
+<!--            <div class="modal-header">-->
+<!--                <h5 class="modal-title" id="exampleModalLabel">React to Blog</h5>-->
+<!--            </div>-->
+<!--            <div class="modal-body" id="blog-react-modal-body">-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
 
 
 
@@ -465,7 +466,16 @@
                     <form>
                         <div class="input-group">
                             <div class="input-group-btn">
-                                <button type='button' onclick="showBlogReactModal(${listBlog.id})" class="btn btn-default">Like</button>
+
+                            <div class="dropdown">
+                                    <button type='button' onclick="showBlogReactModal(${listBlog.id})" class="btn btn-default dropbtn">Like</button>
+                                <div class="dropdown-content">
+                                    <div class="blog-react-modal-body">
+
+                                    </div>
+                                </div>
+                            </div>
+
                                 <button type='button' class="btn btn-default" data-toggle="collapse" data-target="#${listBlog.id}">
                                     Bình Luận
                                 </button>
@@ -511,12 +521,17 @@
                 let modalBody = "";
                 console.log(data);
                 for (let i = 0; i < data.length; i++) {
-                    modalBody += `<button onclick="reactToBlog(${blogId},${data[i].id})">${data[i].name}</button>`;
+                    modalBody += getReactBody(blogId, data[i]);
                 }
-                $('#blog-react-modal-body').html(modalBody);
+                $('.blog-react-modal-body').html(modalBody);
             },
         });
-        $('#blog-react-modal').modal('show');
+    }
+
+
+    function getReactBody(blogId, data) {
+        return "" +
+        `<a onclick="reactToBlog(${blogId},${data.id})">${data.name}</a>`
     }
 
     function reactToBlog(blogId, reactionId) {
@@ -541,7 +556,6 @@
                 console.log(data);
             }
         });
-        $('#blog-react-modal').modal('hide');
     }
 </script>
 </html>
