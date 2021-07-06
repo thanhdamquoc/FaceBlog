@@ -1,7 +1,9 @@
 package com.codegym.faceblog.controller.user;
 
+import com.codegym.faceblog.model.Blog;
 import com.codegym.faceblog.model.Role;
 import com.codegym.faceblog.model.User;
+import com.codegym.faceblog.service.blog.BlogService;
 import com.codegym.faceblog.service.role.RoleService;
 import com.codegym.faceblog.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,9 @@ public class UserRestController {
 
     @Autowired
     private RoleService roleService;
+
+    @Autowired
+    private BlogService blogService;
 
     @GetMapping
     private ResponseEntity<Iterable<User>> findAll() {
@@ -42,5 +47,32 @@ public class UserRestController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(userOptional.get(), HttpStatus.OK);
+    }
+
+    @PostMapping("/{id}")
+    private ResponseEntity<User> editUser(@RequestBody User user) {
+        Optional<User> userOptional = userService.findById(user.getId());
+        if (!userOptional.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        userOptional.get().setFullName(user.getFullName());
+        userOptional.get().setProfilePicture(user.getProfilePicture());
+        if (user.getPassword() != "") {
+            userOptional.get().setPassword(user.getPassword());
+        }
+        return new ResponseEntity<>(userService.save(userOptional.get()),HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/blogs")
+    private ResponseEntity<Iterable<Blog>> findBlogsByUserId(@PathVariable Long id) {
+        Optional<User> userOptional = userService.findById(id);
+        if (!userOptional.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        Iterable<Blog> blogs = blogService.findAllByUser(userOptional.get());
+        if (!blogs.iterator().hasNext()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(blogs, HttpStatus.OK);
     }
 }
