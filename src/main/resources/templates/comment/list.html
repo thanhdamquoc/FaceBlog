@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Comment</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<body>
+
+<div id="container">
+    <h1>Comment List</h1>
+    <p><a class="btn btn-info" data-bs-toggle="modal" data-bs-target="#createNew">Create New Comment</a></p>
+    <hr>
+    <input type="text" id="search" name="search" placeholder="Search By author">
+    <input onclick="findAuthor()" type="submit" value="Search">
+    <hr>
+    <table id="commentList" border="1px">
+        <tr>
+            <th>Id</th>
+            <th>Author</th>
+            <th>Content</th>
+            <th>Rate</th>
+            <th>Product</th>
+            <th>Likes</th>
+        </tr>
+        <tr th:each="x:${comments}">
+            <td th:text="${x.id}"></td>
+            <td th:text="${x.author}"></td>
+            <td th:text="${x.content}"></td>
+            <td th:text="${x.rate}"></td>
+            <td th:text="${x.product.name}"></td>
+            <td><button th:text="${x.likes}" id="clickLike"></button></td>
+        </tr>
+    </table>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+        integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+        integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+        crossorigin="anonymous"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+<script>
+
+    function findAuthor() {
+        let search = $('#search').val();
+        $.ajax({
+            type: "GET",
+            url: `/comments?search=${search}`,
+            success: function (data) {
+                $('#search').val("");
+                let content = '    <tr>\n' +
+                    '        <th>Id</th>\n' +
+                    '        <th>Author</th>\n' +
+                    '        <th>Content</th>\n' +
+                    '        <th>Rate</th>\n' +
+                    '        <th>Product</th>\n' +
+                    '        <th>Likes</th>\n' +
+                    '    </tr>';
+                for (let i = 0; i < data.content.length; i++) {
+                    content += getComment(data.content[i]);
+                }
+                document.getElementById('commentList').innerHTML = content;
+            }
+        })
+    }
+
+    function successHandler() {
+        $('#editModal').modal('hide');
+        $('#createNew').modal('hide');
+        $('#deleteModal').modal('hide');
+
+        $.ajax({
+            type: "GET",
+            url: `/comments`,
+            success: function (data) {
+                let content = '    <tr>\n' +
+                    '        <th>Id</th>\n' +
+                    '        <th>Author</th>\n' +
+                    '        <th>Content</th>\n' +
+                    '        <th>Rate</th>\n' +
+                    '        <th>Product</th>\n' +
+                    '        <th>Likes</th>\n' +
+                    '    </tr>';
+                for (let i = 0; i < data.content.length; i++) {
+                    content += getComment(data.content[i]);
+                }
+                document.getElementById("commentList").innerHTML = content;
+            }
+        })
+    }
+
+    //hàm create
+    $(document).ready(function () {
+        $("#createComment").click(function (e) {
+            let author = $('#comment_author').val();
+            let content = $('#comment_content').val();
+            let rate = $('#comment_rate').val();
+            let product = $('#comment_product').val();
+            $('#comment_author').val("");
+            $('#comment_content').val("");
+            let newComment = {
+                author: author,
+                content:content,
+                rate:rate,
+                product:{
+                    id:product
+                },
+                likes: 0
+            }
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                type: "POST",
+                url: `/comments`,
+                data: JSON.stringify(newComment),
+                success: successHandler
+            })
+            event.preventDefault();
+        })
+    })
+
+    // vẽ lại html
+    function getComment(comment) {
+        return `<tr><td >${comment.id}</td>`+
+            `<td>${comment.author}</td>` +
+            `<td>${comment.content}</td>` +
+            `<td>${comment.rate}</td>` +
+            `<td>${comment.product.name}</td>`+
+            `<td><button id="clickLike">like</button>${comment.likes}</td></tr>`;
+    }
+</script>
+
+<!--modal create-->
+<div class="modal fade" id="createNew" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">New Comment</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="comment_author" class="col-form-label">Author:</label>
+                        <input class="form-control" id="comment_author"/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="comment_content" class="col-form-label">Content:</label>
+                        <textarea class="form-control" id="comment_content"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="comment_rate" class="col-form-label">Rate:</label>
+                        <select id="comment_rate">
+                            <option value="5">5*</option>
+                            <option value="4">4*</option>
+                            <option value="3">3*</option>
+                            <option value="2">2*</option>
+                            <option value="1">1*</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="comment_product" class="col-form-label">Product:</label>
+                        <select id="comment_product">
+                            <option th:each="x:${products}" th:value="${x.id}" th:text="${x.name}"></option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Back</button>
+                <button class="btn btn-primary" id="createComment">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
