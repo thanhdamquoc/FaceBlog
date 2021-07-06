@@ -1,116 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-    <title>Google Plus Bootstrap Theme Demo</title>
+    <title>FaceBlog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="/templateHome/css/bootstrap.css">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <!--[if lt IE 9]>
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-
     <link href="/templateHome/css/google-plus.css" rel="stylesheet">
-    <script>
-        window.onload = function () {
-            showListBlog()
-        };
-
-        function showListBlog() {
-            $.ajax({
-                type: "GET",
-                url: "/blogs",
-                success: function (listBlog) {
-                    let contentBlog = "";
-                    for (let i = 0; i < listBlog.length; i++) {
-                        contentBlog += getBlog(listBlog[i])
-                    }
-                    document.getElementById('contentList').innerHTML = contentBlog;
-                    console.log(listBlog);
-                }
-            })
-        }
-
-        function getBlog(listBlog) {
-
-
-            return "" +
-                `<div className="panel panel-default">
-                <div className="panel-body">
-                    <div className="well well-sm">
-                        <div className="media">
-                            <a className="thumbnail pull-left" href="#">
-                                <img className="media-object"
-                                     src="/templateHome/img/a13ac7aed64918b6354f48da59490e3a.jpg">
-                            </a>
-                            <div className="media-body">
-                                <h4 className="media-heading">${listBlog.user.username}</h4>
-
-                                <p>
-                                    <a href="#" className="btn btn-xs btn-default">
-                                        <span>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                 fill="currentColor" className="bi bi-messenger" viewBox="0 0 16 16">
-                                                     <path
-                                                         d="M0 7.76C0 3.301 3.493 0 8 0s8 3.301 8 7.76-3.493 7.76-8 7.76c-.81 0-1.586-.107-2.316-.307a.639.639 0 0 0-.427.03l-1.588.702a.64.64 0 0 1-.898-.566l-.044-1.423a.639.639 0 0 0-.215-.456C.956 12.108 0 10.092 0 7.76zm5.546-1.459-2.35 3.728c-.225.358.214.761.551.506l2.525-1.916a.48.48 0 0 1 .578-.002l1.869 1.402a1.2 1.2 0 0 0 1.735-.32l2.35-3.728c.226-.358-.214-.761-.551-.506L9.728 7.381a.48.48 0 0 1-.578.002L7.281 5.98a1.2 1.2 0 0 0-1.735.32z"/></svg>
-                                        </span> Message</a>
-                                    <a href="#" className="btn btn-xs btn-default">
-                                        <span>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                 fill="currentColor" className="bi bi-heart-fill" viewBox="0 0 16 16">
-                                                <path fill-rule="evenodd"
-                                                      d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/></svg>
-                                        </span> Favorite</a>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-                        <p>${listBlog.content}</p>
-
-                        <hr>
-                            <form>
-                                <div className="input-group">
-                                    <div className="input-group-btn">
-                                        <button className="btn btn-default">+1</button>
-                                        <button className="btn btn-default"><i
-                                            className="glyphicon glyphicon-share"></i></button>
-                                    </div>
-                                    <input className="form-control" placeholder="Add a comment.." type="text">
-                                </div>
-                            </form>
-                </div>
-            </div>`
-        }
-
-        function createBlog() {
-            let content = $('#status').val();
-            let blog = {
-                content: content,
-            };
-            $.ajax({
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                type: "POST",
-                data: JSON.stringify(blog),
-                url: "/blogs",
-                success: function (data) {
-                    console.log(data);
-                    showListBlog();
-                }
-            });
-        }
-
-
-    </script>
-
 </head>
-
 <body class="">
-
 <div class="navbar navbar-fixed-top header">
     <div class="col-md-12">
         <div class="navbar-header">
@@ -133,51 +36,95 @@
                     </div>
                 </div>
             </form>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="http://usebootstrap.com/theme/google-plus" target="_ext">User Blog</a></li>
-
-                <li><a class="" href="#" id="btnToggle">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                         class="bi bi-messenger" viewBox="0 0 16 16">
-                        <path d="M0 7.76C0 3.301 3.493 0 8 0s8 3.301 8 7.76-3.493 7.76-8 7.76c-.81 0-1.586-.107-2.316-.307a.639.639 0 0 0-.427.03l-1.588.702a.64.64 0 0 1-.898-.566l-.044-1.423a.639.639 0 0 0-.215-.456C.956 12.108 0 10.092 0 7.76zm5.546-1.459-2.35 3.728c-.225.358.214.761.551.506l2.525-1.916a.48.48 0 0 1 .578-.002l1.869 1.402a1.2 1.2 0 0 0 1.735-.32l2.35-3.728c.226-.358-.214-.761-.551-.506L9.728 7.381a.48.48 0 0 1-.578.002L7.281 5.98a1.2 1.2 0 0 0-1.735.32z"/>
-                    </svg>
-                </a></li>
-                <li><a href="#">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                         class="bi bi-bell-fill" viewBox="0 0 16 16">
-                        <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z"/>
-                    </svg>
-                    </i></a></li>
-                <li class="">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <div sec:authorize="isAnonymous()">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/login">Login</a>
+                    </li>
+                </ul>
+            </div>
+            <div sec:authorize="isAuthenticated()">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#" target="_ext"><span class="personal-wall-button"></span></a></li>
+                    <li><a class="" href="#" id="btnToggle">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                             class="bi bi-gear-fill" viewBox="0 0 16 16">
-                            <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"/>
+                             class="bi bi-messenger" viewBox="0 0 16 16">
+                            <path d="M0 7.76C0 3.301 3.493 0 8 0s8 3.301 8 7.76-3.493 7.76-8 7.76c-.81 0-1.586-.107-2.316-.307a.639.639 0 0 0-.427.03l-1.588.702a.64.64 0 0 1-.898-.566l-.044-1.423a.639.639 0 0 0-.215-.456C.956 12.108 0 10.092 0 7.76zm5.546-1.459-2.35 3.728c-.225.358.214.761.551.506l2.525-1.916a.48.48 0 0 1 .578-.002l1.869 1.402a1.2 1.2 0 0 0 1.735-.32l2.35-3.728c.226-.358-.214-.761-.551-.506L9.728 7.381a.48.48 0 0 1-.578.002L7.281 5.98a1.2 1.2 0 0 0-1.735.32z"/>
                         </svg>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">User Name</a></li>
-                        <li><a href="#">Setting</a></li>
-                        <li><a href="#">Help and support</a></li>
-                        <li><a href="#">Login</a></li>
-                    </ul>
-                </li>
-            </ul>
+                    </a></li>
+                    <li><a href="#">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                             class="bi bi-bell-fill" viewBox="0 0 16 16">
+                            <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z"/>
+                        </svg>
+                        </i></a></li>
+                    <li class="">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-gear-fill" viewBox="0 0 16 16">
+                                <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"/>
+                            </svg>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#"><span class="personal-wall-button"></span></a></li>
+                            <li><a href="#">Setting</a></li>
+                            <li><a href="#">Help and support</a></li>
+                            <li><a href="@{/logout}">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 </div>
 
-<!--main-->
 <div class="container" id="main">
     <div class="row">
         <div class="col-sm-6 col-md-2">
             <div class="panel panel-default">
-                <div class="panel-heading"><a href="#" class="pull-right">View all</a> <h4>User Name</h4></div>
+                <div class="panel-heading"><a href="#" class="pull-right">View all</a> <h4><span
+                        class="personal-wall-button"></span></h4></div>
                 <div class="panel-body">
                     <div class="list-group">
-                        <a href="http://usebootstrap.com/theme/google-plus" class="list-group-item">Friends</a>
-                        <a href="http://usebootstrap.com/theme/google-plus" class="list-group-item">Groups</a>
-                        <a href="http://usebootstrap.com/theme/google-plus" class="list-group-item">Watch</a>
+                        <a href="http://usebootstrap.com/theme/google-plus" class="list-group-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-person-fill" viewBox="0 0 16 16">
+                                <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                            </svg>
+                            Friends
+                        </a>
+
+                        <a href="http://usebootstrap.com/theme/google-plus" class="list-group-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-people-fill" viewBox="0 0 16 16">
+                                <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                                <path fill-rule="evenodd"
+                                      d="M5.216 14A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216z"/>
+                                <path d="M4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/>
+                            </svg>
+                            Groups
+                        </a>
+
+                        <a href="http://usebootstrap.com/theme/google-plus" class="list-group-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-play-btn" viewBox="0 0 16 16">
+                                <path d="M6.79 5.093A.5.5 0 0 0 6 5.5v5a.5.5 0 0 0 .79.407l3.5-2.5a.5.5 0 0 0 0-.814l-3.5-2.5z"/>
+                                <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm15 0a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
+                            </svg>
+                            Watch
+                        </a>
+                        <a href="http://usebootstrap.com/theme/google-plus" class="list-group-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-shop" viewBox="0 0 16 16">
+                                <path d="M2.97 1.35A1 1 0 0 1 3.73 1h8.54a1 1 0 0 1 .76.35l2.609 3.044A1.5 1.5 0 0 1 16 5.37v.255a2.375 2.375 0 0 1-4.25 1.458A2.371 2.371 0 0 1 9.875 8 2.37 2.37 0 0 1 8 7.083 2.37 2.37 0 0 1 6.125 8a2.37 2.37 0 0 1-1.875-.917A2.375 2.375 0 0 1 0 5.625V5.37a1.5 1.5 0 0 1 .361-.976l2.61-3.045zm1.78 4.275a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 1 0 2.75 0V5.37a.5.5 0 0 0-.12-.325L12.27 2H3.73L1.12 5.045A.5.5 0 0 0 1 5.37v.255a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0zM1.5 8.5A.5.5 0 0 1 2 9v6h1v-5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v5h6V9a.5.5 0 0 1 1 0v6h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1V9a.5.5 0 0 1 .5-.5zM4 15h3v-5H4v5zm5-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-3zm3 0h-2v3h2v-3z"/>
+                            </svg>
+                            Market
+                        </a>
+                        <a href="http://usebootstrap.com/theme/google-plus" class="list-group-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-check-fill" viewBox="0 0 16 16">
+                                <path d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4V.5zM16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2zm-5.146-5.146-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708.708z"/>
+                            </svg>
+                            Sự kiện
+                        </a>
                     </div>
                 </div>
             </div>
@@ -222,57 +169,7 @@
 
             <!--content-->
             <div id="contentList">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <div class="well well-sm">
-                            <div class="media">
-                                <a class="thumbnail pull-left" href="#">
-                                    <img class="media-object"
-                                         src="/templateHome/img/a13ac7aed64918b6354f48da59490e3a.jpg">
-                                </a>
-                                <div class="media-body">
-                                    <h4 class="media-heading">Jose Kinsella</h4>
-                                    <p><span class="label label-info">10 photos</span> <span
-                                            class="label label-primary">89 followers</span>
-                                    </p>
-                                    <p>
-                                        <a href="#" class="btn btn-xs btn-default">
-                                        <span>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                 fill="currentColor" class="bi bi-messenger" viewBox="0 0 16 16">
-                                                     <path d="M0 7.76C0 3.301 3.493 0 8 0s8 3.301 8 7.76-3.493 7.76-8 7.76c-.81 0-1.586-.107-2.316-.307a.639.639 0 0 0-.427.03l-1.588.702a.64.64 0 0 1-.898-.566l-.044-1.423a.639.639 0 0 0-.215-.456C.956 12.108 0 10.092 0 7.76zm5.546-1.459-2.35 3.728c-.225.358.214.761.551.506l2.525-1.916a.48.48 0 0 1 .578-.002l1.869 1.402a1.2 1.2 0 0 0 1.735-.32l2.35-3.728c.226-.358-.214-.761-.551-.506L9.728 7.381a.48.48 0 0 1-.578.002L7.281 5.98a1.2 1.2 0 0 0-1.735.32z"/></svg>
-                                        </span> Message</a>
-                                        <a href="#" class="btn btn-xs btn-default">
-                                        <span>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                 fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
-                                                <path fill-rule="evenodd"
-                                                      d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/></svg>
-                                        </span> Favorite</a>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <hr>
 
-                        <p>If you're looking for help with Bootstrap code, the <code>twitter-bootstrap</code> tag at <a
-                                href="http://stackoverflow.com/questions/tagged/twitter-bootstrap">Stackoverflow</a> is
-                            a
-                            good place to find answers.</p>
-
-                        <hr>
-                        <form>
-                            <div class="input-group">
-                                <div class="input-group-btn">
-                                    <button class="btn btn-default">+1</button>
-                                    <button class="btn btn-default"><i class="glyphicon glyphicon-share"></i></button>
-                                </div>
-                                <input class="form-control" placeholder="Add a comment.." type="text">
-                            </div>
-                        </form>
-
-                    </div>
-                </div>
             </div>
 
 
@@ -366,7 +263,6 @@
                 </div>
             </div>
 
-
             <script type="text/javascript" src="/templateHome/js/jquery.js"></script>
             <script type="text/javascript" src="/templateHome/js/bootstrap.js"></script>
 
@@ -390,5 +286,126 @@
         </div>
     </div>
 </div>
+<!-- Blog React Modal -->
+<div class="modal fade" id="blog-react-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">React to Blog</h5>
+            </div>
+            <div class="modal-body" id="blog-react-modal-body">
+            </div>
+        </div>
+    </div>
+</div>
 </body>
+<script>
+
+    showListBlog();
+    $('.personal-wall-button').html(localStorage.getItem("fullName"));
+
+    function showListBlog() {
+        $.ajax({
+            type: "GET",
+            url: "/blogs",
+            success: function (listBlog) {
+                let contentBlog = "";
+                for (let i = 0; i < listBlog.length; i++) {
+                    contentBlog += getBlog(listBlog[i])
+                }
+                document.getElementById('contentList').innerHTML = contentBlog;
+                console.log(listBlog);
+            }
+        })
+    }
+
+    function getBlog(listBlog) {
+        return "" +
+            `<div class="panel panel-default">
+                <div class="panel-body">
+                    <img src="/templateHome/img/150x150.gif" class="img-circle pull-left"> <a href="#">${listBlog.user.username}</a>
+                    <div class="clearfix"></div>
+                    <hr>
+                    <p>${listBlog.content}</p>
+                    <hr>
+                    <form>
+                        <div class="input-group">
+                            <div class="input-group-btn">
+                                <button type='button' onclick="showBlogReactModal(${listBlog.id})" class="btn btn-default">Like</button>
+                                <button type='button' class="btn btn-default" data-toggle="collapse" data-target="#${listBlog.id}">
+                                    Bình Luận
+                                </button>
+                            </div>
+                            <div id="${listBlog.id}" class="collapse">
+                                <input class="form-control" placeholder="Add a comment.." type="text">
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>`
+    }
+
+    function createBlog() {
+        let content = $('#status').val();
+        let blog = {
+            content: content,
+        };
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            type: "POST",
+            data: JSON.stringify(blog),
+            url: "/blogs",
+            success: function (data) {
+                console.log(data);
+                showListBlog();
+            }
+        });
+    }
+
+    function showBlogReactModal(blogId) {
+        $.ajax({
+            type: "GET",
+            url: "/reactions",
+            success: function (data) {
+                let modalBody = "";
+                console.log(data);
+                for (let i = 0; i < data.length; i++) {
+                    modalBody += `<button onclick="reactToBlog(${blogId},${data[i].id})">${data[i].name}</button>`;
+                }
+                $('#blog-react-modal-body').html(modalBody);
+            },
+        });
+        $('#blog-react-modal').modal('show');
+    }
+
+    function reactToBlog(blogId, reactionId) {
+        let blogReaction = {
+            blog: {
+                id: blogId,
+            },
+            reaction: {
+                id: reactionId,
+            }
+        }
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem("token"),
+            },
+            type: "POST",
+            data: JSON.stringify(blogReaction),
+            url: "/blog-reactions",
+            success: function (data) {
+                console.log(data);
+            }
+        });
+        $('#blog-react-modal').modal('hide');
+    }
+</script>
 </html>

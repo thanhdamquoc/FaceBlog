@@ -42,4 +42,5 @@ public class BlogRestController {
         return new ResponseEntity<>(blogService.save(blog), HttpStatus.CREATED);
     }
 
+
 }
