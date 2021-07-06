@@ -1,4 +1,4 @@
-package com.codegym.faceblog.model;
+package com.codegym.faceblog.model.security;
 
 import org.springframework.security.core.GrantedAuthority;
 

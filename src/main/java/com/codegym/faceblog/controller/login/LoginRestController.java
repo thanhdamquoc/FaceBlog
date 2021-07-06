@@ -1,6 +1,6 @@
 package com.codegym.faceblog.controller.login;
 
-import com.codegym.faceblog.model.JwtResponse;
+import com.codegym.faceblog.model.security.JwtResponse;
 import com.codegym.faceblog.model.User;
 import com.codegym.faceblog.service.jwt.JwtService;
 import com.codegym.faceblog.service.user.UserService;
@@ -12,7 +12,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 @RestController
 @RequestMapping("/login")

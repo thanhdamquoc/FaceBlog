@@ -1,5 +1,6 @@
-package com.codegym.faceblog.model;
+package com.codegym.faceblog.model.security;
 
+import com.codegym.faceblog.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
