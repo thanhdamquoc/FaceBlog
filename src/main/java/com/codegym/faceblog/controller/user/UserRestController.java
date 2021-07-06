@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/users")
 public class UserRestController {
@@ -31,5 +33,14 @@ public class UserRestController {
     private ResponseEntity<User> addUser(@RequestBody User user) {
         user.setRole(roleService.findByName("ROLE_USER"));
         return new ResponseEntity<>(userService.save(user), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}")
+    private ResponseEntity<User> findById(@PathVariable Long id) {
+        Optional<User> userOptional = userService.findById(id);
+        if (!userOptional.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(userOptional.get(), HttpStatus.OK);
     }
 }

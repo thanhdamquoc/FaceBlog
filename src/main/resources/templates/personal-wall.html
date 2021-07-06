@@ -7,6 +7,52 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 </head>
 <body>
-    hello world!
+    <input  type="hidden" id="user-id" th:text="${user.id}" th:value="${user.id}">
+    <div id="user-profile-div"></div>
+    <div id="user-blog-div"></div>
 </body>
+<script>
+    //init
+    window.onload = renderWall();
+    //function
+    function renderWall() {
+        let userId = $('#user-id').val();
+        getUserProfile(userId);
+        getUserBlogs(userId);
+    }
+
+    function getUserProfile(userId) {
+        let url = "/users/" + userId;
+        //ajax
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem("token"),
+            },
+            type: "GET",
+            url: url,
+            success: function (user) {
+                drawUserProfile(user);
+            },
+            error: function () {
+                console.log("failed to get user profile");
+            }
+        });
+    }
+
+    function drawUserProfile(user) {
+        let userProfileContent =
+            `<img src="${user.profilePicture}">`;
+        $('#user-profile-div').html(userProfileContent);
+    }
+
+    function getUserBlogs(userId) {
+
+    }
+
+    function drawUserBlogs(blogs) {
+
+    }
+</script>
 </html>

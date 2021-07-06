@@ -23,7 +23,7 @@ public class BlogController {
         return modelAndView;
     }
 
-    @GetMapping("/{username}")
+    @GetMapping("/wall/{username}")
     public ModelAndView showPersonalWall(@PathVariable String username) {
         return new ModelAndView("personal-wall","user",userService.findByUsername(username).get());
     }

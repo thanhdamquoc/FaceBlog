@@ -17,4 +17,5 @@ public class LoginController {
     public String showSignUpPage() {
         return "/signup";
     }
+
 }
