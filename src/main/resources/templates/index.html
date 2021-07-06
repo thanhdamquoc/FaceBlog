@@ -334,7 +334,7 @@
         return "" +
             `<div class="panel panel-default">
                 <div class="panel-body">
-                    <img src="/templateHome/img/150x150.gif" class="img-circle pull-left"> <a href="#">${listBlog.user.username}</a>
+                    <img src="${listBlog.user.profilePicture}" class="img-circle pull-left"> <a href="/wall/${listBlog.user.username}">${listBlog.user.username}</a>
                     <div class="clearfix"></div>
                     <hr>
                     <p>${listBlog.content}</p>
