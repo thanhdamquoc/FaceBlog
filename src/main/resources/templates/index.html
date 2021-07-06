@@ -72,7 +72,7 @@
                             <li><a onclick="goToPersonalWall()"><span class="personal-wall-button"></span></a></li>
                             <li><a href="#">Setting</a></li>
                             <li><a href="#">Help and support</a></li>
-                            <li><a href="/logout">Logout</a></li>
+                            <li><a onclick="clearLocalStorage()" href="/logout">Logout</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -379,19 +379,27 @@
     }
 
     function showBlogReactModal(blogId) {
+        if (localStorage.getItem("token") != null) {
+            renderBlogReactModal(blogId);
+            $('#blog-react-modal').modal('show');
+        } else {
+            alert("Please login first!");
+        }
+    }
+
+    function renderBlogReactModal(blogId) {
         $.ajax({
             type: "GET",
             url: "/reactions",
-            success: function (data) {
+            success: function (reactions) {
                 let modalBody = "";
-                console.log(data);
-                for (let i = 0; i < data.length; i++) {
-                    modalBody += `<button onclick="reactToBlog(${blogId},${data[i].id})">${data[i].name}</button>`;
+                for (let i = 0; i < reactions.length; i++) {
+                    let reaction = reactions[i];
+                    modalBody += `<button onclick="reactToBlog(${blogId},${reaction.id})">${reaction.name}</button>`;
                 }
                 $('#blog-react-modal-body').html(modalBody);
             },
         });
-        $('#blog-react-modal').modal('show');
     }
 
     function reactToBlog(blogId, reactionId) {
@@ -417,6 +425,10 @@
             }
         });
         $('#blog-react-modal').modal('hide');
+    }
+
+    function clearLocalStorage() {
+        localStorage.clear();
     }
 </script>
 </html>
