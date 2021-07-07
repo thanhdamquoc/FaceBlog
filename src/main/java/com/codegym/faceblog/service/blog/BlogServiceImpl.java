@@ -1,6 +1,7 @@
 package com.codegym.faceblog.service.blog;
 
 import com.codegym.faceblog.model.Blog;
+import com.codegym.faceblog.model.DetailedBlog;
 import com.codegym.faceblog.model.User;
 import com.codegym.faceblog.repository.BlogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,12 +40,7 @@ public class BlogServiceImpl implements BlogService{
     }
 
     @Override
-    public Iterable<Blog> findAllSorted() {
-        return blogRepository.findAllSorted();
-    }
-
-    @Override
-    public Iterable<Blog> findAllSortedAndPaged(int limit) {
-        return blogRepository.findAllSortedAndPaged(limit);
+    public Iterable<DetailedBlog> findAllDetailedBlogs(int limit) {
+        return blogRepository.findAllDetailedBlogs(limit);
     }
 }

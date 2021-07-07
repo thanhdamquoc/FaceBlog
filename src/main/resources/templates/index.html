@@ -444,26 +444,26 @@
         $.ajax({
             type: "GET",
             url: url,
-            success: function (listBlog) {
+            success: function (detailedBlogs) {
                 let contentBlog = "";
-                for (let i = 0; i < listBlog.length; i++) {
-                    contentBlog += getBlog(listBlog[i])
+                for (let i = 0; i < detailedBlogs.length; i++) {
+                    contentBlog += getBlog(detailedBlogs[i])
                 }
                 document.getElementById('contentList').innerHTML = contentBlog;
-                console.log(listBlog);
+                console.log(detailedBlogs);
             }
         })
     }
 
-    function getBlog(listBlog) {
-        let dateTimeString = listBlog.date.toString();
+    function getBlog(detailedBlog) {
+        let dateTimeString = detailedBlog.date.toString();
         let formattedDateTimeString = formatDateTime(dateTimeString);
 
         return "" +
             `<div class="panel panel-default">
                 <div class="panel-body">
-                    <img src="${listBlog.user.profilePicture}" class="img-circle pull-left">
-                     <a href="/wall/${listBlog.user.username}" style='padding-left: 6px'>${listBlog.user.username}</a>
+                    <img src="${detailedBlog.profilePicture}" class="img-circle pull-left">
+                     <a href="/wall/${detailedBlog.username}" style='padding-left: 6px'>${detailedBlog.username}</a>
 
                     <div class="clearfix">
                     <i style='padding-left: 6px'>
@@ -474,26 +474,29 @@
                     </i>
                     </div>
                     <hr>
-                    <p>${listBlog.content}</p>
+                    <p>${detailedBlog.content}</p>
                     <hr>
+                    <div>
+                        <span>${detailedBlog.reactionCount} reactions</span>
+                        <span>${detailedBlog.commentCount} comments</span>
+                    </div>
                     <form>
                         <div class="input-group">
                             <div class="input-group-btn">
 
                             <div class="dropdown">
-                                    <button type="button" onmouseover="renderBlogReactModal(${listBlog.id})" class="btn btn-default dropbtn">Like</button>
+                                    <button type="button" onmouseover="renderBlogReactModal(${detailedBlog.id})" class="btn btn-default dropbtn">Like</button>
                                 <div class="dropdown-content">
                                     <div class="blog-react-modal-body">
 
                                     </div>
                                 </div>
                             </div>
-
-                                <button type='button' class="btn btn-default" data-toggle="collapse" data-target="#${listBlog.id}">
+                                <button type='button' class="btn btn-default" data-toggle="collapse" data-target="#${detailedBlog.id}">
                                     Bình Luận
                                 </button>
                             </div>
-                            <div id="${listBlog.id}" class="collapse">
+                            <div id="${detailedBlog.id}" class="collapse">
                                 <input class="form-control" placeholder="Add a comment.." type="text">
                             </div>
                         </div>
@@ -566,6 +569,7 @@
                 url: "/blog-reactions",
                 success: function (data) {
                     console.log(data);
+                    showListBlog();
                 }
             });
         } else {

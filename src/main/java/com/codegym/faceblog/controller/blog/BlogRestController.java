@@ -1,6 +1,7 @@
 package com.codegym.faceblog.controller.blog;
 
 import com.codegym.faceblog.model.Blog;
+import com.codegym.faceblog.model.DetailedBlog;
 import com.codegym.faceblog.model.User;
 import com.codegym.faceblog.service.blog.BlogService;
 import com.codegym.faceblog.service.user.UserService;
@@ -30,8 +31,8 @@ public class BlogRestController {
     }
 
     @GetMapping("/sorted")
-    public ResponseEntity<Iterable<Blog>> showListBlogSorted(@RequestParam int limit) {
-        return new ResponseEntity<>(blogService.findAllSortedAndPaged(limit), HttpStatus.OK);
+    public ResponseEntity<Iterable<DetailedBlog>> showListBlogSorted(@RequestParam int limit) {
+        return new ResponseEntity<>(blogService.findAllDetailedBlogs(limit), HttpStatus.OK);
     }
 
     @PostMapping
@@ -46,6 +47,4 @@ public class BlogRestController {
         blog.setDate(new Date());
         return new ResponseEntity<>(blogService.save(blog), HttpStatus.CREATED);
     }
-
-
 }
