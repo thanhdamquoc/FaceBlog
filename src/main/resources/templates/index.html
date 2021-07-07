@@ -294,9 +294,7 @@
                 <h5 class="modal-title" id="message-modal-title">Inbox</h5>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="hideMessageModal()">Close</button>
             </div>
-            <div class="modal-body" id="message-modal-body">
-
-            </div>
+            <div class="modal-body" id="message-modal-body" style="height: 300px; overflow: auto"></div>
             <div class="modal-footer">
                 <textarea id="message-text-area"></textarea>
                 <div id="message-send-button"></div>
@@ -311,8 +309,6 @@
     showListBlog();
     $('.personal-wall-button').html(localStorage.getItem("fullName"));
     //functions
-
-
     function showMessageModal(friendId) {
         let userId = localStorage.getItem("userId");
         renderMessageModal(friendId, userId);
@@ -331,34 +327,51 @@
     }
 
     function renderMessageModalBody(friendId, userId) {
-        //code here
+        let url = "/messages/user/" + userId + "/user/" + friendId;
+        $.ajax({
+            type: "GET",
+            url: url,
+            success: function (privateMessages) {
+                let modalBodyContent = "";
+                if (privateMessages != undefined) {
+                    for (let i = 0; i < privateMessages.length; i++) {
+                        let privateMessage = privateMessages[i];
+                        modalBodyContent += `<div><img src="${privateMessage.sender.profilePicture}" width="50px" height="50px" class="img-circle"><span>${privateMessage.content}</span></div>`
+                    }
+                }
+                $('#message-modal-body').html(modalBodyContent);
+            }
+        });
     }
 
     function sendMessage(friendId, userId) {
         let messageContent = $('#message-text-area').val();
-        let message = {
-            sender: {
-                id: userId,
-            },
-            receiver: {
-                id: friendId,
-            },
-            content: messageContent,
-        };
-        $.ajax({
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            type: "POST",
-            data: JSON.stringify(message),
-            url: "/messages",
-            success: function (sentMessage) {
-                console.log("message has been sent");
-                console.log(sentMessage)
-                renderMessageModal(friendId, userId);
-            }
-        });
+        if (messageContent != "") {
+            let message = {
+                sender: {
+                    id: userId,
+                },
+                receiver: {
+                    id: friendId,
+                },
+                content: messageContent,
+            };
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                type: "POST",
+                data: JSON.stringify(message),
+                url: "/messages",
+                success: function (sentMessage) {
+                    console.log("message has been sent");
+                    console.log(sentMessage)
+                    renderMessageModal(friendId, userId);
+                }
+            });
+        }
+        $('#message-text-area').val("");
     }
 
     function renderMessageModalTitle(friendId) {
@@ -402,7 +415,7 @@
             `<div class="well well-sm">
                 <div class="media">
                     <a class="thumbnail pull-left" href="#">
-                        <img class="media-object img-circle pull-left" width="100px" src="${listUser.profilePicture}">
+                        <img class="img-circle pull-left" width="100px" height="100px" src="${listUser.profilePicture}">
                     </a>
                     <div class="media-body">
                         <h4 class="media-heading">${listUser.username}</h4>
