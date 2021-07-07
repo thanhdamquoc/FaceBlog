@@ -29,6 +29,11 @@ public class BlogRestController {
         return new ResponseEntity<>(blogService.findAll(), HttpStatus.OK);
     }
 
+    @GetMapping("/sorted")
+    public ResponseEntity<Iterable<Blog>> showListBlogSorted(@RequestParam int limit) {
+        return new ResponseEntity<>(blogService.findAllSortedAndPaged(limit), HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<Blog> saveBlog(@RequestBody Blog blog) {
         Object loginUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();

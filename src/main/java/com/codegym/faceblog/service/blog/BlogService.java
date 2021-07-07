@@ -6,4 +6,8 @@ import com.codegym.faceblog.service.GeneralService;
 
 public interface BlogService extends GeneralService<Blog> {
     Iterable<Blog> findAllByUser(User user);
+
+    Iterable<Blog> findAllSorted();
+
+    Iterable<Blog> findAllSortedAndPaged(int limit);
 }

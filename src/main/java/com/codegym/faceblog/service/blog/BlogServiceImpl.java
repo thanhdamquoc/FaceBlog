@@ -37,4 +37,14 @@ public class BlogServiceImpl implements BlogService{
     public Iterable<Blog> findAllByUser(User user) {
         return blogRepository.findAllByUser(user);
     }
+
+    @Override
+    public Iterable<Blog> findAllSorted() {
+        return blogRepository.findAllSorted();
+    }
+
+    @Override
+    public Iterable<Blog> findAllSortedAndPaged(int limit) {
+        return blogRepository.findAllSortedAndPaged(limit);
+    }
 }
