@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
   <meta charset="utf-8">
   <!--  This file has been downloaded from bootdey.com @bootdey on twitter -->
@@ -12,17 +14,17 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.bundle.min.js"></script>
   <style type="text/css">
     body{
-      background-color: #f9fafb;
+      background-color: #E0E0E0;
       margin-top:20px;}
 
     .profile-page .profile-header {
       box-shadow: 0 0 10px 0 rgba(183, 192, 206, 0.2);
-      border: 1px solid #f2f4f9;
+      border: 1px solid #e7e7e7;
     }
 
     .profile-page .profile-header .cover {
       position: relative;
-      border-radius: .25rem .25rem 0 0;
+      border-radius: .1rem .1rem 0 0;
     }
 
 
@@ -45,7 +47,6 @@
     }
 
     .profile-page .profile-header .cover figure img {
-      border-radius: .25rem .25rem 0 0;
       width: 100%;
     }
 
@@ -85,6 +86,7 @@
     .profile-page .profile-header .cover .cover-body .profile-pic {
       border-radius: 50%;
       width: 100px;
+      height: 100px;
     }
 
     @media (max-width: 767px) {
@@ -106,7 +108,7 @@
       -webkit-justify-content: center;
       justify-content: center;
       background: #fff;
-      border-radius: 0 0 .25rem .25rem;
+      border-radius: 0 0 .1rem .1rem;
     }
 
     .profile-page .profile-header .header-links ul {
@@ -158,14 +160,14 @@
     }
 
     .profile-page .profile-body .right-wrapper .latest-photos > .row > div figure img {
-      border-radius: .25rem;
+      border-radius: .1rem;
     }
 
     .rtl .profile-page .profile-header .cover .cover-body .profile-name {
       margin-left: 0;
       margin-right: 17px;
     }
-    .img-xs {
+    .img-circle {
       width: 37px;
       height: 37px;
     }
@@ -184,7 +186,7 @@
       padding: 0.875rem 1.5rem;
       margin-bottom: 0;
       background-color: rgba(0, 0, 0, 0);
-      border-bottom: 1px solid #f2f4f9;
+      border-bottom: 1px solid #e7e7e7;
     }
 
     .card-footer:last-child {
@@ -193,7 +195,7 @@
     .card-footer {
       padding: 0.875rem 1.5rem;
       background-color: rgba(0, 0, 0, 0);
-      border-top: 1px solid #f2f4f9;
+      border-top: 1px solid #e7e7e7;
     }
 
     .grid-margin {
@@ -207,7 +209,7 @@
       -ms-box-shadow: 0 0 10px 0 rgba(183, 192, 206, 0.2);
     }
     .rounded {
-      border-radius: 0.25rem !important;
+      border-radius: 0.1rem !important;
     }
     .card {
       position: relative;
@@ -217,36 +219,54 @@
       word-wrap: break-word;
       background-color: #fff;
       background-clip: border-box;
-      border: 1px solid #f2f4f9;
-      border-radius: 0.25rem;
+      border: 1px solid #e7e7e7;
+      border-radius: 0.1rem;
     }
   </style>
 </head>
 <body>
 
 
-<div id="user-profile-div"></div>
-<div id="user-blog-div"></div>
 <!-- Edit Profile Modal -->
-<div class="modal fade" id="edit-profile-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Edit profile</h5>
       </div>
-      <div class="modal-body" id="edit-profile-modal-body">
+      <div class="modal-body" >
+
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="updateUserProfile()">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" >
           Update
         </button>
-        <button type="button" class="btn btn-secondary" onclick="hideEditModal()">Close</button>
+        <button type="button" class="btn btn-secondary" >Close</button>
       </div>
     </div>
   </div>
 </div>
 
+<!--new modal-->
+<div class="modal fade" id="edit-profile-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit profile</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div id="edit-profile-modal-body" class="modal-body">
 
+      </div>
+      <div class="modal-footer">
+        <button onclick="updateUserProfile()" type="button" class="btn btn-primary" >Update</button>
+        <button onclick="hideEditModal()" type="button" class="btn btn-secondary" data-dismiss="modal" >Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <input type="hidden" id="user-id" th:value="${user.id}">
 <div class="container">
@@ -260,11 +280,14 @@
               <img src="https://bootdey.com/img/Content/bg1.jpg" class="img-fluid" alt="profile cover">
             </figure>
             <div class="cover-body d-flex justify-content-between align-items-center">
-              <div>
-                <img class="profile-pic" src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="profile">
-                <span class="profile-name">Amiah Burton</span>
+              <div id="user-profile-div">
+
+<!--                <img class="profile-pic" src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="profile">-->
+<!--                <span class="profile-name">Amiah Burton</span>-->
+
               </div>
-              <div class="d-none d-md-block">
+
+              <div id="edit-user-profile-div" class="d-none d-md-block">
                 <button class="btn btn-primary btn-icon-text btn-edit-profile">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit btn-icon-prepend">
                     <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
@@ -272,6 +295,7 @@
                   </svg> Edit profile
                 </button>
               </div>
+
             </div>
           </div>
           <div class="header-links">
@@ -394,90 +418,12 @@
       </div>
       <!-- left wrapper end -->
       <!-- middle wrapper start -->
-      <div class="col-md-8 col-xl-6 middle-wrapper">
+      <div class="col-md-8 col-xl-6 middle-wrapper" >
+        <div class="row">
+          <div id="user-blog-div">
 
-
-<!--        <div class="row">-->
-<!--          <div class="col-md-12 grid-margin">-->
-<!--            <div class="card rounded">-->
-<!--              <div class="card-header">-->
-<!--                <div class="d-flex align-items-center justify-content-between">-->
-<!--                  <div class="d-flex align-items-center">-->
-<!--                    <img class="img-xs rounded-circle" src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="">-->
-<!--                    <div class="ml-2">-->
-<!--                      <p>Mike Popescu</p>-->
-<!--                      <p class="tx-11 text-muted">1 min ago</p>-->
-<!--                    </div>-->
-<!--                  </div>-->
-<!--                  <div class="dropdown">-->
-<!--                    <button class="btn p-0" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
-<!--                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal icon-lg pb-3px">-->
-<!--                        <circle cx="12" cy="12" r="1"></circle>-->
-<!--                        <circle cx="19" cy="12" r="1"></circle>-->
-<!--                        <circle cx="5" cy="12" r="1"></circle>-->
-<!--                      </svg>-->
-<!--                    </button>-->
-<!--                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">-->
-<!--                      <a class="dropdown-item d-flex align-items-center" href="#">-->
-<!--                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-meh icon-sm mr-2">-->
-<!--                          <circle cx="12" cy="12" r="10"></circle>-->
-<!--                          <line x1="8" y1="15" x2="16" y2="15"></line>-->
-<!--                          <line x1="9" y1="9" x2="9.01" y2="9"></line>-->
-<!--                          <line x1="15" y1="9" x2="15.01" y2="9"></line>-->
-<!--                        </svg> <span class="">Unfollow</span></a>-->
-<!--                      <a class="dropdown-item d-flex align-items-center" href="#">-->
-<!--                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-corner-right-up icon-sm mr-2">-->
-<!--                          <polyline points="10 9 15 4 20 9"></polyline>-->
-<!--                          <path d="M4 20h7a4 4 0 0 0 4-4V4"></path>-->
-<!--                        </svg> <span class="">Go to post</span></a>-->
-<!--                      <a class="dropdown-item d-flex align-items-center" href="#">-->
-<!--                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-share-2 icon-sm mr-2">-->
-<!--                          <circle cx="18" cy="5" r="3"></circle>-->
-<!--                          <circle cx="6" cy="12" r="3"></circle>-->
-<!--                          <circle cx="18" cy="19" r="3"></circle>-->
-<!--                          <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>-->
-<!--                          <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>-->
-<!--                        </svg> <span class="">Share</span></a>-->
-<!--                      <a class="dropdown-item d-flex align-items-center" href="#">-->
-<!--                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy icon-sm mr-2">-->
-<!--                          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>-->
-<!--                          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>-->
-<!--                        </svg> <span class="">Copy link</span></a>-->
-<!--                    </div>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--              <div class="card-body">-->
-<!--                <p class="mb-3 tx-14">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus minima delectus nemo unde quae recusandae assumenda.</p>-->
-<!--                <img class="img-fluid" src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="">-->
-<!--              </div>-->
-<!--              <div class="card-footer">-->
-<!--                <div class="d-flex post-actions">-->
-<!--                  <a href="javascript:;" class="d-flex align-items-center text-muted mr-4">-->
-<!--                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart icon-md">-->
-<!--                      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>-->
-<!--                    </svg>-->
-<!--                    <p class="d-none d-md-block ml-2">Like</p>-->
-<!--                  </a>-->
-<!--                  <a href="javascript:;" class="d-flex align-items-center text-muted mr-4">-->
-<!--                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-square icon-md">-->
-<!--                      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>-->
-<!--                    </svg>-->
-<!--                    <p class="d-none d-md-block ml-2">Comment</p>-->
-<!--                  </a>-->
-<!--                  <a href="javascript:;" class="d-flex align-items-center text-muted">-->
-<!--                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-share icon-md">-->
-<!--                      <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>-->
-<!--                      <polyline points="16 6 12 2 8 6"></polyline>-->
-<!--                      <line x1="12" y1="2" x2="12" y2="15"></line>-->
-<!--                    </svg>-->
-<!--                    <p class="d-none d-md-block ml-2">Share</p>-->
-<!--                  </a>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
-
+          </div>
+        </div>
       </div>
       <!-- middle wrapper end -->
       <!-- right wrapper start -->
@@ -545,7 +491,7 @@
                 <h6 class="card-title">suggestions for you</h6>
                 <div class="d-flex justify-content-between mb-2 pb-2 border-bottom">
                   <div class="d-flex align-items-center hover-pointer">
-                    <img class="img-xs rounded-circle" src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="">
+                    <img class="img-circle rounded-circle" src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="">
                     <div class="ml-2">
                       <p>Mike Popescu</p>
                       <p class="tx-11 text-muted">12 Mutual Friends</p>
@@ -562,7 +508,7 @@
                 </div>
                 <div class="d-flex justify-content-between mb-2 pb-2 border-bottom">
                   <div class="d-flex align-items-center hover-pointer">
-                    <img class="img-xs rounded-circle" src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="">
+                    <img class="img-circle rounded-circle" src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="">
                     <div class="ml-2">
                       <p>Mike Popescu</p>
                       <p class="tx-11 text-muted">12 Mutual Friends</p>
@@ -579,7 +525,7 @@
                 </div>
                 <div class="d-flex justify-content-between mb-2 pb-2 border-bottom">
                   <div class="d-flex align-items-center hover-pointer">
-                    <img class="img-xs rounded-circle" src="https://bootdey.com/img/Content/avatar/avatar4.png" alt="">
+                    <img class="img-circle rounded-circle" src="https://bootdey.com/img/Content/avatar/avatar4.png" alt="">
                     <div class="ml-2">
                       <p>Mike Popescu</p>
                       <p class="tx-11 text-muted">12 Mutual Friends</p>
@@ -596,7 +542,7 @@
                 </div>
                 <div class="d-flex justify-content-between mb-2 pb-2 border-bottom">
                   <div class="d-flex align-items-center hover-pointer">
-                    <img class="img-xs rounded-circle" src="https://bootdey.com/img/Content/avatar/avatar5.png" alt="">
+                    <img class="img-circle rounded-circle" src="https://bootdey.com/img/Content/avatar/avatar5.png" alt="">
                     <div class="ml-2">
                       <p>Mike Popescu</p>
                       <p class="tx-11 text-muted">12 Mutual Friends</p>
@@ -613,7 +559,7 @@
                 </div>
                 <div class="d-flex justify-content-between mb-2 pb-2 border-bottom">
                   <div class="d-flex align-items-center hover-pointer">
-                    <img class="img-xs rounded-circle" src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="">
+                    <img class="img-circle rounded-circle" src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="">
                     <div class="ml-2">
                       <p>Mike Popescu</p>
                       <p class="tx-11 text-muted">12 Mutual Friends</p>
@@ -630,7 +576,7 @@
                 </div>
                 <div class="d-flex justify-content-between">
                   <div class="d-flex align-items-center hover-pointer">
-                    <img class="img-xs rounded-circle" src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="">
+                    <img class="img-circle rounded-circle" src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="">
                     <div class="ml-2">
                       <p>Mike Popescu</p>
                       <p class="tx-11 text-muted">12 Mutual Friends</p>
@@ -655,6 +601,7 @@
     </div>
   </div>
 </div>
+
 
 <script>
   //init
@@ -748,25 +695,59 @@
 
   function renderUserProfile(user) {
     let userProfileContent =
-            `<img width="200px" src="${user.profilePicture}">
-            <div>${user.fullName}</div>`;
+            `<img class="profile-pic" src="${user.profilePicture}" alt="profile">
+                <span class="profile-name">${user.fullName}</span>`;
+
     //Only show edit button for authenticated wall owner
     if (user.id == localStorage.getItem("userId")) {
-      userProfileContent +=
+      let editUserProfileContent =
               `<div sec:authorize="isAuthenticated()">
-                    <button onclick="showEditModal(${user.id})">Edit</button>
+                        <button onclick="showEditModal(${user.id})" class="btn btn-primary btn-icon-text btn-edit-profile">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit btn-icon-prepend">
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                    </svg>
+                        Edit profile
+                    </button>
                 </div>`;
+      $('#edit-user-profile-div').html(editUserProfileContent);
     }
     $('#user-profile-div').html(userProfileContent);
   }
 
+  // function renderEditModal(user) {
+  //   let modalBodyContent =
+  //           `<input type="text" id="new-full-name" value="${user.fullName}">
+  //            <img width="200px" src="${user.profilePicture}">
+  //            <input type="hidden" id="old-profile-pic" value="${user.profilePicture}">
+  //            <input type="file" id="new-profile-pic">
+  //            <input type="password" id="new-password" placeholder="Enter new password">`;
+  //   $('#edit-profile-modal-body').html(modalBodyContent);
+  // }
+
   function renderEditModal(user) {
     let modalBodyContent =
-            `<input type="text" id="new-full-name" value="${user.fullName}">
-             <img width="200px" src="${user.profilePicture}">
-             <input type="hidden" id="old-profile-pic" value="${user.profilePicture}">
-             <input type="file" id="new-profile-pic">
-             <input type="password" id="new-password" placeholder="Enter new password">`;
+            `<div class="form-group">
+                <label for="new-full-name" class="col-form-label">Recipient:</label>
+                <input id="new-full-name" value="${user.fullName}" type="text" class="form-control" >
+            </div>
+            <div class="form-group">
+                <img width="200px" src="${user.profilePicture}">
+            </div>
+            <div class="form-group">
+                <input id="old-profile-pic" value="${user.profilePicture}" type="hidden" class="form-control">
+            </div>
+            <div class="custom-file">
+                <label class="custom-file-label" for="new-profile-pic">Profile pic...</label>
+                <input type="file" id="new-profile-pic" class="custom-file-input">
+            </div>
+            <div class="form-group">
+                <label for="new-password" class="col-form-label">Password:</label>
+                <input type="password" id="new-password" placeholder="Enter new password" class="form-control" >
+            </div>`
+
     $('#edit-profile-modal-body').html(modalBodyContent);
   }
 
@@ -804,13 +785,64 @@
     for (let i = 0; i < blogs.length; i++) {
       let blog = blogs[i];
       userBlogContent +=
-              `<img width="50px" src="${blog.user.profilePicture}">
-                <div>${blog.user.fullName}</div>
-                <div>${blog.date}</div>
-                <div>${blog.content}</div>`;
+      `<div class="col-md-12" style="margin-bottom: 10px">
+            <div class="card rounded">
+              <div class="card-header">
+                <div class="d-flex align-items-center justify-content-between">
+                  <div class="d-flex align-items-center">
+                    <img class="img-circle rounded-circle" src="${blog.user.profilePicture}" alt="">
+                    <div class="ml-2">
+                      <p><span>${blog.user.fullName}</span></p>
+                      <p class="tx-11 text-muted"><span>${blog.date}</span></p>
+                    </div>
+                  </div>
+                  <div class="dropdown">
+                    <button class="btn p-0" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal icon-lg pb-3px">
+                        <circle cx="12" cy="12" r="1"></circle>
+                        <circle cx="19" cy="12" r="1"></circle>
+                        <circle cx="5" cy="12" r="1"></circle>
+                      </svg>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                      <a class="dropdown-item d-flex align-items-center" href="#">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-meh icon-sm mr-2">
+                          <circle cx="12" cy="12" r="10"></circle>
+                          <line x1="8" y1="15" x2="16" y2="15"></line>
+                          <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                          <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                        </svg> <span class="">Unfollow</span></a>
+                      <a class="dropdown-item d-flex align-items-center" href="#">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-corner-right-up icon-sm mr-2">
+                          <polyline points="10 9 15 4 20 9"></polyline>
+                          <path d="M4 20h7a4 4 0 0 0 4-4V4"></path>
+                        </svg> <span class="">Go to post</span></a>
+                      <a class="dropdown-item d-flex align-items-center" href="#">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-share-2 icon-sm mr-2">
+                          <circle cx="18" cy="5" r="3"></circle>
+                          <circle cx="6" cy="12" r="3"></circle>
+                          <circle cx="18" cy="19" r="3"></circle>
+                          <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                          <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                        </svg> <span class="">Share</span></a>
+                      <a class="dropdown-item d-flex align-items-center" href="#">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy icon-sm mr-2">
+                          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg> <span class="">Copy link</span></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card-body">
+                <p class="mb-3 tx-14"><span>${blog.content}</span></p>
+              </div>
+          </div>
+        </div>`
     }
     $('#user-blog-div').html(userBlogContent);
   }
+
 </script>
 
 <script type="text/javascript">
