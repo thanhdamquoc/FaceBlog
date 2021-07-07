@@ -86,7 +86,8 @@
             data: JSON.stringify(user),
             url: url,
             success: function (user) {
-                console.log(user);
+                console.log(user + "updated");
+                localStorage.setItem("fullName", user.fullName);
                 hideEditModal();
                 renderWall();
             },

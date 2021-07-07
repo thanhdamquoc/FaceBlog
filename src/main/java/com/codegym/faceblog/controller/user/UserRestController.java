@@ -9,6 +9,7 @@ import com.codegym.faceblog.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -24,6 +25,9 @@ public class UserRestController {
 
     @Autowired
     private BlogService blogService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @GetMapping
     private ResponseEntity<Iterable<User>> findAll() {
@@ -60,7 +64,7 @@ public class UserRestController {
         if (user.getPassword() != "") {
             userOptional.get().setPassword(user.getPassword());
         }
-        return new ResponseEntity<>(userService.save(userOptional.get()),HttpStatus.OK);
+        return new ResponseEntity<>(userService.update(userOptional.get()),HttpStatus.OK);
     }
 
     @GetMapping("/{id}/blogs")

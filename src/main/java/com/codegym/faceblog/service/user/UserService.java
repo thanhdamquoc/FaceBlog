@@ -8,4 +8,6 @@ import java.util.Optional;
 
 public interface UserService extends GeneralService<User>, UserDetailsService {
     Optional<User> findByUsername(String username);
+
+    public User update(User user);
 }
