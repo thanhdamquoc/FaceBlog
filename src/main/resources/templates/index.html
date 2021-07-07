@@ -468,7 +468,7 @@
                             <div class="input-group-btn">
 
                             <div class="dropdown">
-                                    <button type='button' onclick="showBlogReactModal(${listBlog.id})" class="btn btn-default dropbtn">Like</button>
+                                    <button type="button" onmouseover="renderBlogReactModal(${listBlog.id})" class="btn btn-default dropbtn">Like</button>
                                 <div class="dropdown-content">
                                     <div class="blog-react-modal-body">
 
@@ -511,14 +511,6 @@
         });
     }
 
-    function showBlogReactModal(blogId) {
-        if (localStorage.getItem("token") != null) {
-            renderBlogReactModal(blogId);
-        } else {
-            alert("Please login first!");
-        }
-    }
-
     function renderBlogReactModal(blogId) {
         $.ajax({
             type: "GET",
@@ -540,27 +532,32 @@
     }
 
     function reactToBlog(blogId, reactionId) {
-        let blogReaction = {
-            blog: {
-                id: blogId,
-            },
-            reaction: {
-                id: reactionId,
+        if (localStorage.getItem("token") != null) {
+            let blogReaction = {
+                blog: {
+                    id: blogId,
+                },
+                reaction: {
+                    id: reactionId,
+                }
             }
+            console.log("user reacted " + reactionId + " to blog " + blogId);
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': localStorage.getItem("token"),
+                },
+                type: "POST",
+                data: JSON.stringify(blogReaction),
+                url: "/blog-reactions",
+                success: function (data) {
+                    console.log(data);
+                }
+            });
+        } else {
+            alert("Please login first!");
         }
-        $.ajax({
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': localStorage.getItem("token"),
-            },
-            type: "POST",
-            data: JSON.stringify(blogReaction),
-            url: "/blog-reactions",
-            success: function (data) {
-                console.log(data);
-            }
-        });
     }
 
     function logout() {
