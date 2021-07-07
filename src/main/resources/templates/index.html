@@ -2,6 +2,7 @@
 <html lang="en"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <title>FaceBlog</title>
@@ -149,44 +150,25 @@
                 <div class="panel-body">
                     <div class="list-group">
                         <a onclick="showFriends()" class="list-group-item">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                 class="bi bi-person-fill" viewBox="0 0 16 16">
-                                <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-                            </svg>
+                            <i class="fa fa-user" aria-hidden="true"></i>
                             Friends
                         </a>
 
                         <a href="http://usebootstrap.com/theme/google-plus" class="list-group-item">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                 class="bi bi-people-fill" viewBox="0 0 16 16">
-                                <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-                                <path fill-rule="evenodd"
-                                      d="M5.216 14A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216z"/>
-                                <path d="M4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/>
-                            </svg>
+                            <i class="fa fa-users" aria-hidden="true"></i>
                             Groups
                         </a>
 
                         <a href="http://usebootstrap.com/theme/google-plus" class="list-group-item">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                 class="bi bi-play-btn" viewBox="0 0 16 16">
-                                <path d="M6.79 5.093A.5.5 0 0 0 6 5.5v5a.5.5 0 0 0 .79.407l3.5-2.5a.5.5 0 0 0 0-.814l-3.5-2.5z"/>
-                                <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm15 0a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
-                            </svg>
+                            <i class="fa fa-file-video-o" aria-hidden="true"></i>
                             Watch
                         </a>
                         <a href="http://usebootstrap.com/theme/google-plus" class="list-group-item">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                 class="bi bi-shop" viewBox="0 0 16 16">
-                                <path d="M2.97 1.35A1 1 0 0 1 3.73 1h8.54a1 1 0 0 1 .76.35l2.609 3.044A1.5 1.5 0 0 1 16 5.37v.255a2.375 2.375 0 0 1-4.25 1.458A2.371 2.371 0 0 1 9.875 8 2.37 2.37 0 0 1 8 7.083 2.37 2.37 0 0 1 6.125 8a2.37 2.37 0 0 1-1.875-.917A2.375 2.375 0 0 1 0 5.625V5.37a1.5 1.5 0 0 1 .361-.976l2.61-3.045zm1.78 4.275a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 1 0 2.75 0V5.37a.5.5 0 0 0-.12-.325L12.27 2H3.73L1.12 5.045A.5.5 0 0 0 1 5.37v.255a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0zM1.5 8.5A.5.5 0 0 1 2 9v6h1v-5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v5h6V9a.5.5 0 0 1 1 0v6h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1V9a.5.5 0 0 1 .5-.5zM4 15h3v-5H4v5zm5-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-3zm3 0h-2v3h2v-3z"/>
-                            </svg>
+                            <i class="fa fa-shopping-bag" aria-hidden="true"></i>
                             Market
                         </a>
                         <a href="http://usebootstrap.com/theme/google-plus" class="list-group-item">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                 class="bi bi-calendar-check-fill" viewBox="0 0 16 16">
-                                <path d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4V.5zM16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2zm-5.146-5.146-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708.708z"/>
-                            </svg>
+                            <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
                             Sự kiện
                         </a>
                     </div>
@@ -206,24 +188,13 @@
                     <button onclick="createBlog()" class="btn btn-success pull-right" type="button">Post</button>
                     <ul class="list-inline">
                         <li><a href="#">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                 class="bi bi-camera-video-fill" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd"
-                                      d="M0 5a2 2 0 0 1 2-2h7.5a2 2 0 0 1 1.983 1.738l3.11-1.382A1 1 0 0 1 16 4.269v7.462a1 1 0 0 1-1.406.913l-3.111-1.382A2 2 0 0 1 9.5 13H2a2 2 0 0 1-2-2V5z"/>
-                            </svg>
+                            <i class="fa fa-video-camera" aria-hidden="true"></i>
                         </a></li>
                         <li><a href="#">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                 class="bi bi-file-earmark-image-fill" viewBox="0 0 16 16">
-                                <path d="M4 0h5.293A1 1 0 0 1 10 .293L13.707 4a1 1 0 0 1 .293.707v5.586l-2.73-2.73a1 1 0 0 0-1.52.127l-1.889 2.644-1.769-1.062a1 1 0 0 0-1.222.15L2 12.292V2a2 2 0 0 1 2-2zm5.5 1.5v2a1 1 0 0 0 1 1h2l-3-3zm-1.498 4a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0z"/>
-                                <path d="M10.564 8.27 14 11.708V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-.293l3.578-3.577 2.56 1.536 2.426-3.395z"/>
-                            </svg>
+                            <i class="fa fa-file-image-o" aria-hidden="true"></i>
                         </a></li>
                         <li><a href="#">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                 class="bi bi-emoji-laughing-fill" viewBox="0 0 16 16">
-                                <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zM7 6.5c0 .501-.164.396-.415.235C6.42 6.629 6.218 6.5 6 6.5c-.218 0-.42.13-.585.235C5.164 6.896 5 7 5 6.5 5 5.672 5.448 5 6 5s1 .672 1 1.5zm5.331 3a1 1 0 0 1 0 1A4.998 4.998 0 0 1 8 13a4.998 4.998 0 0 1-4.33-2.5A1 1 0 0 1 4.535 9h6.93a1 1 0 0 1 .866.5zm-1.746-2.765C10.42 6.629 10.218 6.5 10 6.5c-.218 0-.42.13-.585.235C9.164 6.896 9 7 9 6.5c0-.828.448-1.5 1-1.5s1 .672 1 1.5c0 .501-.164.396-.415.235z"/>
-                            </svg>
+                            <i class="fa fa-smile-o" aria-hidden="true"></i>
                         </a></li>
                     </ul>
                 </form>
@@ -406,9 +377,7 @@
                     <div class="clearfix">
                     <i style='padding-left: 6px'>
                         ${listBlog.date}
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-globe" viewBox="0 0 16 16">
-                            <path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm7.5-6.923c-.67.204-1.335.82-1.887 1.855A7.97 7.97 0 0 0 5.145 4H7.5V1.077zM4.09 4a9.267 9.267 0 0 1 .64-1.539 6.7 6.7 0 0 1 .597-.933A7.025 7.025 0 0 0 2.255 4H4.09zm-.582 3.5c.03-.877.138-1.718.312-2.5H1.674a6.958 6.958 0 0 0-.656 2.5h2.49zM4.847 5a12.5 12.5 0 0 0-.338 2.5H7.5V5H4.847zM8.5 5v2.5h2.99a12.495 12.495 0 0 0-.337-2.5H8.5zM4.51 8.5a12.5 12.5 0 0 0 .337 2.5H7.5V8.5H4.51zm3.99 0V11h2.653c.187-.765.306-1.608.338-2.5H8.5zM5.145 12c.138.386.295.744.468 1.068.552 1.035 1.218 1.65 1.887 1.855V12H5.145zm.182 2.472a6.696 6.696 0 0 1-.597-.933A9.268 9.268 0 0 1 4.09 12H2.255a7.024 7.024 0 0 0 3.072 2.472zM3.82 11a13.652 13.652 0 0 1-.312-2.5h-2.49c.062.89.291 1.733.656 2.5H3.82zm6.853 3.472A7.024 7.024 0 0 0 13.745 12H11.91a9.27 9.27 0 0 1-.64 1.539 6.688 6.688 0 0 1-.597.933zM8.5 12v2.923c.67-.204 1.335-.82 1.887-1.855.173-.324.33-.682.468-1.068H8.5zm3.68-1h2.146c.365-.767.594-1.61.656-2.5h-2.49a13.65 13.65 0 0 1-.312 2.5zm2.802-3.5a6.959 6.959 0 0 0-.656-2.5H12.18c.174.782.282 1.623.312 2.5h2.49zM11.27 2.461c.247.464.462.98.64 1.539h1.835a7.024 7.024 0 0 0-3.072-2.472c.218.284.418.598.597.933zM10.855 4a7.966 7.966 0 0 0-.468-1.068C9.835 1.897 9.17 1.282 8.5 1.077V4h2.355z"/>
-                        </svg>
+                        <i class="fa fa-globe" aria-hidden="true"></i>
                     </i>
                     </div>
                     <hr>
@@ -419,7 +388,9 @@
                             <div class="input-group-btn">
 
                             <div class="dropdown">
-                                    <button type="button" onmouseover="renderBlogReactModal(${listBlog.id})" class="btn btn-default dropbtn">Like</button>
+                                    <button type="button" onmouseover="renderBlogReactModal(${listBlog.id})" class="btn btn-default dropbtn">
+                                    <i class="fa fa-thumbs-up"></i>
+                                    <span style='padding-left: 5px'>Like</span></button>
                                 <div class="dropdown-content">
                                     <div class="blog-react-modal-body">
 
@@ -427,15 +398,79 @@
                                 </div>
                             </div>
 
-                                <button type='button' class="btn btn-default" data-toggle="collapse" data-target="#${listBlog.id}">
-                                    Bình Luận
+                                <button type='button' class="btn btn-default" data-toggle="collapse" data-target="#collapse${listBlog.id}, #collapse1${listBlog.id}">
+                                <i class="fa fa-comments"></i>
+                                    <span style='padding-left: 5px'>Bình Luận</span>
                                 </button>
                             </div>
-                            <div id="${listBlog.id}" class="collapse">
+                            <div id="collapse${listBlog.id}" class="collapse">
                                 <input class="form-control" placeholder="Add a comment.." type="text">
                             </div>
                         </div>
+                        <div id="collapse1${listBlog.id}" class="collapse">
+                            <div class="fb-status-container fb-border fb-gray-bg">
+                                <div class="fb-time-action like-info">
+                                    <a href="#">Jhon Due,</a>
+                                    <a href="#">Danieal Kalion</a>
+                                    <span>and</span>
+                                    <a href="#">40 more</a>
+                                <span>like this</span>
+                            </div>
 
+                            <ul class="fb-comments">
+                                <li>
+                                   <a href="#" class="cmt-thumb">
+                                    <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="">
+                                    </a>
+                                <div class="cmt-details">
+                                    <a href="#">Jhone due</a>
+                                    <span> is world famous professional photographer.  with forward thinking clients to create beautiful, </span>
+                                    <p>40 minutes ago - <a href="#" class="like-link">Like</a></p>
+                                </div>
+                                </li>
+                                <li>
+                                    <a href="#" class="cmt-thumb">
+                                        <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="">
+                                    </a>
+                                    <div class="cmt-details">
+                                    <a href="#">Tawseef</a>
+                                        <span> is world famous professional photographer.  with forward thinking clients to create beautiful, </span>
+                                        <p>34 minutes ago - <a href="#" class="like-link">Like</a></p>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <a href="#" class="cmt-thumb">
+                                    <img src="https://bootdey.com/img/Content/avatar/avatar4.png" alt="">
+                                    </a>
+                                <div class="cmt-details">
+                                    <a href="#">Jhone due</a>
+                                    <span> is world famous professional photographer.   </span>
+                                    <p>15 minutes ago - <a href="#" class="like-link">Like</a></p>
+                                </div>
+                                </li>
+        <li>
+            <a href="#" class="cmt-thumb">
+                <img src="https://bootdey.com/img/Content/avatar/avatar5.png" alt="">
+            </a>
+            <div class="cmt-details">
+                <a href="#">Tawseef</a>
+                <span> thinking clients to create beautiful world famous professional photographer.  </span>
+                <p>2 minutes ago - <a href="#" class="like-link">Like</a></p>
+            </div>
+        </li>
+        <li>
+            <a href="#" class="cmt-thumb">
+                <img src="https://bootdey.com/img/Content/avatar/avatar8.png" alt="">
+            </a>
+            <div class="cmt-form">
+                <textarea class="form-control" placeholder="Write a comment..." name=""></textarea>
+            </div>
+        </li>
+    </ul>
+    <div class="clearfix"></div>
+</div>
+                        </div>
                     </form>
 
                 </div>
