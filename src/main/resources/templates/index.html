@@ -335,9 +335,8 @@
                         <div class="input-group">
                             <div class="input-group-btn">
                                 <button type='button' onclick="showBlogReactModal(${listBlog.id})" class="btn btn-default">Like</button>
-                                <button type='button' class="btn btn-default" data-toggle="collapse" data-target="#${listBlog.id}">
-                                    Bình Luận
-                                </button>
+                                <button type="button"  onclick="showComment()" >Comment</button>
+                                <div id='write_data_comment' ></div>
                             </div>
                             <div id="${listBlog.id}" class="collapse">
                                 <input class="form-control" placeholder="Add a comment.." type="text">
@@ -410,5 +409,37 @@
         });
         $('#blog-react-modal').modal('hide');
     }
+    function showComment(){
+        console.log("a");
+        $.ajax({
+            type:"GET",
+            url:"/comment/commentList",
+            success: function (data){
+                let content = `<table class="table" style="border-radius: 5px"> <tr style="text-align: center">
+                               <th scope="col">Id</th>
+                               <th scope="col">Content</th>
+                               <th scope="col">Date</th>
+                               <th scope="col" colspan="2">Action</th>`
+                for (let i = 0 ; i < data.length;i++){
+                    content += getComment(data[i]);
+                    console.log(data[i]);
+                }
+                console.log(content);
+                document.getElementById("write_data_comment").innerHTML = content;
+                console.log(data)
+
+            }
+        })
+        function getComment(comment) {
+            return `<tr style="text-align: center">
+                <td>${comment.id}</td>
+                <td>${comment.content}</td>
+                <td>${comment.date}</td>
+                <td><button onclick="" type="button" class="btn btn-danger" id="${comment.id}">Delete</button></td>
+                <td><button onclick="" type="button" class="btn btn-primary " id="${comment.id}">Edit</button></td>`
+        }
+    }
+
+
 </script>
 </html>

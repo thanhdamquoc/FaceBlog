@@ -3,6 +3,8 @@ package com.codegym.faceblog.service.comment;
 import com.codegym.faceblog.model.Comment;
 import com.codegym.faceblog.repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -29,5 +31,14 @@ public class CommentSerivceImpl implements CommentService {
     @Override
     public void deleteById(Long id) {
         commentRepository.deleteById(id);
+    }
+    @Override
+    public Page<Comment> findAllByBlog(Pageable pageable, String name) {
+        return commentRepository.findAllByBlog(pageable,name);
+    }
+
+    @Override
+    public Page<Comment> findAllByUser(Pageable pageable, String name) {
+        return commentRepository.findAllByUser(pageable,name);
     }
 }
