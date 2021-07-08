@@ -5,6 +5,8 @@ import com.codegym.faceblog.model.DetailedBlog;
 import com.codegym.faceblog.model.User;
 import com.codegym.faceblog.service.GeneralService;
 
+import java.util.Optional;
+
 public interface BlogService extends GeneralService<Blog> {
     Iterable<Blog> findAllByUser(User user);
 

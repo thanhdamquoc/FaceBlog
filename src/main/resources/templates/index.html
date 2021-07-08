@@ -9,9 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="/templateHome/css/bootstrap.css">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <!--[if lt IE 9]>
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
     <link href="/templateHome/css/google-plus.css" rel="stylesheet">
     <style>
         .dropdown {
@@ -300,6 +298,29 @@
         </div>
     </div>
 </div>
+
+<!--modal comment-->
+<div class="modal fade" id="edit-comment-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalBlogLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalBlogLabel">Edit blog</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div id="edit-comment-modal-body" class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button onclick="updateComment()" type="button" class="btn btn-primary" >Update</button>
+                <button onclick="hideModalComment()" type="button" class="btn btn-secondary" data-dismiss="modal" >Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script type="text/javascript" src="/templateHome/js/jquery.js"></script>
 <script type="text/javascript" src="/templateHome/js/bootstrap.js"></script>
 <script type="text/javascript"></script>
@@ -515,13 +536,14 @@
                                 </div>
                             </div>
 
-                                <button type='button' class="btn btn-default" data-toggle="collapse" data-target="#collapse${detailedBlog.id}, #collapse1${detailedBlog.id}">
+                                <button type='button' onclick="renderComment(${detailedBlog.id})" class="btn btn-default" data-toggle="collapse" data-target="#collapse${detailedBlog.id}, #collapse1${detailedBlog.id}">
                                 <i class="fa fa-comments"></i>
                                     <span style='padding-left: 5px'>Bình Luận</span>
                                 </button>
                             </div>
                             <div id="collapse${detailedBlog.id}" class="collapse">
-                                <input class="form-control" placeholder="Add a comment.." type="text">
+                                <input id="commentBlog${detailedBlog.id}" onkeypress="comment(event, ${detailedBlog.id})"
+                                 class="form-control" placeholder="Add a comment.." type="text">
                             </div>
                         </div>
                         <div id="collapse1${detailedBlog.id}" class="collapse">
@@ -533,7 +555,12 @@
                                     <a href="#">40 more</a>
                                 <span>like this</span>
                             </div>
-                            <ul class="fb-comments"></ul>
+                            <hr>
+                            <ul class="fb-comments" style='list-style-type: none;'>
+                                <span id="commentBody${detailedBlog.id}" >
+
+                                </span>
+                            </ul>
                            <div class="clearfix"></div>
                            </div>
                         </div>
@@ -672,5 +699,159 @@
         blogLimit += 2;
         showListBlog();
     }
+
+    //Create Comment
+    function comment(event, blogId) {
+        if (event.keyCode === 13) {
+            if (localStorage.getItem("token") != null) {
+                let commentBlog = $('#commentBlog' + blogId).val();
+                let comment = {
+                    blog: {
+                        id: blogId,
+                    },
+                    content: commentBlog,
+                }
+                $.ajax({
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': localStorage.getItem("token"),
+                    },
+                    type: "POST",
+                    data: JSON.stringify(comment),
+                    url: "/comment-blog",
+                    success: function (blogId) {
+                        renderComment(blogId);
+                        showListBlog();
+                    }
+                });
+                event.preventDefault();
+            } else {
+                alert("Please login first!");
+            }
+        }
+    }
+
+    function renderComment(blogId) {
+        $.ajax({
+            type: "GET",
+            url: "/comment-blog/" + blogId,
+            success: function (comments) {
+                let content = "";
+                for (let i = 0; i < comments.length; i++) {
+                    content += getBodyComment(comments[i])
+                }
+                document.getElementById("commentBody" + blogId).innerHTML = content;
+            }
+        });
+    }
+
+    function getBodyComment(comments) {
+        return "" +
+            `<li>
+                <a href="#" class="cmt-thumb">
+                    <img src="${comments.user.profilePicture}" style="width: 40px; height: 40px"
+                         class="img-circle pull-left">
+                </a>
+                <div class="cmt-details" style='margin-top: 25px'>
+                    <a style='padding-left: 5px' href="#">${comments.user.username}</a>
+                    <p style='padding-left: 45px'>${comments.content} - <a href="#" class="like-link">Like</a></p>
+
+                    <div class="dropdown position-absolute top-50 end-0 translate-middle-y">
+                        <button class="btn p-0" type="button" id="dropdownMenuButton2" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                            <a onclick="showModalEditComment(${comments.id}, ${comments.blog.id})" class="dropdown-item d-flex align-items-center"
+                               href="#">
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                <span class="" style="padding-left: 5px">Edit</span></a>
+
+                            <a onclick="deleteComment(${comments.id}, ${comments.blog.id})" class="dropdown-item d-flex align-items-center"
+                               href="#">
+                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                <span class="" style="padding-left: 5px">Delete</span></a>
+                        </div>
+                    </div>
+
+                </div>
+            </li>
+        <hr>`
+    }
+
+//Edit Comment
+    function showModalComment(){
+        $('#edit-comment-modal').modal('show');
+    }
+    function hideModalComment(){
+        $('#edit-comment-modal').modal('hide');
+    }
+
+    function showModalEditComment(commentId, blogId){
+        $.ajax({
+            type: "GET",
+            url: "/comment-blog/comment/" + commentId,
+            success: function (data){
+                $('#edit-comment-modal-body').html(renderModalComment(data, blogId));
+                showModalComment();
+            }
+        });
+    }
+
+    function renderModalComment(comment, blogId){
+        return "" +
+            `<div class="form-group">
+                 <input id="old-blog-id" value="${blogId}" type="hidden" class="form-control">
+            </div>
+            <div class="form-group">
+                 <input id="old-comment-id" value="${comment.id}" type="hidden" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="new-content" class="col-form-label">Content:</label>
+                <input id="new-content" value="${comment.content}" type="text" class="form-control" >
+            </div>`
+    }
+
+//update Comment
+    function updateComment(){
+        let commentId = $('#old-comment-id').val();
+        let content = $('#new-content').val();
+        let blogId = $('#old-blog-id').val();
+        let comment = {
+            id : commentId,
+            content: content,
+            blog : {
+                id: blogId,
+            }
+        };
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem("token"),
+            },
+            type: "POST",
+            data: JSON.stringify(comment),
+            url: "/comment-blog/",
+            success: function (){
+                console.log("Update success!");
+                renderComment(blogId);
+                hideModalComment();
+            }
+        });
+    }
+// Delete Comment
+    function deleteComment(commentId, blogId){
+        $.ajax({
+            type: "POST",
+            url: "/comment-blog/" + commentId,
+            success: function (){
+                renderComment(blogId);
+            }
+        });
+        event.preventDefault();
+    }
+
 </script>
 </html>
