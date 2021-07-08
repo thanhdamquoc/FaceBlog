@@ -3,6 +3,7 @@ package com.codegym.faceblog.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Data
@@ -18,4 +19,6 @@ public class Message {
     private User receiver;
 
     private String content;
+
+    private Date date;
 }

@@ -1,6 +1,8 @@
 package com.codegym.faceblog.service.comment;
 
+import com.codegym.faceblog.model.Blog;
 import com.codegym.faceblog.model.Comment;
+import com.codegym.faceblog.model.User;
 import com.codegym.faceblog.repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,5 +31,10 @@ public class CommentSerivceImpl implements CommentService {
     @Override
     public void deleteById(Long id) {
         commentRepository.deleteById(id);
+    }
+
+    @Override
+    public Iterable<Comment> findAllByBlogId(Long id) {
+        return commentRepository.findAllByBlogId(id);
     }
 }

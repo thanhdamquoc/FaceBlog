@@ -31,4 +31,9 @@ public class MessageServiceImpl implements MessageService {
     public void deleteById(Long id) {
         messageRepository.deleteById(id);
     }
+
+    @Override
+    public Iterable<Message> getPrivateMessages(Long senderId, Long receiverId) {
+        return messageRepository.getPrivateMessages(senderId, receiverId);
+    }
 }

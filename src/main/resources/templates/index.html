@@ -78,7 +78,7 @@
             <div sec:authorize="isAuthenticated()">
                 <ul class="nav navbar-nav navbar-right">
                     <li><a onclick="goToPersonalWall()" target="_ext"><span class="personal-wall-button"></span></a></li>
-                    <li><a class="" href="#" id="btnToggle">
+                    <li><a class="" onclick="showFriends()" id="btnToggle">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                              class="bi bi-messenger" viewBox="0 0 16 16">
                             <path d="M0 7.76C0 3.301 3.493 0 8 0s8 3.301 8 7.76-3.493 7.76-8 7.76c-.81 0-1.586-.107-2.316-.307a.639.639 0 0 0-.427.03l-1.588.702a.64.64 0 0 1-.898-.566l-.044-1.423a.639.639 0 0 0-.215-.456C.956 12.108 0 10.092 0 7.76zm5.546-1.459-2.35 3.728c-.225.358.214.761.551.506l2.525-1.916a.48.48 0 0 1 .578-.002l1.869 1.402a1.2 1.2 0 0 0 1.735-.32l2.35-3.728c.226-.358-.214-.761-.551-.506L9.728 7.381a.48.48 0 0 1-.578.002L7.281 5.98a1.2 1.2 0 0 0-1.735.32z"/>
@@ -205,11 +205,12 @@
             <div id="contentList">
 
             </div>
-
+            <div>
+                <button onclick="loadMoreBlogs()">Load more</button>
+            </div>
 
         </div>
         <div class="col-sm-6 col-md-2">
-
             <div class="panel panel-default">
                 <div class="panel-heading"><a href="#" class="pull-right">View all</a> <h4>Top Blog</h4></div>
                 <div class="panel-body">
@@ -234,45 +235,8 @@
                     </ul>
                 </div>
             </div>
-            <!--/main-->
 
-
-            <!--login modal-->
-            <div style="display: none;" id="loginModal" class="modal fade" tabindex="-1" role="dialog"
-                 aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">�</button>
-                            <h2 class="text-center"><img src="templateHome/img/photo_002.png" class="img-circle"><br>Login
-                            </h2>
-                        </div>
-                        <div class="modal-body">
-                            <form class="form col-md-12 center-block">
-                                <div class="form-group">
-                                    <input class="form-control input-lg" placeholder="Email" type="text">
-                                </div>
-                                <div class="form-group">
-                                    <input class="form-control input-lg" placeholder="Password" type="password">
-                                </div>
-                                <div class="form-group">
-                                    <button class="btn btn-primary btn-lg btn-block">Sign In</button>
-                                    <span class="pull-right"><a href="#">Register</a></span><span><a
-                                        href="#">Need help?</a></span>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <div class="col-md-12">
-                                <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <!--about modal-->
+            <!--Friend Modal-->
             <div style="display: none;" id="modalFriends" class="modal fade" tabindex="-1" role="dialog"
                  aria-hidden="true">
                 <div class="modal-dialog">
@@ -290,24 +254,119 @@
                     </div>
                 </div>
             </div>
-
-            <script type="text/javascript" src="/templateHome/js/jquery.js"></script>
-            <script type="text/javascript" src="/templateHome/js/bootstrap.js"></script>
-
-            <script type="text/javascript">
-
-            </script>
+            <!-- Message Modal -->
+            <div class="modal fade" id="message-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="message-modal-title">Inbox</h5>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="hideMessageModal()">Close</button>
+                        </div>
+                        <div class="modal-body" id="message-modal-body" style="height: 300px; overflow: auto"></div>
+                        <div class="modal-footer">
+                            <textarea id="message-text-area"></textarea>
+                            <div id="message-send-button"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-
+<script type="text/javascript" src="/templateHome/js/jquery.js"></script>
+<script type="text/javascript" src="/templateHome/js/bootstrap.js"></script>
+<script type="text/javascript"></script>
 </body>
 <script>
     //init
-    showListBlog();
-
-    $('.personal-wall-button').html(localStorage.getItem("fullName"));
+    let blogLimit;
+    window.onload = function () {
+        blogLimit = 5;
+        showListBlog();
+        $('.personal-wall-button').html(localStorage.getItem("fullName"));
+    }
     //functions
+    function showMessageModal(friendId) {
+        let userId = localStorage.getItem("userId");
+        renderMessageModal(friendId, userId);
+        $('#message-modal').modal('show');
+    }
+
+    function renderMessageModal(friendId, userId) {
+        renderMessageModalTitle(friendId);
+        renderMessageModalBody(friendId, userId);
+        renderMessageSendButton(friendId, userId);
+    }
+
+    function renderMessageSendButton(friendId, userId) {
+        let buttonContent = `<button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="sendMessage(${friendId},${userId})">Send</button>`;
+        $('#message-send-button').html(buttonContent);
+    }
+
+    function renderMessageModalBody(friendId, userId) {
+        let url = "/messages/user/" + userId + "/user/" + friendId;
+        $.ajax({
+            type: "GET",
+            url: url,
+            success: function (privateMessages) {
+                let modalBodyContent = "";
+                if (privateMessages != undefined) {
+                    for (let i = 0; i < privateMessages.length; i++) {
+                        let privateMessage = privateMessages[i];
+                        modalBodyContent += `<div><img src="${privateMessage.sender.profilePicture}" width="50px" height="50px" class="img-circle"><span>${privateMessage.content}</span></div>`
+                    }
+                }
+                $('#message-modal-body').html(modalBodyContent);
+            }
+        });
+    }
+
+    function sendMessage(friendId, userId) {
+        let messageContent = $('#message-text-area').val();
+        if (messageContent != "") {
+            let message = {
+                sender: {
+                    id: userId,
+                },
+                receiver: {
+                    id: friendId,
+                },
+                content: messageContent,
+            };
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                type: "POST",
+                data: JSON.stringify(message),
+                url: "/messages",
+                success: function (sentMessage) {
+                    console.log("message has been sent");
+                    console.log(sentMessage)
+                    renderMessageModal(friendId, userId);
+                }
+            });
+        }
+        $('#message-text-area').val("");
+    }
+
+    function renderMessageModalTitle(friendId) {
+        let url = "/users/" + friendId;
+        $.ajax({
+            type: "GET",
+            url: url,
+            success: function (friendUser) {
+                console.log(friendUser);
+                $('#message-modal-title').html(friendUser.fullName);
+            }
+        });
+    }
+
+    function hideMessageModal() {
+        $('#message-modal').modal('hide');
+    }
+
     function goToPersonalWall() {
         let url = "/wall/" + localStorage.getItem("username");
         window.location.href = url;
@@ -323,7 +382,6 @@
                     content += getBodyModalFriends(listUser[i])
                 }
                 document.getElementById("modal-friend-body").innerHTML = content;
-                console.log(content)
             }
         });
         $('#modalFriends').modal('show');
@@ -334,14 +392,14 @@
             `<div class="well well-sm">
                 <div class="media">
                     <a class="thumbnail pull-left" href="#">
-                        <img class="media-object" src="/templateHome/img/a13ac7aed64918b6354f48da59490e3a.jpg">
+                        <img class="img-circle pull-left" width="100px" height="100px" src="${listUser.profilePicture}">
                     </a>
                     <div class="media-body">
                         <h4 class="media-heading">${listUser.username}</h4>
                         <p><span class="label label-info">10 photos</span> <span class="label label-primary">89 followers</span>
                         </p>
                         <p>
-                            <a href="#" class="btn btn-xs btn-default">
+                            <a onclick="showMessageModal(${listUser.id})" class="btn btn-xs btn-default">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                              class="bi bi-messenger" viewBox="0 0 16 16">
                             <path d="M0 7.76C0 3.301 3.493 0 8 0s8 3.301 8 7.76-3.493 7.76-8 7.76c-.81 0-1.586-.107-2.316-.307a.639.639 0 0 0-.427.03l-1.588.702a.64.64 0 0 1-.898-.566l-.044-1.423a.639.639 0 0 0-.215-.456C.956 12.108 0 10.092 0 7.76zm5.546-1.459-2.35 3.728c-.225.358.214.761.551.506l2.525-1.916a.48.48 0 0 1 .578-.002l1.869 1.402a1.2 1.2 0 0 0 1.735-.32l2.35-3.728c.226-.358-.214-.761-.551-.506L9.728 7.381a.48.48 0 0 1-.578.002L7.281 5.98a1.2 1.2 0 0 0-1.735.32z"/>
@@ -353,42 +411,50 @@
     }
 
     function showListBlog() {
+        let url = "/blogs/sorted?limit=" + blogLimit;
         $.ajax({
             type: "GET",
-            url: "/blogs",
-            success: function (listBlog) {
+            url: url,
+            success: function (detailedBlogs) {
                 let contentBlog = "";
-                for (let i = 0; i < listBlog.length; i++) {
-                    contentBlog += getBlog(listBlog[i])
+                for (let i = 0; i < detailedBlogs.length; i++) {
+                    contentBlog += getBlog(detailedBlogs[i])
                 }
                 document.getElementById('contentList').innerHTML = contentBlog;
-                console.log(listBlog);
+                console.log(detailedBlogs);
             }
         })
     }
 
-    function getBlog(listBlog) {
+    function getBlog(detailedBlog) {
+        let dateTimeString = detailedBlog.date.toString();
+        let formattedDateTimeString = formatDateTime(dateTimeString);
+
         return "" +
             `<div class="panel panel-default">
                 <div class="panel-body">
-                    <img src="${listBlog.user.profilePicture}" class="img-circle pull-left">
-                     <a href="/wall/${listBlog.user.username}" style='padding-left: 6px'>${listBlog.user.username}</a>
+                    <img src="${detailedBlog.profilePicture}" class="img-circle pull-left">
+                     <a href="/wall/${detailedBlog.username}" style='padding-left: 6px'>${detailedBlog.username}</a>
 
                     <div class="clearfix">
                     <i style='padding-left: 6px'>
-                        ${listBlog.date}
+                        ${formattedDateTimeString}
                         <i class="fa fa-globe" aria-hidden="true"></i>
                     </i>
                     </div>
                     <hr>
-                    <p>${listBlog.content}</p>
+                    <p>${detailedBlog.content}</p>
                     <hr>
+                    <div>
+                        <span>${detailedBlog.reactionCount} reactions</span>
+                        <span>${detailedBlog.commentCount} comments</span>
+                    </div>
                     <form>
                         <div class="input-group">
                             <div class="input-group-btn">
 
                             <div class="dropdown">
-                                    <button type="button" onmouseover="renderBlogReactModal(${listBlog.id})" class="btn btn-default dropbtn">
+                                    <button type="button" onmouseover="renderBlogReactModal(${detailedBlog.id})" class="btn btn-default dropbtn">
                                     <i class="fa fa-thumbs-up"></i>
                                     <span style='padding-left: 5px'>Like</span></button>
                                 <div class="dropdown-content">
@@ -398,17 +464,16 @@
                                 </div>
                             </div>
 
-                                <button type='button' class="btn btn-default" data-toggle="collapse" data-target="#collapse${listBlog.id}, #collapse1${listBlog.id}">
+                                <button type='button' onclick="renderComment(${detailedBlog.id})" class="btn btn-default" data-toggle="collapse" data-target="#collapse${detailedBlog.id}, #collapse1${detailedBlog.id}">
                                 <i class="fa fa-comments"></i>
                                     <span style='padding-left: 5px'>Bình Luận</span>
                                 </button>
                             </div>
-                            <div id="collapse${listBlog.id}" class="collapse">
-                                <input class="form-control" placeholder="Add a comment.." type="text">
+                            <div id="collapse${detailedBlog.id}" class="collapse">
+                                <input id="commentBlog${detailedBlog.id}" onkeypress="comment(event, ${detailedBlog.id})" class="form-control" placeholder="Add a comment.." type="text">
                             </div>
                         </div>
-
-                        <div id="collapse1${listBlog.id}" class="collapse">
+                        <div id="collapse1${detailedBlog.id}" class="collapse">
                             <div class="fb-status-container fb-border fb-gray-bg">
                                 <div class="fb-time-action like-info">
                                     <a href="#">Jhon Due,</a>
@@ -417,57 +482,11 @@
                                     <a href="#">40 more</a>
                                 <span>like this</span>
                             </div>
+                            <hr>
+                            <ul class="fb-comments" style='list-style-type: none;'>
+                                <span id="commentBody${detailedBlog.id}" >
 
-                            <ul class="fb-comments">
-                                <li>
-                                   <a href="#" class="cmt-thumb">
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar3.pn" alt="">
-                                    </a>
-                                <div class="cmt-details">
-                                    <a href="#">Jhone due</a>
-                                    <span> is world famous professional photographer.  with forward thinking clients to create beautiful, </span>
-                                    <p>40 minutes ago - <a href="#" class="like-link">Like</a></p>
-                                </div>
-                                </li>
-                                <li>
-                                    <a href="#" class="cmt-thumb">
-                                        <img src="https://bootdey.com/img/Content/avatar/avatar3.pn" alt="">
-                                    </a>
-                                    <div class="cmt-details">
-                                    <a href="#">Tawseef</a>
-                                        <span> is world famous professional photographer.  with forward thinking clients to create beautiful, </span>
-                                        <p>34 minutes ago - <a href="#" class="like-link">Like</a></p>
-                                    </div>
-                                </li>
-
-                                <li>
-                                    <a href="#" class="cmt-thumb">
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar4.pg" alt="">
-                                    </a>
-                                <div class="cmt-details">
-                                    <a href="#">Jhone due</a>
-                                    <span> is world famous professional photographer.   </span>
-                                    <p>15 minutes ago - <a href="#" class="like-link">Like</a></p>
-                                </div>
-                                </li>
-                                <li>
-                                    <a href="#" class="cmt-thumb">
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar5.pn" alt="">
-                                    </a>
-                                    <div class="cmt-details">
-                                    <a href="#">Tawseef</a>
-                                    <span> thinking clients to create beautiful world famous professional photographer.  </span>
-                                    <p>2 minutes ago - <a href="#" class="like-link">Like</a></p>
-                                </div>
-                                </li>
-                                <li>
-                                        <a href="#" class="cmt-thumb">
-                                        <img src="https://bootdey.com/img/Content/avatar/avatar8.pn" alt="">
-                                        </a>
-                                <div class="cmt-form">
-                                    <textarea class="form-control" placeholder="Write a comment..." name=""></textarea>
-                                </div>
-                                </li>
+                                </span>
                             </ul>
                            <div class="clearfix"></div>
                            </div>
@@ -517,7 +536,7 @@
         return "" +
         `<a onclick="reactToBlog(${blogId},${data.id})">${data.name}</a>`
     }
-
+    
     function reactToBlog(blogId, reactionId) {
         if (localStorage.getItem("token") != null) {
             let blogReaction = {
@@ -540,6 +559,7 @@
                 url: "/blog-reactions",
                 success: function (data) {
                     console.log(data);
+                    showListBlog();
                 }
             });
         } else {
@@ -550,6 +570,78 @@
     function logout() {
         localStorage.clear();
         window.location.href = "/logout";
+    }
+
+    function formatDateTime(dateTimeString) {
+        let year = dateTimeString.substring(0,4);
+        let month = dateTimeString.substring(5,7);
+        let day = dateTimeString.substring(8,10);
+        return year + "-" + month + "-" + day;
+    }
+
+    function loadMoreBlogs() {
+        blogLimit += 2;
+        showListBlog();
+    }
+    
+// Comment
+    function comment(event, blogId){
+        if (event.keyCode === 13){
+            if (localStorage.getItem("token") !=null){
+                let commentBlog = $('#commentBlog' + blogId).val();
+                let comment = {
+                    blog: {
+                        id: blogId,
+                    },
+                    content: commentBlog,
+                }
+                $.ajax({
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': localStorage.getItem("token"),
+                    },
+                    type:"POST",
+                    data: JSON.stringify(comment),
+                    url: "/comment-blog",
+                    success: function (blogId){
+                        renderComment(blogId);
+                    }
+                });
+            }
+            else {
+                alert("Please login first!");
+            }
+        }
+    }
+    
+    function renderComment(blogId) {
+        $.ajax({
+            type: "GET",
+            url: "/comment-blog/" + blogId,
+            success: function (comments){
+                let content = "";
+                for (let i = 0; i < comments.length; i++) {
+                    content += getBodyComment(comments[i])
+                }
+                document.getElementById("commentBody" + blogId).innerHTML = content;
+            }
+        });
+    }
+
+    function getBodyComment(comments){
+        return "" +
+            `<li>
+                <a href="#" class="cmt-thumb">
+                   <img src="${comments.user.profilePicture}" class="img-circle pull-left">
+                </a>
+                   <div class="cmt-details" style='margin-top: 25px'>
+                <a href="#">${comments.user.username}</a>
+                   <span>${comments.content}</span>
+                <p>${comments.date} - <a href="#" class="like-link">Like</a></p>
+                   </div>
+            </li>
+            <hr>`
     }
 </script>
 </html>
