@@ -43,4 +43,9 @@ public class BlogReactionServiceImpl implements BlogReactionService{
     public Optional<BlogReaction> findByUserIdAndBlogId(Long userId, Long blogId) {
         return blogReactionRepository.findByUserIdAndBlogId(userId, blogId);
     }
+
+    @Override
+    public Iterable<BlogReaction> findAllByBlog(Blog blog) {
+        return blogReactionRepository.findAllByBlog(blog);
+    }
 }

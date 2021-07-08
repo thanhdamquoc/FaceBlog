@@ -43,4 +43,9 @@ public class BlogServiceImpl implements BlogService{
     public Iterable<DetailedBlog> findAllDetailedBlogs(int limit) {
         return blogRepository.findAllDetailedBlogs(limit);
     }
+
+    @Override
+    public Iterable<DetailedBlog> findAllDetailedBlogsByUserId(Long userId, int limit) {
+        return blogRepository.findAllDetailedBlogsByUserId(userId, limit);
+    }
 }

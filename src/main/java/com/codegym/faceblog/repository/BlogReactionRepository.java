@@ -16,4 +16,6 @@ public interface BlogReactionRepository extends JpaRepository<BlogReaction, Long
 
     @Query(value = "SELECT b FROM BlogReaction b WHERE b.user.id = ?1 AND b.blog.id = ?2")
     Optional<BlogReaction> findByUserIdAndBlogId(Long userId, Long blogId);
+
+    Iterable<BlogReaction> findAllByBlog(Blog blog);
 }

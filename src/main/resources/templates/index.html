@@ -103,7 +103,8 @@
                             </svg>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a onclick="goToPersonalWall()"><span class="personal-wall-button"></span></a></li>
+                            <li><a onclick="goToPersonalWall()" href="#"><span class="personal-wall-button"></span></a>
+                            </li>
                             <li>
                                 <a href="#">
                                     <span>
@@ -128,7 +129,7 @@
                                     Help and support</a>
                             </li>
                             <li>
-                                <a onclick="logout()">
+                                <a onclick="logout()" href="#">
                                     <span>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                              fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
@@ -279,6 +280,19 @@
                         <div class="modal-footer">
                             <textarea id="message-text-area"></textarea>
                             <div id="message-send-button"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--            Detailed Reaction List Modal-->
+            <div class="modal fade" id="detailed-reaction-list-modal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Reactions</h5>
+                        </div>
+                        <div class="modal-body" id="detailed-reaction-list-modal-body" style="height: 200px; overflow: auto">
                         </div>
                     </div>
                 </div>
@@ -450,13 +464,13 @@
         $.ajax({
             type: "GET",
             url: url,
-            success: function (data) {
-                let likeButtonThumbId = "like-btn-thumb-" + blogId;
+            success: function (blogReaction) {
+                let likeButtonThumbId = "like-btn-icon-" + blogId;
                 let likeButtonSpanId = "like-btn-span-" + blogId;
-                document.getElementById(likeButtonThumbId).style.color = "blue";
-                document.getElementById(likeButtonThumbId).style.fontWeight = "bold";
+                document.getElementById(likeButtonThumbId).src = blogReaction.reaction.icon;
                 document.getElementById(likeButtonSpanId).style.color = "blue";
                 document.getElementById(likeButtonSpanId).style.fontWeight = "bold";
+                document.getElementById(likeButtonSpanId).innerHTML = blogReaction.reaction.name;
             }
         });
     }
@@ -480,7 +494,9 @@
                     <p>${detailedBlog.content}</p>
                     <hr>
                     <div>
-                        <span>${detailedBlog.reactionCount} reactions</span>
+                        <a style="text-decoration: none; color: black" onclick="renderDetailedReactionListModal(${detailedBlog.id})" href="#">
+                            <span>${detailedBlog.reactionCount} reactions</span>
+                        </a>
                         <span>${detailedBlog.commentCount} comments</span>
                     </div>
                     <form>
@@ -489,7 +505,7 @@
 
                             <div class="dropdown">
                                     <button type="button" onmouseover="renderBlogReactModal(${detailedBlog.id})" class="btn btn-default dropbtn">
-                                        <i id="like-btn-thumb-${detailedBlog.id}" class="fa fa-thumbs-up"></i>
+                                        <img id="like-btn-icon-${detailedBlog.id}" src="/files/like.png" alt="LIKE" height="19px">
                                         <span id="like-btn-span-${detailedBlog.id}" style='padding-left: 5px' >Like</span>
                                     </button>
                                 <div class="dropdown-content">
@@ -517,64 +533,36 @@
                                     <a href="#">40 more</a>
                                 <span>like this</span>
                             </div>
-
-                            <ul class="fb-comments">
-                                <li>
-                                   <a href="#" class="cmt-thumb">
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar3.pn" alt="">
-                                    </a>
-                                <div class="cmt-details">
-                                    <a href="#">Jhone due</a>
-                                    <span> is world famous professional photographer.  with forward thinking clients to create beautiful, </span>
-                                    <p>40 minutes ago - <a href="#" class="like-link">Like</a></p>
-                                </div>
-                                </li>
-                                <li>
-                                    <a href="#" class="cmt-thumb">
-                                        <img src="https://bootdey.com/img/Content/avatar/avatar3.pn" alt="">
-                                    </a>
-                                    <div class="cmt-details">
-                                    <a href="#">Tawseef</a>
-                                        <span> is world famous professional photographer.  with forward thinking clients to create beautiful, </span>
-                                        <p>34 minutes ago - <a href="#" class="like-link">Like</a></p>
-                                    </div>
-                                </li>
-
-                                <li>
-                                    <a href="#" class="cmt-thumb">
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar4.pg" alt="">
-                                    </a>
-                                <div class="cmt-details">
-                                    <a href="#">Jhone due</a>
-                                    <span> is world famous professional photographer.   </span>
-                                    <p>15 minutes ago - <a href="#" class="like-link">Like</a></p>
-                                </div>
-                                </li>
-                                <li>
-                                    <a href="#" class="cmt-thumb">
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar5.pn" alt="">
-                                    </a>
-                                    <div class="cmt-details">
-                                    <a href="#">Tawseef</a>
-                                    <span> thinking clients to create beautiful world famous professional photographer.  </span>
-                                    <p>2 minutes ago - <a href="#" class="like-link">Like</a></p>
-                                </div>
-                                </li>
-                                <li>
-                                        <a href="#" class="cmt-thumb">
-                                        <img src="https://bootdey.com/img/Content/avatar/avatar8.pn" alt="">
-                                        </a>
-                                <div class="cmt-form">
-                                    <textarea class="form-control" placeholder="Write a comment..." name=""></textarea>
-                                </div>
-                                </li>
-                            </ul>
+                            <ul class="fb-comments"></ul>
                            <div class="clearfix"></div>
                            </div>
                         </div>
                     </form>
                 </div>
             </div>`
+    }
+
+    function renderDetailedReactionListModal(blogId) {
+        let url = "/blogs/" + blogId + "/blog-reactions";
+        $.ajax({
+            type: "GET",
+            url: url,
+            success: function (blogReactions) {
+                let modalBodyContent = "<ul style='list-style-type: none'>";
+                for (let i = 0; i < blogReactions.length; i++) {
+                    let blogReaction = blogReactions[i];
+                    modalBodyContent +=
+                        `<li>
+                            <img src="${blogReaction.reaction.icon}" alt="${blogReaction.reaction.name}" width="20px">
+                            <span> ${blogReaction.user.fullName}</span>
+                        </li>`;
+                }
+                modalBodyContent += "</ul>";
+                $('#detailed-reaction-list-modal-body').html(modalBodyContent);
+            }
+        });
+        $('#detailed-reaction-list-modal').modal('show');
+        event.preventDefault();
     }
 
     function createBlog() {
@@ -649,7 +637,6 @@
                     id: reactionId,
                 }
             }
-            console.log("user reacted " + reactionId + " to blog " + blogId);
             $.ajax({
                 headers: {
                     'Accept': 'application/json',
@@ -659,8 +646,8 @@
                 type: "POST",
                 data: JSON.stringify(blogReaction),
                 url: "/blog-reactions",
-                success: function (data) {
-                    console.log(data);
+                success: function (savedBlogReaction) {
+                    console.log(savedBlogReaction);
                     showListBlog();
                 }
             });

@@ -1,9 +1,11 @@
 package com.codegym.faceblog.controller.blog;
 
 import com.codegym.faceblog.model.Blog;
+import com.codegym.faceblog.model.BlogReaction;
 import com.codegym.faceblog.model.DetailedBlog;
 import com.codegym.faceblog.model.User;
 import com.codegym.faceblog.service.blog.BlogService;
+import com.codegym.faceblog.service.blogreaction.BlogReactionService;
 import com.codegym.faceblog.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,6 +27,9 @@ public class BlogRestController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private BlogReactionService blogReactionService;
+
 
     @GetMapping("")
     public ResponseEntity<Iterable<Blog>> showListBlog() {
@@ -33,7 +38,11 @@ public class BlogRestController {
 
     @GetMapping("/sorted")
     public ResponseEntity<Iterable<DetailedBlog>> showListBlogSorted(@RequestParam int limit) {
-        return new ResponseEntity<>(blogService.findAllDetailedBlogs(limit), HttpStatus.OK);
+        Iterable<DetailedBlog> detailedBlogs = blogService.findAllDetailedBlogs(limit);
+        if (!detailedBlogs.iterator().hasNext()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(detailedBlogs, HttpStatus.OK);
     }
 
     @PostMapping
@@ -66,5 +75,18 @@ public class BlogRestController {
         }
         blogService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/{blogId}/blog-reactions")
+    public ResponseEntity<Iterable<BlogReaction>> getReactionsByBlogId(@PathVariable Long blogId) {
+        Optional<Blog> blogOptional = blogService.findById(blogId);
+        if (!blogOptional.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        Iterable<BlogReaction> blogReactions = blogReactionService.findAllByBlog(blogOptional.get());
+        if (!blogReactions.iterator().hasNext()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(blogReactions, HttpStatus.OK);
     }
 }

@@ -11,4 +11,6 @@ public interface BlogReactionService extends GeneralService<BlogReaction> {
     Optional<BlogReaction> findAllByUserAndByBlog(User user, Blog blog);
 
     Optional<BlogReaction> findByUserIdAndBlogId(Long userId, Long blogId);
+
+    Iterable<BlogReaction> findAllByBlog(Blog blog);
 }

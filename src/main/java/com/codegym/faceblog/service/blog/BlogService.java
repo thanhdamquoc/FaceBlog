@@ -9,4 +9,6 @@ public interface BlogService extends GeneralService<Blog> {
     Iterable<Blog> findAllByUser(User user);
 
     Iterable<DetailedBlog> findAllDetailedBlogs(int limit);
+
+    Iterable<DetailedBlog> findAllDetailedBlogsByUserId(Long userId, int limit);
 }

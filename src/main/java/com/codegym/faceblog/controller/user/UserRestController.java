@@ -1,9 +1,6 @@
 package com.codegym.faceblog.controller.user;
 
-import com.codegym.faceblog.model.Blog;
-import com.codegym.faceblog.model.BlogReaction;
-import com.codegym.faceblog.model.Role;
-import com.codegym.faceblog.model.User;
+import com.codegym.faceblog.model.*;
 import com.codegym.faceblog.service.blog.BlogService;
 import com.codegym.faceblog.service.blogreaction.BlogReactionService;
 import com.codegym.faceblog.service.role.RoleService;
@@ -89,5 +86,14 @@ public class UserRestController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(blogReactionOptional.get(), HttpStatus.OK);
+    }
+
+    @GetMapping("/{userId}/detailed-blogs")
+    private ResponseEntity<Iterable<DetailedBlog>> findDetailedBlogsByUserId(@PathVariable Long userId, @RequestParam int limit) {
+        Iterable<DetailedBlog> detailedBlogs = blogService.findAllDetailedBlogsByUserId(userId, limit);
+        if (!detailedBlogs.iterator().hasNext()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(detailedBlogs, HttpStatus.OK);
     }
 }
