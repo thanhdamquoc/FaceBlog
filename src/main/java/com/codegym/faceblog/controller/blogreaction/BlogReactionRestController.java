@@ -38,7 +38,14 @@ public class BlogReactionRestController {
         //if this user has reacted to this blog before, overwrite last reaction
         Optional<BlogReaction> blogReactionOptional = blogReactionService.findAllByUserAndByBlog(user, blogReaction.getBlog());
         if (blogReactionOptional.isPresent()) {
+            Long lastReactionId = blogReactionOptional.get().getReaction().getId();
+            Long newReactionId = blogReaction.getReaction().getId();
             blogReaction.setId(blogReactionOptional.get().getId());
+            //clicking on the same reaction as you reacted before removes that reaction
+            if (lastReactionId == newReactionId) {
+                blogReactionService.deleteById(blogReaction.getId());
+                return new ResponseEntity<>(blogReactionOptional.get(), HttpStatus.OK);
+            }
         }
         return new ResponseEntity<>(blogReactionService.save(blogReaction), HttpStatus.OK);
     }

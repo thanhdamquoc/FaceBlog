@@ -604,20 +604,36 @@
             success: function (reactions) {
                 let modalBody = "";
                 for (let i = 0; i < reactions.length; i++) {
-                    let reaction = reactions[i];
-                    modalBody += getReactBody(blogId, reaction);
+                    modalBody += getReactBody(blogId, reactions[i]);
                 }
                 $('.blog-react-modal-body').html(modalBody);
+                for (let i = 0; i < reactions.length; i++) {
+                    renderChosenReaction(blogId);
+                }
             },
+        });
+    }
+
+    function renderChosenReaction(blogId) {
+        let userId = localStorage.getItem("userId");
+        let url = "/users/" + userId + "/blogs/" + blogId + "/blog-reactions";
+        $.ajax({
+            type: "GET",
+            url: url,
+            success: function (blogReaction) {
+                let reactionId = "like-btn-" + blogId + "-reaction-" + blogReaction.reaction.id;
+                document.getElementById(reactionId).style.color = "blue";
+                console.log(reactionId);
+            }
         });
     }
 
     function getReactBody(blogId, data) {
         return "" +
             `<a onclick="reactToBlog(${blogId},${data.id})">
-            <img src="${data.icon}" alt="${data.name}" width="20px">
-            <span> ${data.name}</span>
-        </a>`
+                <img src="${data.icon}" alt="${data.name}" width="20px">
+                <span id="like-btn-${blogId}-reaction-${data.id}"> ${data.name}</span>
+            </a>`
     }
 
     function reactToBlog(blogId, reactionId) {
