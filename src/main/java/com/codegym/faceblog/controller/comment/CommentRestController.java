@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/comment-blog")
@@ -27,6 +28,15 @@ public class CommentRestController {
     @GetMapping("/{id}")
     public ResponseEntity<Iterable<Comment>> showListComment(@PathVariable Long id){
         return new ResponseEntity<>(commentService.findAllByBlogId(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/comment/{id}")
+    public ResponseEntity<Comment> findCommentById(@PathVariable Long id){
+        Optional<Comment> commentOptional = commentService.findById(id);
+        if (!commentOptional.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(commentOptional.get(), HttpStatus.OK);
     }
 
     @PostMapping
@@ -45,6 +55,14 @@ public class CommentRestController {
         return new ResponseEntity<>(commentService.save(comment), HttpStatus.CREATED);
     }
 
-
+    @PostMapping("/{id}")
+    public ResponseEntity<Comment> daleteComment(@PathVariable Long id){
+        Optional<Comment> commentOptional = commentService.findById(id);
+        if (!commentOptional.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        commentService.deleteById(commentOptional.get().getId());
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 
 }

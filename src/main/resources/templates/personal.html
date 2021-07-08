@@ -860,6 +860,7 @@
             showEditBlogModal();
         }
       });
+      event.preventDefault();
   }
 
   function showEditBlogModal() {
@@ -904,8 +905,10 @@
         let userId = $('#user-id').val();
         console.log("Update Blog success!")
         getUserBlogs(userId);
+        hideEditBlogModal();
       }
     });
+    event.preventDefault();
   }
 
   function deleteBlog(blogId){
@@ -919,6 +922,7 @@
           getUserBlogs(userId);
         }
       });
+      event.preventDefault();
   }
 
 </script>
