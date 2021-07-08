@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/blogs")
@@ -47,4 +48,25 @@ public class BlogRestController {
         blog.setDate(new Date());
         return new ResponseEntity<>(blogService.save(blog), HttpStatus.CREATED);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Optional<Blog>> findBlogById(@PathVariable Long id){
+        Optional<Blog> blogOptional = blogService.findById(id);
+        if (!blogOptional.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(blogOptional, HttpStatus.OK);
+    }
+
+    @PostMapping("/{id}")
+    public ResponseEntity<Blog> deleteById(@PathVariable Long id){
+        Optional<Blog> blogOptional = blogService.findById(id);
+        if (!blogOptional.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        blogService.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+
 }
