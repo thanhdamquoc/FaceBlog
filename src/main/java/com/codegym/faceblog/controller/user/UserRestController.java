@@ -1,9 +1,11 @@
 package com.codegym.faceblog.controller.user;
 
 import com.codegym.faceblog.model.Blog;
+import com.codegym.faceblog.model.BlogReaction;
 import com.codegym.faceblog.model.Role;
 import com.codegym.faceblog.model.User;
 import com.codegym.faceblog.service.blog.BlogService;
+import com.codegym.faceblog.service.blogreaction.BlogReactionService;
 import com.codegym.faceblog.service.role.RoleService;
 import com.codegym.faceblog.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +29,7 @@ public class UserRestController {
     private BlogService blogService;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private BlogReactionService blogReactionService;
 
     @GetMapping
     private ResponseEntity<Iterable<User>> findAll() {
@@ -78,5 +80,14 @@ public class UserRestController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(blogs, HttpStatus.OK);
+    }
+
+    @GetMapping("/{userId}/blogs/{blogId}/blog-reactions")
+    private ResponseEntity<BlogReaction> findBlogReactionsByUserIdAndBlogId(@PathVariable Long userId, @PathVariable Long blogId) {
+        Optional<BlogReaction> blogReactionOptional = blogReactionService.findByUserIdAndBlogId(userId, blogId);
+        if (!blogReactionOptional.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(blogReactionOptional.get(), HttpStatus.OK);
     }
 }

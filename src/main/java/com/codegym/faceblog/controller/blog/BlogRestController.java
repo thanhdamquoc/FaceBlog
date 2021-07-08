@@ -67,6 +67,4 @@ public class BlogRestController {
         blogService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
-
 }

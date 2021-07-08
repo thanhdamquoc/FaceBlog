@@ -9,4 +9,6 @@ import java.util.Optional;
 
 public interface BlogReactionService extends GeneralService<BlogReaction> {
     Optional<BlogReaction> findAllByUserAndByBlog(User user, Blog blog);
+
+    Optional<BlogReaction> findByUserIdAndBlogId(Long userId, Long blogId);
 }
