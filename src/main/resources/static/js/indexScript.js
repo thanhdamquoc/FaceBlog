@@ -35,7 +35,7 @@ function getBlog(detailedBlog) {
         `<div class="panel panel-default">
                 <div class="panel-body">
                     <img src="${detailedBlog.profilePicture}" class="img-circle pull-left">
-                     <a href="/wall/${detailedBlog.username}" style='padding-left: 6px'>${detailedBlog.username}</a>
+                    <a href="/wall/${detailedBlog.username}" style='padding-left: 6px'>${detailedBlog.username}</a>
 
                     <div class="clearfix">
                     <i style='padding-left: 6px'>
@@ -241,7 +241,11 @@ function renderMessageModalBody(friendId, userId) {
             if (privateMessages != undefined) {
                 for (let i = 0; i < privateMessages.length; i++) {
                     let privateMessage = privateMessages[i];
-                    modalBodyContent += `<div><img src="${privateMessage.sender.profilePicture}" width="50px" height="50px" class="img-circle"><span>${privateMessage.content}</span></div>`
+                    if (privateMessage.receiver.id == friendId){
+                        modalBodyContent += modalBodyContentPersonal(privateMessage)
+                    } else {
+                        modalBodyContent += modalBodyContentUser(privateMessage);
+                    }
                 }
             }
             $('#message-modal-body').html(modalBodyContent);
@@ -249,8 +253,26 @@ function renderMessageModalBody(friendId, userId) {
     });
 }
 
+function modalBodyContentPersonal(privateMessage) {
+    return "" +
+        `<div class='${privateMessage.sender.id}' style="margin-bottom: 30px;">
+            <div>
+                <a style='float: right'>${privateMessage.content}</a>
+            </div>
+        </div>`
+}
+
+function modalBodyContentUser(privateMessage) {
+    return "" +
+        `<div class='${privateMessage.receiver.id}' style="margin-bottom: 10px">
+            <img src="${privateMessage.receiver.profilePicture}" height="45px" width="45px" class="img-circle" >
+            <span>${privateMessage.content}</span>
+        </div>`
+}
+
 function renderMessageSendButton(friendId, userId) {
-    let buttonContent = `<button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="sendMessage(${friendId},${userId})">Send</button>`;
+    let buttonContent =
+        `<button onclick="sendMessage(${friendId},${userId})" class="btn btn-default btn-primary" type="button">Send</button>`;
     $('#message-send-button').html(buttonContent);
 }
 
@@ -314,19 +336,15 @@ function getBodyModalFriends(listUser) {
     return "" +
         `<div class="well well-sm">
                 <div class="media">
-                    <a class="thumbnail pull-left" href="#">
-                        <img class="img-circle pull-left" width="100px" height="100px" src="${listUser.profilePicture}">
+                    <a class="thumbnail pull-left" href="#" style="width: 50px; height: 50px">
+                        <img class="img-circle" src="${listUser.profilePicture}" style="width: 100%; height: 100%;">
                     </a>
                     <div class="media-body">
                         <h4 class="media-heading">${listUser.username}</h4>
-                        <p><span class="label label-info">10 photos</span> <span class="label label-primary">89 followers</span>
                         </p>
                         <p>
                             <a onclick="showMessageModal(${listUser.id})" class="btn btn-xs btn-default">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                             class="bi bi-messenger" viewBox="0 0 16 16">
-                            <path d="M0 7.76C0 3.301 3.493 0 8 0s8 3.301 8 7.76-3.493 7.76-8 7.76c-.81 0-1.586-.107-2.316-.307a.639.639 0 0 0-.427.03l-1.588.702a.64.64 0 0 1-.898-.566l-.044-1.423a.639.639 0 0 0-.215-.456C.956 12.108 0 10.092 0 7.76zm5.546-1.459-2.35 3.728c-.225.358.214.761.551.506l2.525-1.916a.48.48 0 0 1 .578-.002l1.869 1.402a1.2 1.2 0 0 0 1.735-.32l2.35-3.728c.226-.358-.214-.761-.551-.506L9.728 7.381a.48.48 0 0 1-.578.002L7.281 5.98a1.2 1.2 0 0 0-1.735.32z"/>
-                            </svg> Message</a>
+                            <i class="fa fa-comments" aria-hidden="true"></i> Message</a>
                         </p>
                     </div>
                 </div>

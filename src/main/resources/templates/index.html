@@ -40,16 +40,18 @@
         .dropdown:hover .dropdown-content {
             display: block;
         }
+
         a:hover {
-            cursor:pointer;
+            cursor: pointer;
         }
-        .blog-react-a-body:hover img{
-            -webkit-transform: scale(1.4); transform: scale(1.4);
+
+        .blog-react-a-body:hover img {
+            -webkit-transform: scale(1.4);
+            transform: scale(1.4);
         }
     </style>
 </head>
 <body class="">
-
 <div class="navbar navbar-fixed-top header">
     <div class="col-md-12">
         <div class="navbar-header">
@@ -257,7 +259,6 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">�</button>
                             <h2 class="text-center">Friends</h2>
                         </div>
                         <div class="modal-body" id="modal-friend-body">
@@ -269,25 +270,38 @@
                     </div>
                 </div>
             </div>
+
             <!-- Message Modal -->
             <div class="modal fade" id="message-modal" tabindex="-1" aria-labelledby="exampleModalLabel"
                  aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="message-modal-title">Inbox</h5>
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-                                    onclick="hideMessageModal()">Close
-                            </button>
+                            <h5 class="modal-title">
+                                <span id="message-modal-title">
+
+                                </span>
+                            </h5>
                         </div>
-                        <div class="modal-body" id="message-modal-body" style="height: 300px; overflow: auto"></div>
-                        <div class="modal-footer">
-                            <textarea id="message-text-area"></textarea>
-                            <div id="message-send-button"></div>
+                        <div class="modal-body" id="message-modal-body" style="height: 300px; overflow: auto">
+
                         </div>
+                        <form>
+                            <div class="modal-footer">
+                                <div class="input-group">
+                                    <input id="message-text-area" class="form-control" type="text">
+
+                                    <span id="message-send-button" class="input-group-btn">
+
+                                </span>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
+
+
             <!--            Detailed Reaction List Modal-->
             <div class="modal fade" id="detailed-reaction-list-modal" tabindex="-1" aria-labelledby="exampleModalLabel"
                  aria-hidden="true">
@@ -296,7 +310,8 @@
                         <div class="modal-header">
                             <h5 class="modal-title">Reactions</h5>
                         </div>
-                        <div class="modal-body" id="detailed-reaction-list-modal-body" style="height: 200px; overflow: auto">
+                        <div class="modal-body" id="detailed-reaction-list-modal-body"
+                             style="height: 200px; overflow: auto">
                         </div>
                     </div>
                 </div>
@@ -306,7 +321,8 @@
 </div>
 
 <!--modal comment-->
-<div class="modal fade" id="edit-comment-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalBlogLabel" aria-hidden="true">
+<div class="modal fade" id="edit-comment-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalBlogLabel"
+     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -319,12 +335,15 @@
 
             </div>
             <div class="modal-footer">
-                <button onclick="updateComment()" type="button" class="btn btn-primary" >Update</button>
-                <button onclick="hideModalComment()" type="button" class="btn btn-secondary" data-dismiss="modal" >Close</button>
+                <button onclick="updateComment()" type="button" class="btn btn-primary">Update</button>
+                <button onclick="hideModalComment()" type="button" class="btn btn-secondary" data-dismiss="modal">
+                    Close
+                </button>
             </div>
         </div>
     </div>
 </div>
+
 
 <script type="text/javascript" src="/templateHome/js/jquery.js"></script>
 <script type="text/javascript" src="/templateHome/js/bootstrap.js"></script>
