@@ -161,9 +161,9 @@ function renderLikeButton(blogId) {
             let likeButtonThumbId = "like-btn-icon-" + blogId;
             let likeButtonSpanId = "like-btn-span-" + blogId;
             document.getElementById(likeButtonThumbId).src = blogReaction.reaction.icon;
-            document.getElementById(likeButtonSpanId).style.color = "blue";
             document.getElementById(likeButtonSpanId).style.fontWeight = "bold";
             document.getElementById(likeButtonSpanId).innerHTML = blogReaction.reaction.name;
+            document.getElementById(likeButtonSpanId).style.color = "red";
         }
     });
 }
@@ -294,6 +294,7 @@ function renderBlogReactModal(blogId) {
                 modalBody += getReactBody(blogId, reactions[i]);
             }
             $('.blog-react-modal-body').html(modalBody);
+
             for (let i = 0; i < reactions.length; i++) {
                 renderChosenReaction(blogId);
             }
@@ -320,9 +321,9 @@ function renderChosenReaction(blogId) {
 
 function getReactBody(blogId, data) {
     return "" +
-        `<a onclick="reactToBlog(${blogId},${data.id})">
-                <img src="${data.icon}" alt="${data.name}" width="20px">
-            </a>`
+        `<a onclick="reactToBlog(${blogId},${data.id})" style="margin: 0px 5px">
+            <img src="${data.icon}" alt="${data.name}" width="20px">
+        </a>`
 }
 
 function reactToBlog(blogId, reactionId) {
