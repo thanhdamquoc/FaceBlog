@@ -1,8 +1,9 @@
 package com.codegym.faceblog.repository;
 
 import com.codegym.faceblog.model.Blog;
-import com.codegym.faceblog.model.DetailedBlog;
+import com.codegym.faceblog.model.dto.DetailedBlog;
 import com.codegym.faceblog.model.User;
+import com.codegym.faceblog.model.dto.TopBlog;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -29,4 +30,14 @@ public interface BlogRepository extends JpaRepository<Blog, Long> {
             "WHERE b.user_id = ?1 " +
             "ORDER BY b.date DESC LIMIT ?2", nativeQuery = true)
     Iterable<DetailedBlog> findAllDetailedBlogsByUserId(Long userId, int limit);
+
+    @Query(value = "select b.content, u.full_name as fullName, " +
+            "(select count(*) from blog_reaction br where b.id = br.blog_id) as reactionCount, " +
+            "(select count(*) from comment c where b.id = c.blog_id) as commentCount, " +
+            "((select count(*) from blog_reaction br where b.id = br.blog_id) + " +
+            "(select count(*) from comment c where b.id = c.blog_id)) as popularity " +
+            "from blog b " +
+            "join user u on b.user_id = u.id " +
+            "order by popularity desc limit 5", nativeQuery = true)
+    Iterable<TopBlog> findTopBlogs();
 }

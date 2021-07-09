@@ -1,4 +1,4 @@
-package com.codegym.faceblog.model;
+package com.codegym.faceblog.model.dto;
 
 import java.util.Date;
 

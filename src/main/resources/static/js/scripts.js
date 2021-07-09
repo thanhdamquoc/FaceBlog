@@ -1,6 +1,7 @@
 //Blog Feature
 function showListBlog(userId) {
     renderPersonalWallButton();
+    renderRightSideBar();
     let url;
     if (userId == null) {
         url = "/blogs/detailed?limit=" + blogLimit;
@@ -131,6 +132,34 @@ function createBlog() {
         success: function (data) {
             console.log(data);
             showListBlog(getWallOwnerId());
+        }
+    });
+}
+
+//Right Side Bar Rendering
+function renderRightSideBar() {
+    renderTopBlogs();
+}
+
+function renderTopBlogs() {
+    $.ajax({
+        type: "GET",
+        url: "/blogs/top",
+        success: function (topBlogs) {
+            let topBlogContent = "";
+            for (let i = 0; i < topBlogs.length; i++) {
+                let topBlog = topBlogs[i];
+                let blogPreview = topBlog.content;
+                if (blogPreview.length > 10) blogPreview = blogPreview.substring(0, 20) + "...";
+                topBlogContent +=
+                    `<a href="#" class="list-group-item">
+                        <span>"${blogPreview}"</span><br>
+                        <span style="font-weight: bold">${topBlog.fullName}</span><br>
+                        <span>${topBlog.reactionCount} <i class="fa fa-smile-o" aria-hidden="true"></i></span>
+                        <span>${topBlog.commentCount} <i class="fa fa-comments" aria-hidden="true"></i></span>
+                    </a>`;
+            }
+            $('#top-blog-div').html(topBlogContent);
         }
     });
 }
@@ -355,6 +384,7 @@ function loadMoreBlogs() {
 
 function renderPersonalWallButton() {
     $('.personal-wall-button').html(localStorage.getItem("fullName"));
+    event.preventDefault();
 }
 
 function getWallOwnerId() {
@@ -586,6 +616,19 @@ function renderEditModal(user) {
 
 //Edit Profile Feature
 function showEditModal() {
+    let url = "/users/" + localStorage.getItem("userId");
+    $.ajax({
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': localStorage.getItem("token"),
+        },
+        type: "GET",
+        url: url,
+        success: function (user) {
+            renderEditModal(user);
+        }
+    });
     $('#edit-profile-modal').modal('show');
 }
 

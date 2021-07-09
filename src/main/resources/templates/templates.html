@@ -161,7 +161,7 @@
             </div>
             <div sec:authorize="isAuthenticated()">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a onclick="goToPersonalWall()" target="_ext"><span class="personal-wall-button"></span></a>
+                    <li><a onclick="goToPersonalWall()" target="_ext" href="#"><span class="personal-wall-button"></span></a>
                     </li>
                     <li><a class="" onclick="showFriends()" id="btnToggle">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -323,9 +323,9 @@
 <!--Right Side Bar Fragment-->
 <div th:fragment="rightSideBarContent">
     <div class="panel panel-default">
-        <div class="panel-heading"><a href="#" class="pull-right">View all</a> <h4>Top Blog</h4></div>
+        <div class="panel-heading"><h4>Top Blogs</h4></div>
         <div class="panel-body">
-            <div class="list-group">
+            <div class="list-group" id="top-blog-div">
                 <a href="http://usebootstrap.com/theme/google-plus" class="list-group-item active">Blog 1</a>
                 <a href="http://usebootstrap.com/theme/google-plus" class="list-group-item">Blog 2</a>
                 <a href="http://usebootstrap.com/theme/google-plus" class="list-group-item">Blog 3</a>

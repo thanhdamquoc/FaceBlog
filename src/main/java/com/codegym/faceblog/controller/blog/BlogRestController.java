@@ -2,8 +2,9 @@ package com.codegym.faceblog.controller.blog;
 
 import com.codegym.faceblog.model.Blog;
 import com.codegym.faceblog.model.BlogReaction;
-import com.codegym.faceblog.model.DetailedBlog;
+import com.codegym.faceblog.model.dto.DetailedBlog;
 import com.codegym.faceblog.model.User;
+import com.codegym.faceblog.model.dto.TopBlog;
 import com.codegym.faceblog.service.blog.BlogService;
 import com.codegym.faceblog.service.blogreaction.BlogReactionService;
 import com.codegym.faceblog.service.user.UserService;
@@ -88,5 +89,14 @@ public class BlogRestController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(blogReactions, HttpStatus.OK);
+    }
+
+    @GetMapping("/top")
+    public ResponseEntity<Iterable<TopBlog>> getTopBlogs() {
+        Iterable<TopBlog> topBlogs = blogService.findTopBlogs();
+        if (!topBlogs.iterator().hasNext()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(topBlogs, HttpStatus.OK);
     }
 }
