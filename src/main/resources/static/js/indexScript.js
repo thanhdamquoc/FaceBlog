@@ -111,24 +111,24 @@ function showFriends() {
 function getBodyModalFriends(listUser) {
     return "" +
         `<div class="well well-sm">
-            <div class="media">
-                <a class="thumbnail pull-left" href="#">
-                    <img class="img-circle pull-left" width="100px" height="100px" src="${listUser.profilePicture}">
-                </a>
-                <div class="media-body">
-                    <h4 class="media-heading">${listUser.username}</h4>
-                    <p><span class="label label-info">10 photos</span> <span class="label label-primary">89 followers</span>
-                    </p>
-                    <p>
-                        <a onclick="showMessageModal(${listUser.id})" class="btn btn-xs btn-default">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                         class="bi bi-messenger" viewBox="0 0 16 16">
-                        <path d="M0 7.76C0 3.301 3.493 0 8 0s8 3.301 8 7.76-3.493 7.76-8 7.76c-.81 0-1.586-.107-2.316-.307a.639.639 0 0 0-.427.03l-1.588.702a.64.64 0 0 1-.898-.566l-.044-1.423a.639.639 0 0 0-.215-.456C.956 12.108 0 10.092 0 7.76zm5.546-1.459-2.35 3.728c-.225.358.214.761.551.506l2.525-1.916a.48.48 0 0 1 .578-.002l1.869 1.402a1.2 1.2 0 0 0 1.735-.32l2.35-3.728c.226-.358-.214-.761-.551-.506L9.728 7.381a.48.48 0 0 1-.578.002L7.281 5.98a1.2 1.2 0 0 0-1.735.32z"/>
-                        </svg> Message</a>
-                    </p>
+                <div class="media">
+                    <a class="thumbnail pull-left" href="#">
+                        <img class="img-circle pull-left" width="100px" height="100px" src="${listUser.profilePicture}">
+                    </a>
+                    <div class="media-body">
+                        <h4 class="media-heading">${listUser.username}</h4>
+                        <p><span class="label label-info">10 photos</span> <span class="label label-primary">89 followers</span>
+                        </p>
+                        <p>
+                            <a onclick="showMessageModal(${listUser.id})" class="btn btn-xs btn-default">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                             class="bi bi-messenger" viewBox="0 0 16 16">
+                            <path d="M0 7.76C0 3.301 3.493 0 8 0s8 3.301 8 7.76-3.493 7.76-8 7.76c-.81 0-1.586-.107-2.316-.307a.639.639 0 0 0-.427.03l-1.588.702a.64.64 0 0 1-.898-.566l-.044-1.423a.639.639 0 0 0-.215-.456C.956 12.108 0 10.092 0 7.76zm5.546-1.459-2.35 3.728c-.225.358.214.761.551.506l2.525-1.916a.48.48 0 0 1 .578-.002l1.869 1.402a1.2 1.2 0 0 0 1.735-.32l2.35-3.728c.226-.358-.214-.761-.551-.506L9.728 7.381a.48.48 0 0 1-.578.002L7.281 5.98a1.2 1.2 0 0 0-1.735.32z"/>
+                            </svg> Message</a>
+                        </p>
+                    </div>
                 </div>
-            </div>
-        </div>`
+            </div>`
 }
 
 function showListBlog() {
@@ -137,13 +137,13 @@ function showListBlog() {
         type: "GET",
         url: url,
         success: function (detailedBlogs) {
-//render blogs in timeline
+            //render blogs in timeline
             let contentBlog = "";
             for (let i = 0; i < detailedBlogs.length; i++) {
                 contentBlog += getBlog(detailedBlogs[i]);
             }
             document.getElementById('contentList').innerHTML = contentBlog;
-//render like button for blog you have been reacted
+            //render like button for blog you have been reacted
             for (let i = 0; i < detailedBlogs.length; i++) {
                 renderLikeButton(detailedBlogs[i].id);
             }
@@ -173,72 +173,72 @@ function getBlog(detailedBlog) {
     let formattedDateTimeString = formatDateTime(dateTimeString);
     return "" +
         `<div class="panel panel-default">
-            <div class="panel-body">
-                <img src="${detailedBlog.profilePicture}" class="img-circle pull-left">
-                 <a href="/wall/${detailedBlog.username}" style='padding-left: 6px'>${detailedBlog.username}</a>
+                <div class="panel-body">
+                    <img src="${detailedBlog.profilePicture}" class="img-circle pull-left">
+                     <a href="/wall/${detailedBlog.username}" style='padding-left: 6px'>${detailedBlog.username}</a>
 
-                <div class="clearfix">
-                <i style='padding-left: 6px'>
-                    ${formattedDateTimeString}
-                    <i class="fa fa-globe" aria-hidden="true"></i>
-                </i>
-                </div>
-                <hr>
-                <p>${detailedBlog.content}</p>
-                <hr>
-                <div>
-                    <a style="text-decoration: none; color: black" onclick="renderDetailedReactionListModal(${detailedBlog.id})" href="#">
-                        <span>${detailedBlog.reactionCount} reactions</span>
-                    </a>
-                    <span>${detailedBlog.commentCount} comments</span>
-                </div>
-                <form>
-                    <div class="input-group">
-                        <div class="input-group-btn">
+                    <div class="clearfix">
+                    <i style='padding-left: 6px'>
+                        ${formattedDateTimeString}
+                        <i class="fa fa-globe" aria-hidden="true"></i>
+                    </i>
+                    </div>
+                    <hr>
+                    <p>${detailedBlog.content}</p>
+                    <hr>
+                    <div>
+                        <a style="text-decoration: none; color: black" onclick="renderDetailedReactionListModal(${detailedBlog.id})" href="#">
+                            <span>${detailedBlog.reactionCount} reactions</span>
+                        </a>
+                        <span>${detailedBlog.commentCount} comments</span>
+                    </div>
+                    <form>
+                        <div class="input-group">
+                            <div class="input-group-btn">
 
-                        <div class="dropdown">
-                                <button type="button" onmouseover="renderBlogReactModal(${detailedBlog.id})" class="btn btn-default dropbtn">
-                                    <img id="like-btn-icon-${detailedBlog.id}" src="/files/like.png" alt="LIKE" height="19px">
-                                    <span id="like-btn-span-${detailedBlog.id}" style='padding-left: 5px' >Like</span>
-                                </button>
-                            <div class="dropdown-content">
-                                <div class="blog-react-modal-body">
+                            <div class="btn-group dropup">
+                                    <button type="button" onmouseover="renderBlogReactModal(${detailedBlog.id})" data-toggle="dropdown" class="btn btn-secondary dropdown-toggle">
+                                        <img id="like-btn-icon-${detailedBlog.id}" src="/files/like.png" alt="LIKE" height="19px">
+                                        <span id="like-btn-span-${detailedBlog.id}" style='padding-left: 5px' >Like</span>
+                                    </button>
+                                <div class="dropdown-menu">
+                                    <div class="blog-react-modal-body">
 
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                            <button type='button' onclick="renderComment(${detailedBlog.id})" class="btn btn-default" data-toggle="collapse" data-target="#collapse${detailedBlog.id}, #collapse1${detailedBlog.id}">
-                            <i class="fa fa-comments"></i>
-                                <span style='padding-left: 5px'>Bình Luận</span>
-                            </button>
+                                <button type='button' onclick="renderComment(${detailedBlog.id})" class="btn btn-default" data-toggle="collapse" data-target="#collapse${detailedBlog.id}, #collapse1${detailedBlog.id}">
+                                <i class="fa fa-comments"></i>
+                                    <span style='padding-left: 5px'>Bình Luận</span>
+                                </button>
+                            </div>
+                            <div id="collapse${detailedBlog.id}" class="collapse">
+                                <input id="commentBlog${detailedBlog.id}" onkeypress="comment(event, ${detailedBlog.id})"
+                                 class="form-control" placeholder="Add a comment.." type="text">
+                            </div>
                         </div>
-                        <div id="collapse${detailedBlog.id}" class="collapse">
-                            <input id="commentBlog${detailedBlog.id}" onkeypress="comment(event, ${detailedBlog.id})"
-                             class="form-control" placeholder="Add a comment.." type="text">
-                        </div>
-                    </div>
-                    <div id="collapse1${detailedBlog.id}" class="collapse">
-                        <div class="fb-status-container fb-border fb-gray-bg">
-                            <div class="fb-time-action like-info">
-                                <a href="#">Jhon Due,</a>
-                                <a href="#">Danieal Kalion</a>
-                                <span>and</span>
-                                <a href="#">40 more</a>
-                            <span>like this</span>
-                        </div>
-                        <hr>
-                        <ul class="fb-comments" style='list-style-type: none;'>
-                            <span id="commentBody${detailedBlog.id}" >
+                        <div id="collapse1${detailedBlog.id}" class="collapse">
+                            <div class="fb-status-container fb-border fb-gray-bg">
+                                <div class="fb-time-action like-info">
+                                    <a href="#">Jhon Due,</a>
+                                    <a href="#">Danieal Kalion</a>
+                                    <span>and</span>
+                                    <a href="#">40 more</a>
+                                <span>like this</span>
+                            </div>
+                            <hr>
+                            <ul class="fb-comments" style='list-style-type: none;'>
+                                <span id="commentBody${detailedBlog.id}" >
 
-                            </span>
-                        </ul>
-                       <div class="clearfix"></div>
-                       </div>
-                    </div>
-                </form>
-            </div>
-        </div>`
+                                </span>
+                            </ul>
+                           <div class="clearfix"></div>
+                           </div>
+                        </div>
+                    </form>
+                </div>
+            </div>`
 }
 
 function renderDetailedReactionListModal(blogId) {
@@ -252,9 +252,9 @@ function renderDetailedReactionListModal(blogId) {
                 let blogReaction = blogReactions[i];
                 modalBodyContent +=
                     `<li>
-                        <img src="${blogReaction.reaction.icon}" alt="${blogReaction.reaction.name}" width="20px">
-                        <span> ${blogReaction.user.fullName}</span>
-                    </li>`;
+                            <img src="${blogReaction.reaction.icon}" alt="${blogReaction.reaction.name}" width="20px">
+                            <span> ${blogReaction.user.fullName}</span>
+                        </li>`;
             }
             modalBodyContent += "</ul>";
             $('#detailed-reaction-list-modal-body').html(modalBodyContent);
@@ -321,9 +321,8 @@ function renderChosenReaction(blogId) {
 function getReactBody(blogId, data) {
     return "" +
         `<a onclick="reactToBlog(${blogId},${data.id})">
-            <img src="${data.icon}" alt="${data.name}" width="20px">
-            <span class="reaction-btn-${data.id}"> ${data.name}</span>
-        </a>`
+                <img src="${data.icon}" alt="${data.name}" width="20px">
+            </a>`
 }
 
 function reactToBlog(blogId, reactionId) {
@@ -421,35 +420,35 @@ function renderComment(blogId) {
 function getBodyComment(comments) {
     return "" +
         `<li>
-            <a href="#" class="cmt-thumb">
-                <img src="${comments.user.profilePicture}" style="width: 40px; height: 40px"
-                     class="img-circle pull-left">
-            </a>
-            <div class="cmt-details" style='margin-top: 25px'>
-                <a style='padding-left: 5px' href="#">${comments.user.username}</a>
-                <p style='padding-left: 45px'>${comments.content} - <a href="#" class="like-link">Like</a></p>
+                <a href="#" class="cmt-thumb">
+                    <img src="${comments.user.profilePicture}" style="width: 40px; height: 40px"
+                         class="img-circle pull-left">
+                </a>
+                <div class="cmt-details" style='margin-top: 25px'>
+                    <a style='padding-left: 5px' href="#">${comments.user.username}</a>
+                    <p style='padding-left: 45px'>${comments.content} - <a href="#" class="like-link">Like</a></p>
 
-                <div class="dropdown position-absolute top-50 end-0 translate-middle-y">
-                    <button class="btn p-0" type="button" id="dropdownMenuButton2" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-                        <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                        <a onclick="showModalEditComment(${comments.id}, ${comments.blog.id})" class="dropdown-item d-flex align-items-center"
-                           href="#">
-                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                            <span class="" style="padding-left: 5px">Edit</span></a>
+                    <div class="dropdown position-absolute top-50 end-0 translate-middle-y">
+                        <button class="btn p-0" type="button" id="dropdownMenuButton2" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                            <a onclick="showModalEditComment(${comments.id}, ${comments.blog.id})" class="dropdown-item d-flex align-items-center"
+                               href="#">
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                <span class="" style="padding-left: 5px">Edit</span></a>
 
-                        <a onclick="deleteComment(${comments.id}, ${comments.blog.id})" class="dropdown-item d-flex align-items-center"
-                           href="#">
-                            <i class="fa fa-trash-o" aria-hidden="true"></i>
-                            <span class="" style="padding-left: 5px">Delete</span></a>
+                            <a onclick="deleteComment(${comments.id}, ${comments.blog.id})" class="dropdown-item d-flex align-items-center"
+                               href="#">
+                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                <span class="" style="padding-left: 5px">Delete</span></a>
+                        </div>
                     </div>
-                </div>
 
-            </div>
-        </li>
-    <hr>`
+                </div>
+            </li>
+        <hr>`
 }
 
 //Edit Comment
@@ -475,15 +474,15 @@ function showModalEditComment(commentId, blogId) {
 function renderModalComment(comment, blogId) {
     return "" +
         `<div class="form-group">
-             <input id="old-blog-id" value="${blogId}" type="hidden" class="form-control">
-        </div>
-        <div class="form-group">
-             <input id="old-comment-id" value="${comment.id}" type="hidden" class="form-control">
-        </div>
-        <div class="form-group">
-            <label for="new-content" class="col-form-label">Content:</label>
-            <input id="new-content" value="${comment.content}" type="text" class="form-control" >
-        </div>`
+                 <input id="old-blog-id" value="${blogId}" type="hidden" class="form-control">
+            </div>
+            <div class="form-group">
+                 <input id="old-comment-id" value="${comment.id}" type="hidden" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="new-content" class="col-form-label">Content:</label>
+                <input id="new-content" value="${comment.content}" type="text" class="form-control" >
+            </div>`
 }
 
 //update Comment
