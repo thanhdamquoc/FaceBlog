@@ -26,7 +26,7 @@ public interface BlogRepository extends JpaRepository<Blog, Long> {
             "u.username, u.full_name AS fullName, u.profile_picture AS profilePicture " +
             "FROM blog AS b " +
             "JOIN user u on u.id = b.user_id " +
-            "WHERE b.user_id = ?1" +
+            "WHERE b.user_id = ?1 " +
             "ORDER BY b.date DESC LIMIT ?2", nativeQuery = true)
     Iterable<DetailedBlog> findAllDetailedBlogsByUserId(Long userId, int limit);
 }
