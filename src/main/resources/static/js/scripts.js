@@ -152,7 +152,7 @@ function renderTopBlogs() {
                 let blogPreview = topBlog.content;
                 if (blogPreview.length > 10) blogPreview = blogPreview.substring(0, 20) + "...";
                 topBlogContent +=
-                    `<a href="#" class="list-group-item">
+                    `<a href="/wall/${topBlog.username}" class="list-group-item">
                         <span>"${blogPreview}"</span><br>
                         <span style="font-weight: bold">${topBlog.fullName}</span><br>
                         <span>${topBlog.reactionCount} <i class="fa fa-smile-o" aria-hidden="true"></i></span>

@@ -31,7 +31,7 @@ public interface BlogRepository extends JpaRepository<Blog, Long> {
             "ORDER BY b.date DESC LIMIT ?2", nativeQuery = true)
     Iterable<DetailedBlog> findAllDetailedBlogsByUserId(Long userId, int limit);
 
-    @Query(value = "select b.content, u.full_name as fullName, " +
+    @Query(value = "select b.content, u.username, u.full_name as fullName, " +
             "(select count(*) from blog_reaction br where b.id = br.blog_id) as reactionCount, " +
             "(select count(*) from comment c where b.id = c.blog_id) as commentCount, " +
             "((select count(*) from blog_reaction br where b.id = br.blog_id) + " +
