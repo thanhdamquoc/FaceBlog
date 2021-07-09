@@ -1,4 +1,4 @@
-//init
+//Initialization:
 let blogLimit;
 window.onload = function () {
     blogLimit = 5;
@@ -6,131 +6,8 @@ window.onload = function () {
     $('.personal-wall-button').html(localStorage.getItem("fullName"));
 }
 
-//functions
-function showMessageModal(friendId) {
-    let userId = localStorage.getItem("userId");
-    renderMessageModal(friendId, userId);
-    $('#message-modal').modal('show');
-}
-
-function renderMessageModal(friendId, userId) {
-    renderMessageModalTitle(friendId);
-    renderMessageModalBody(friendId, userId);
-    renderMessageSendButton(friendId, userId);
-}
-
-function renderMessageSendButton(friendId, userId) {
-    let buttonContent = `<button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="sendMessage(${friendId},${userId})">Send</button>`;
-    $('#message-send-button').html(buttonContent);
-}
-
-function renderMessageModalBody(friendId, userId) {
-    let url = "/messages/user/" + userId + "/user/" + friendId;
-    $.ajax({
-        type: "GET",
-        url: url,
-        success: function (privateMessages) {
-            let modalBodyContent = "";
-            if (privateMessages != undefined) {
-                for (let i = 0; i < privateMessages.length; i++) {
-                    let privateMessage = privateMessages[i];
-                    modalBodyContent += `<div><img src="${privateMessage.sender.profilePicture}" width="50px" height="50px" class="img-circle"><span>${privateMessage.content}</span></div>`
-                }
-            }
-            $('#message-modal-body').html(modalBodyContent);
-        }
-    });
-}
-
-function sendMessage(friendId, userId) {
-    let messageContent = $('#message-text-area').val();
-    if (messageContent != "") {
-        let message = {
-            sender: {
-                id: userId,
-            },
-            receiver: {
-                id: friendId,
-            },
-            content: messageContent,
-        };
-        $.ajax({
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            type: "POST",
-            data: JSON.stringify(message),
-            url: "/messages",
-            success: function (sentMessage) {
-                console.log("message has been sent");
-                console.log(sentMessage)
-                renderMessageModal(friendId, userId);
-            }
-        });
-    }
-    $('#message-text-area').val("");
-}
-
-function renderMessageModalTitle(friendId) {
-    let url = "/users/" + friendId;
-    $.ajax({
-        type: "GET",
-        url: url,
-        success: function (friendUser) {
-            console.log(friendUser);
-            $('#message-modal-title').html(friendUser.fullName);
-        }
-    });
-}
-
-function hideMessageModal() {
-    $('#message-modal').modal('hide');
-}
-
-function goToPersonalWall() {
-    let url = "/wall/" + localStorage.getItem("username");
-    window.location.href = url;
-}
-
-function showFriends() {
-    $.ajax({
-        type: "GET",
-        url: "/users",
-        success: function (listUser) {
-            let content = ""
-            for (let i = 0; i < listUser.length; i++) {
-                content += getBodyModalFriends(listUser[i])
-            }
-            document.getElementById("modal-friend-body").innerHTML = content;
-        }
-    });
-    $('#modalFriends').modal('show');
-}
-
-function getBodyModalFriends(listUser) {
-    return "" +
-        `<div class="well well-sm">
-                <div class="media">
-                    <a class="thumbnail pull-left" href="#">
-                        <img class="img-circle pull-left" width="100px" height="100px" src="${listUser.profilePicture}">
-                    </a>
-                    <div class="media-body">
-                        <h4 class="media-heading">${listUser.username}</h4>
-                        <p><span class="label label-info">10 photos</span> <span class="label label-primary">89 followers</span>
-                        </p>
-                        <p>
-                            <a onclick="showMessageModal(${listUser.id})" class="btn btn-xs btn-default">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                             class="bi bi-messenger" viewBox="0 0 16 16">
-                            <path d="M0 7.76C0 3.301 3.493 0 8 0s8 3.301 8 7.76-3.493 7.76-8 7.76c-.81 0-1.586-.107-2.316-.307a.639.639 0 0 0-.427.03l-1.588.702a.64.64 0 0 1-.898-.566l-.044-1.423a.639.639 0 0 0-.215-.456C.956 12.108 0 10.092 0 7.76zm5.546-1.459-2.35 3.728c-.225.358.214.761.551.506l2.525-1.916a.48.48 0 0 1 .578-.002l1.869 1.402a1.2 1.2 0 0 0 1.735-.32l2.35-3.728c.226-.358-.214-.761-.551-.506L9.728 7.381a.48.48 0 0 1-.578.002L7.281 5.98a1.2 1.2 0 0 0-1.735.32z"/>
-                            </svg> Message</a>
-                        </p>
-                    </div>
-                </div>
-            </div>`
-}
-
+//Functions:
+//Blog Feature
 function showListBlog() {
     let url = "/blogs/sorted?limit=" + blogLimit;
     $.ajax({
@@ -149,23 +26,6 @@ function showListBlog() {
             }
         }
     })
-}
-
-function renderLikeButton(blogId) {
-    let userId = localStorage.getItem("userId");
-    let url = "/users/" + userId + "/blogs/" + blogId + "/blog-reactions";
-    $.ajax({
-        type: "GET",
-        url: url,
-        success: function (blogReaction) {
-            let likeButtonThumbId = "like-btn-icon-" + blogId;
-            let likeButtonSpanId = "like-btn-span-" + blogId;
-            document.getElementById(likeButtonThumbId).src = blogReaction.reaction.icon;
-            document.getElementById(likeButtonSpanId).style.fontWeight = "bold";
-            document.getElementById(likeButtonSpanId).innerHTML = blogReaction.reaction.name;
-            document.getElementById(likeButtonSpanId).style.color = "red";
-        }
-    });
 }
 
 function getBlog(detailedBlog) {
@@ -241,27 +101,21 @@ function getBlog(detailedBlog) {
             </div>`
 }
 
-function renderDetailedReactionListModal(blogId) {
-    let url = "/blogs/" + blogId + "/blog-reactions";
+function renderLikeButton(blogId) {
+    let userId = localStorage.getItem("userId");
+    let url = "/users/" + userId + "/blogs/" + blogId + "/blog-reactions";
     $.ajax({
         type: "GET",
         url: url,
-        success: function (blogReactions) {
-            let modalBodyContent = "<ul style='list-style-type: none'>";
-            for (let i = 0; i < blogReactions.length; i++) {
-                let blogReaction = blogReactions[i];
-                modalBodyContent +=
-                    `<li>
-                            <img src="${blogReaction.reaction.icon}" alt="${blogReaction.reaction.name}" width="20px">
-                            <span> ${blogReaction.user.fullName}</span>
-                        </li>`;
-            }
-            modalBodyContent += "</ul>";
-            $('#detailed-reaction-list-modal-body').html(modalBodyContent);
+        success: function (blogReaction) {
+            let likeButtonThumbId = "like-btn-icon-" + blogId;
+            let likeButtonSpanId = "like-btn-span-" + blogId;
+            document.getElementById(likeButtonThumbId).src = blogReaction.reaction.icon;
+            document.getElementById(likeButtonSpanId).style.color = blogReaction.reaction.color;
+            document.getElementById(likeButtonSpanId).style.fontWeight = "bold";
+            document.getElementById(likeButtonSpanId).innerHTML = blogReaction.reaction.name;
         }
     });
-    $('#detailed-reaction-list-modal').modal('show');
-    event.preventDefault();
 }
 
 function createBlog() {
@@ -284,6 +138,30 @@ function createBlog() {
     });
 }
 
+//React Feature
+function renderDetailedReactionListModal(blogId) {
+    let url = "/blogs/" + blogId + "/blog-reactions";
+    $.ajax({
+        type: "GET",
+        url: url,
+        success: function (blogReactions) {
+            let modalBodyContent = "<ul style='list-style-type: none'>";
+            for (let i = 0; i < blogReactions.length; i++) {
+                let blogReaction = blogReactions[i];
+                modalBodyContent +=
+                    `<li>
+                        <img src="${blogReaction.reaction.icon}" alt="${blogReaction.reaction.name}" width="20px">
+                        <span> ${blogReaction.user.fullName}</span>
+                    </li>`;
+            }
+            modalBodyContent += "</ul>";
+            $('#detailed-reaction-list-modal-body').html(modalBodyContent);
+        }
+    });
+    $('#detailed-reaction-list-modal').modal('show');
+    event.preventDefault();
+}
+
 function renderBlogReactModal(blogId) {
     $.ajax({
         type: "GET",
@@ -291,37 +169,16 @@ function renderBlogReactModal(blogId) {
         success: function (reactions) {
             let modalBody = "";
             for (let i = 0; i < reactions.length; i++) {
-                modalBody += getReactBody(blogId, reactions[i]);
+                modalBody += renderReaction(blogId, reactions[i]);
             }
             $('.blog-react-modal-body').html(modalBody);
-
-            for (let i = 0; i < reactions.length; i++) {
-                renderChosenReaction(blogId);
-            }
         },
     });
 }
 
-function renderChosenReaction(blogId) {
-    let userId = localStorage.getItem("userId");
-    let url = "/users/" + userId + "/blogs/" + blogId + "/blog-reactions";
-    $.ajax({
-        type: "GET",
-        url: url,
-        success: function (blogReaction) {
-            let reactionButtonClass = "reaction-btn-" + blogReaction.reaction.id;
-            let reactionButtons = document.getElementsByClassName(reactionButtonClass);
-            for (let i = 0; i < reactionButtons.length; i++) {
-                let reactionButton = reactionButtons[i];
-                reactionButton.style.color = "blue";
-            }
-        }
-    });
-}
-
-function getReactBody(blogId, data) {
+function renderReaction(blogId, data) {
     return "" +
-        `<a onclick="reactToBlog(${blogId},${data.id})" style="margin: 0px 5px">
+        `<a onclick="reactToBlog(${blogId},${data.id})" style="margin: 0px 5px; text-decoration: none" class="blog-react-a-body">
             <img src="${data.icon}" alt="${data.name}" width="20px">
         </a>`
 }
@@ -355,6 +212,133 @@ function reactToBlog(blogId, reactionId) {
     }
 }
 
+//Messaging Feature
+function renderMessageModal(friendId, userId) {
+    renderMessageModalTitle(friendId);
+    renderMessageModalBody(friendId, userId);
+    renderMessageSendButton(friendId, userId);
+}
+
+function renderMessageModalTitle(friendId) {
+    let url = "/users/" + friendId;
+    $.ajax({
+        type: "GET",
+        url: url,
+        success: function (friendUser) {
+            console.log(friendUser);
+            $('#message-modal-title').html(friendUser.fullName);
+        }
+    });
+}
+
+function renderMessageModalBody(friendId, userId) {
+    let url = "/messages/user/" + userId + "/user/" + friendId;
+    $.ajax({
+        type: "GET",
+        url: url,
+        success: function (privateMessages) {
+            let modalBodyContent = "";
+            if (privateMessages != undefined) {
+                for (let i = 0; i < privateMessages.length; i++) {
+                    let privateMessage = privateMessages[i];
+                    modalBodyContent += `<div><img src="${privateMessage.sender.profilePicture}" width="50px" height="50px" class="img-circle"><span>${privateMessage.content}</span></div>`
+                }
+            }
+            $('#message-modal-body').html(modalBodyContent);
+        }
+    });
+}
+
+function renderMessageSendButton(friendId, userId) {
+    let buttonContent = `<button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="sendMessage(${friendId},${userId})">Send</button>`;
+    $('#message-send-button').html(buttonContent);
+}
+
+function sendMessage(friendId, userId) {
+    let messageContent = $('#message-text-area').val();
+    if (messageContent != "") {
+        let message = {
+            sender: {
+                id: userId,
+            },
+            receiver: {
+                id: friendId,
+            },
+            content: messageContent,
+        };
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            type: "POST",
+            data: JSON.stringify(message),
+            url: "/messages",
+            success: function (sentMessage) {
+                console.log("message has been sent");
+                console.log(sentMessage)
+                renderMessageModal(friendId, userId);
+            }
+        });
+    }
+    $('#message-text-area').val("");
+}
+
+function showMessageModal(friendId) {
+    let userId = localStorage.getItem("userId");
+    renderMessageModal(friendId, userId);
+    $('#message-modal').modal('show');
+}
+
+function hideMessageModal() {
+    $('#message-modal').modal('hide');
+}
+
+//Friend List Feature
+function showFriends() {
+    $.ajax({
+        type: "GET",
+        url: "/users",
+        success: function (listUser) {
+            let content = ""
+            for (let i = 0; i < listUser.length; i++) {
+                content += getBodyModalFriends(listUser[i])
+            }
+            document.getElementById("modal-friend-body").innerHTML = content;
+        }
+    });
+    $('#modalFriends').modal('show');
+}
+
+function getBodyModalFriends(listUser) {
+    return "" +
+        `<div class="well well-sm">
+                <div class="media">
+                    <a class="thumbnail pull-left" href="#">
+                        <img class="img-circle pull-left" width="100px" height="100px" src="${listUser.profilePicture}">
+                    </a>
+                    <div class="media-body">
+                        <h4 class="media-heading">${listUser.username}</h4>
+                        <p><span class="label label-info">10 photos</span> <span class="label label-primary">89 followers</span>
+                        </p>
+                        <p>
+                            <a onclick="showMessageModal(${listUser.id})" class="btn btn-xs btn-default">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                             class="bi bi-messenger" viewBox="0 0 16 16">
+                            <path d="M0 7.76C0 3.301 3.493 0 8 0s8 3.301 8 7.76-3.493 7.76-8 7.76c-.81 0-1.586-.107-2.316-.307a.639.639 0 0 0-.427.03l-1.588.702a.64.64 0 0 1-.898-.566l-.044-1.423a.639.639 0 0 0-.215-.456C.956 12.108 0 10.092 0 7.76zm5.546-1.459-2.35 3.728c-.225.358.214.761.551.506l2.525-1.916a.48.48 0 0 1 .578-.002l1.869 1.402a1.2 1.2 0 0 0 1.735-.32l2.35-3.728c.226-.358-.214-.761-.551-.506L9.728 7.381a.48.48 0 0 1-.578.002L7.281 5.98a1.2 1.2 0 0 0-1.735.32z"/>
+                            </svg> Message</a>
+                        </p>
+                    </div>
+                </div>
+            </div>`
+}
+
+//Other functions
+function goToPersonalWall() {
+    let url = "/wall/" + localStorage.getItem("username");
+    window.location.href = url;
+}
+
 function logout() {
     localStorage.clear();
     window.location.href = "/logout";
@@ -372,6 +356,7 @@ function loadMoreBlogs() {
     showListBlog();
 }
 
+//Comment Feature
 //Create Comment
 function comment(event, blogId) {
     if (event.keyCode === 13) {
@@ -420,7 +405,27 @@ function renderComment(blogId) {
 
 function getBodyComment(comments) {
     return "" +
-        `<li>
+                `<li>
+                    <div class="dropdown pull-right">
+                        <button class="btn p-0" type="button" id="dropdownMenuButton1" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                        </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li>
+                                    <a onclick="showModalEditComment(${comments.id}, ${comments.blog.id})" class="dropdown-item "
+                                    style="text-decoration: none; border: none">
+                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                    <span class="" style="padding-left: 5px">Edit</span></a>
+                                </li>
+                                <li>
+                                    <a onclick="deleteComment(${comments.id}, ${comments.blog.id})" class="dropdown-item"
+                                    style="text-decoration: none; border: none">
+                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                    <span class="" style="padding-left: 5px">Delete</span></a>
+                                </li>
+                            </ul>
+                    </div>
                 <a href="#" class="cmt-thumb">
                     <img src="${comments.user.profilePicture}" style="width: 40px; height: 40px"
                          class="img-circle pull-left">
@@ -428,25 +433,6 @@ function getBodyComment(comments) {
                 <div class="cmt-details" style='margin-top: 25px'>
                     <a style='padding-left: 5px' href="#">${comments.user.username}</a>
                     <p style='padding-left: 45px'>${comments.content} - <a href="#" class="like-link">Like</a></p>
-
-                    <div class="dropdown position-absolute top-50 end-0 translate-middle-y">
-                        <button class="btn p-0" type="button" id="dropdownMenuButton2" data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false">
-                            <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                            <a onclick="showModalEditComment(${comments.id}, ${comments.blog.id})" class="dropdown-item d-flex align-items-center"
-                               href="#">
-                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                <span class="" style="padding-left: 5px">Edit</span></a>
-
-                            <a onclick="deleteComment(${comments.id}, ${comments.blog.id})" class="dropdown-item d-flex align-items-center"
-                               href="#">
-                                <i class="fa fa-trash-o" aria-hidden="true"></i>
-                                <span class="" style="padding-left: 5px">Delete</span></a>
-                        </div>
-                    </div>
-
                 </div>
             </li>
         <hr>`

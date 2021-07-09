@@ -17,4 +17,6 @@ public class Reaction {
     private String name;
 
     private String icon;
+
+    private String color;
 }
