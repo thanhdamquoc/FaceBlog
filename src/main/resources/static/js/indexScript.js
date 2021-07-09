@@ -1,15 +1,12 @@
-//Initialization:
-let blogLimit;
-window.onload = function () {
-    blogLimit = 5;
-    showListBlog();
-    $('.personal-wall-button').html(localStorage.getItem("fullName"));
-}
-
-//Functions:
 //Blog Feature
-function showListBlog() {
-    let url = "/blogs/sorted?limit=" + blogLimit;
+function showListBlog(userId) {
+    renderPersonalWallButton();
+    let url;
+    if (userId == null) {
+        url = "/blogs/detailed?limit=" + blogLimit;
+    } else {
+        url = "/users/" + userId + "/detailed-blogs?limit=" + blogLimit;
+    }
     $.ajax({
         type: "GET",
         url: url,
@@ -35,7 +32,7 @@ function getBlog(detailedBlog) {
         `<div class="panel panel-default">
                 <div class="panel-body">
                     <img src="${detailedBlog.profilePicture}" class="img-circle pull-left">
-                     <a href="/wall/${detailedBlog.username}" style='padding-left: 6px'>${detailedBlog.username}</a>
+                     <a href="/wall/${detailedBlog.username}" style='padding-left: 6px'>${detailedBlog.fullName}</a>
 
                     <div class="clearfix">
                     <i style='padding-left: 6px'>
@@ -133,7 +130,7 @@ function createBlog() {
         url: "/blogs",
         success: function (data) {
             console.log(data);
-            showListBlog();
+            showListBlog(getWallOwnerId());
         }
     });
 }
@@ -204,7 +201,7 @@ function reactToBlog(blogId, reactionId) {
             url: "/blog-reactions",
             success: function (savedBlogReaction) {
                 console.log(savedBlogReaction);
-                showListBlog();
+                showListBlog(getWallOwnerId());
             }
         });
     } else {
@@ -353,7 +350,20 @@ function formatDateTime(dateTimeString) {
 
 function loadMoreBlogs() {
     blogLimit += 2;
-    showListBlog();
+    showListBlog(getWallOwnerId());
+}
+
+function renderPersonalWallButton() {
+    $('.personal-wall-button').html(localStorage.getItem("fullName"));
+}
+
+function getWallOwnerId() {
+    let userId = null;
+    let userIdElement = document.getElementById("user-id");
+    if (userIdElement != null) {
+        userId = userIdElement.value;
+    }
+    return userId
 }
 
 //Comment Feature
@@ -379,7 +389,7 @@ function comment(event, blogId) {
                 url: "/comment-blog",
                 success: function (blogId) {
                     renderComment(blogId);
-                    showListBlog();
+                    showListBlog(getWallOwnerId());
                 }
             });
             event.preventDefault();

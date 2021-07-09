@@ -36,7 +36,7 @@ public class BlogRestController {
         return new ResponseEntity<>(blogService.findAll(), HttpStatus.OK);
     }
 
-    @GetMapping("/sorted")
+    @GetMapping("/detailed")
     public ResponseEntity<Iterable<DetailedBlog>> showListBlogSorted(@RequestParam int limit) {
         Iterable<DetailedBlog> detailedBlogs = blogService.findAllDetailedBlogs(limit);
         if (!detailedBlogs.iterator().hasNext()) {

@@ -1,14 +1,4 @@
-window.onload = function () {
-    renderWall();
-}
-
 //Render User Profile
-function renderWall() {
-    let userId = $('#user-id').val();
-    getUserProfile(userId);
-    getUserBlogs(userId);
-}
-
 function getUserProfile(userId) {
     let url = "/users/" + userId;
     //ajax
@@ -31,27 +21,19 @@ function getUserProfile(userId) {
 }
 
 function renderUserProfile(user) {
-    let userProfileContent =
-        `<img class="profile-pic" src="${user.profilePicture}" alt="profile">
-                <span class="profile-name">${user.fullName}</span>`;
-
+    document.getElementById("user-profile-avatar").src = user.profilePicture;
+    document.getElementById("user-profile-username").innerHTML = user.fullName;
     //Only show edit button for authenticated wall owner
     if (user.id == localStorage.getItem("userId")) {
         let editUserProfileContent =
             `<div sec:authorize="isAuthenticated()">
-                        <button onclick="showEditModal(${user.id})" class="btn btn-primary btn-icon-text btn-edit-profile">
-                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit btn-icon-prepend">
-                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                    </svg>
-                        Edit profile
-                    </button>
-                </div>`;
-        $('#edit-user-profile-div').html(editUserProfileContent);
+                <button onclick="showEditModal(${user.id})" class="btn btn-default btn-sm tip btn-responsive">
+                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                    Edit profile
+                </button>
+            </div>`;
+        $('#user-profile-edit-btn').html(editUserProfileContent);
     }
-    $('#user-profile-div').html(userProfileContent);
 }
 
 function renderEditModal(user) {
