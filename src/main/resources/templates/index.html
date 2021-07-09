@@ -524,12 +524,12 @@
                         <div class="input-group">
                             <div class="input-group-btn">
 
-                            <div class="dropdown">
-                                    <button type="button" onmouseover="renderBlogReactModal(${detailedBlog.id})" class="btn btn-default dropbtn">
+                            <div class="btn-group dropup">
+                                    <button type="button" onmouseover="renderBlogReactModal(${detailedBlog.id})" data-toggle="dropdown" class="btn btn-secondary dropdown-toggle">
                                         <img id="like-btn-icon-${detailedBlog.id}" src="/files/like.png" alt="LIKE" height="19px">
                                         <span id="like-btn-span-${detailedBlog.id}" style='padding-left: 5px' >Like</span>
                                     </button>
-                                <div class="dropdown-content">
+                                <div class="dropdown-menu">
                                     <div class="blog-react-modal-body">
 
                                     </div>
@@ -650,7 +650,6 @@
         return "" +
             `<a onclick="reactToBlog(${blogId},${data.id})">
                 <img src="${data.icon}" alt="${data.name}" width="20px">
-                <span class="reaction-btn-${data.id}"> ${data.name}</span>
             </a>`
     }
 
