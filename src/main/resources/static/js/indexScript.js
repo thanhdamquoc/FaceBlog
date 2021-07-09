@@ -1,4 +1,4 @@
-//init
+//Initialization:
 let blogLimit;
 window.onload = function () {
     blogLimit = 5;
@@ -6,131 +6,8 @@ window.onload = function () {
     $('.personal-wall-button').html(localStorage.getItem("fullName"));
 }
 
-//functions
-function showMessageModal(friendId) {
-    let userId = localStorage.getItem("userId");
-    renderMessageModal(friendId, userId);
-    $('#message-modal').modal('show');
-}
-
-function renderMessageModal(friendId, userId) {
-    renderMessageModalTitle(friendId);
-    renderMessageModalBody(friendId, userId);
-    renderMessageSendButton(friendId, userId);
-}
-
-function renderMessageSendButton(friendId, userId) {
-    let buttonContent = `<button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="sendMessage(${friendId},${userId})">Send</button>`;
-    $('#message-send-button').html(buttonContent);
-}
-
-function renderMessageModalBody(friendId, userId) {
-    let url = "/messages/user/" + userId + "/user/" + friendId;
-    $.ajax({
-        type: "GET",
-        url: url,
-        success: function (privateMessages) {
-            let modalBodyContent = "";
-            if (privateMessages != undefined) {
-                for (let i = 0; i < privateMessages.length; i++) {
-                    let privateMessage = privateMessages[i];
-                    modalBodyContent += `<div><img src="${privateMessage.sender.profilePicture}" width="50px" height="50px" class="img-circle"><span>${privateMessage.content}</span></div>`
-                }
-            }
-            $('#message-modal-body').html(modalBodyContent);
-        }
-    });
-}
-
-function sendMessage(friendId, userId) {
-    let messageContent = $('#message-text-area').val();
-    if (messageContent != "") {
-        let message = {
-            sender: {
-                id: userId,
-            },
-            receiver: {
-                id: friendId,
-            },
-            content: messageContent,
-        };
-        $.ajax({
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            type: "POST",
-            data: JSON.stringify(message),
-            url: "/messages",
-            success: function (sentMessage) {
-                console.log("message has been sent");
-                console.log(sentMessage)
-                renderMessageModal(friendId, userId);
-            }
-        });
-    }
-    $('#message-text-area').val("");
-}
-
-function renderMessageModalTitle(friendId) {
-    let url = "/users/" + friendId;
-    $.ajax({
-        type: "GET",
-        url: url,
-        success: function (friendUser) {
-            console.log(friendUser);
-            $('#message-modal-title').html(friendUser.fullName);
-        }
-    });
-}
-
-function hideMessageModal() {
-    $('#message-modal').modal('hide');
-}
-
-function goToPersonalWall() {
-    let url = "/wall/" + localStorage.getItem("username");
-    window.location.href = url;
-}
-
-function showFriends() {
-    $.ajax({
-        type: "GET",
-        url: "/users",
-        success: function (listUser) {
-            let content = ""
-            for (let i = 0; i < listUser.length; i++) {
-                content += getBodyModalFriends(listUser[i])
-            }
-            document.getElementById("modal-friend-body").innerHTML = content;
-        }
-    });
-    $('#modalFriends').modal('show');
-}
-
-function getBodyModalFriends(listUser) {
-    return "" +
-        `<div class="well well-sm">
-                <div class="media">
-                    <a class="thumbnail pull-left" href="#">
-                        <img class="img-circle pull-left" width="100px" height="100px" src="${listUser.profilePicture}">
-                    </a>
-                    <div class="media-body">
-                        <h4 class="media-heading">${listUser.username}</h4>
-                        <p><span class="label label-info">10 photos</span> <span class="label label-primary">89 followers</span>
-                        </p>
-                        <p>
-                            <a onclick="showMessageModal(${listUser.id})" class="btn btn-xs btn-default">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                             class="bi bi-messenger" viewBox="0 0 16 16">
-                            <path d="M0 7.76C0 3.301 3.493 0 8 0s8 3.301 8 7.76-3.493 7.76-8 7.76c-.81 0-1.586-.107-2.316-.307a.639.639 0 0 0-.427.03l-1.588.702a.64.64 0 0 1-.898-.566l-.044-1.423a.639.639 0 0 0-.215-.456C.956 12.108 0 10.092 0 7.76zm5.546-1.459-2.35 3.728c-.225.358.214.761.551.506l2.525-1.916a.48.48 0 0 1 .578-.002l1.869 1.402a1.2 1.2 0 0 0 1.735-.32l2.35-3.728c.226-.358-.214-.761-.551-.506L9.728 7.381a.48.48 0 0 1-.578.002L7.281 5.98a1.2 1.2 0 0 0-1.735.32z"/>
-                            </svg> Message</a>
-                        </p>
-                    </div>
-                </div>
-            </div>`
-}
-
+//Functions:
+//Blog Feature
 function showListBlog() {
     let url = "/blogs/sorted?limit=" + blogLimit;
     $.ajax({
@@ -149,23 +26,6 @@ function showListBlog() {
             }
         }
     })
-}
-
-function renderLikeButton(blogId) {
-    let userId = localStorage.getItem("userId");
-    let url = "/users/" + userId + "/blogs/" + blogId + "/blog-reactions";
-    $.ajax({
-        type: "GET",
-        url: url,
-        success: function (blogReaction) {
-            let likeButtonThumbId = "like-btn-icon-" + blogId;
-            let likeButtonSpanId = "like-btn-span-" + blogId;
-            document.getElementById(likeButtonThumbId).src = blogReaction.reaction.icon;
-            document.getElementById(likeButtonSpanId).style.color = "blue";
-            document.getElementById(likeButtonSpanId).style.fontWeight = "bold";
-            document.getElementById(likeButtonSpanId).innerHTML = blogReaction.reaction.name;
-        }
-    });
 }
 
 function getBlog(detailedBlog) {
@@ -241,6 +101,44 @@ function getBlog(detailedBlog) {
             </div>`
 }
 
+function renderLikeButton(blogId) {
+    let userId = localStorage.getItem("userId");
+    let url = "/users/" + userId + "/blogs/" + blogId + "/blog-reactions";
+    $.ajax({
+        type: "GET",
+        url: url,
+        success: function (blogReaction) {
+            let likeButtonThumbId = "like-btn-icon-" + blogId;
+            let likeButtonSpanId = "like-btn-span-" + blogId;
+            document.getElementById(likeButtonThumbId).src = blogReaction.reaction.icon;
+            document.getElementById(likeButtonSpanId).style.color = "blue";
+            document.getElementById(likeButtonSpanId).style.fontWeight = "bold";
+            document.getElementById(likeButtonSpanId).innerHTML = blogReaction.reaction.name;
+        }
+    });
+}
+
+function createBlog() {
+    let content = $('#status').val();
+    let blog = {
+        content: content,
+    };
+    $.ajax({
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        type: "POST",
+        data: JSON.stringify(blog),
+        url: "/blogs",
+        success: function (data) {
+            console.log(data);
+            showListBlog();
+        }
+    });
+}
+
+//React Feature
 function renderDetailedReactionListModal(blogId) {
     let url = "/blogs/" + blogId + "/blog-reactions";
     $.ajax({
@@ -264,26 +162,6 @@ function renderDetailedReactionListModal(blogId) {
     event.preventDefault();
 }
 
-function createBlog() {
-    let content = $('#status').val();
-    let blog = {
-        content: content,
-    };
-    $.ajax({
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        type: "POST",
-        data: JSON.stringify(blog),
-        url: "/blogs",
-        success: function (data) {
-            console.log(data);
-            showListBlog();
-        }
-    });
-}
-
 function renderBlogReactModal(blogId) {
     $.ajax({
         type: "GET",
@@ -291,38 +169,18 @@ function renderBlogReactModal(blogId) {
         success: function (reactions) {
             let modalBody = "";
             for (let i = 0; i < reactions.length; i++) {
-                modalBody += getReactBody(blogId, reactions[i]);
+                modalBody += renderReaction(blogId, reactions[i]);
             }
             $('.blog-react-modal-body').html(modalBody);
-            for (let i = 0; i < reactions.length; i++) {
-                renderChosenReaction(blogId);
-            }
         },
     });
 }
 
-function renderChosenReaction(blogId) {
-    let userId = localStorage.getItem("userId");
-    let url = "/users/" + userId + "/blogs/" + blogId + "/blog-reactions";
-    $.ajax({
-        type: "GET",
-        url: url,
-        success: function (blogReaction) {
-            let reactionButtonClass = "reaction-btn-" + blogReaction.reaction.id;
-            let reactionButtons = document.getElementsByClassName(reactionButtonClass);
-            for (let i = 0; i < reactionButtons.length; i++) {
-                let reactionButton = reactionButtons[i];
-                reactionButton.style.color = "blue";
-            }
-        }
-    });
-}
-
-function getReactBody(blogId, data) {
+function renderReaction(blogId, data) {
     return "" +
         `<a onclick="reactToBlog(${blogId},${data.id})">
-                <img src="${data.icon}" alt="${data.name}" width="20px">
-            </a>`
+            <img src="${data.icon}" alt="${data.name}" width="20px">
+        </a>`
 }
 
 function reactToBlog(blogId, reactionId) {
@@ -354,6 +212,133 @@ function reactToBlog(blogId, reactionId) {
     }
 }
 
+//Messaging Feature
+function renderMessageModal(friendId, userId) {
+    renderMessageModalTitle(friendId);
+    renderMessageModalBody(friendId, userId);
+    renderMessageSendButton(friendId, userId);
+}
+
+function renderMessageModalTitle(friendId) {
+    let url = "/users/" + friendId;
+    $.ajax({
+        type: "GET",
+        url: url,
+        success: function (friendUser) {
+            console.log(friendUser);
+            $('#message-modal-title').html(friendUser.fullName);
+        }
+    });
+}
+
+function renderMessageModalBody(friendId, userId) {
+    let url = "/messages/user/" + userId + "/user/" + friendId;
+    $.ajax({
+        type: "GET",
+        url: url,
+        success: function (privateMessages) {
+            let modalBodyContent = "";
+            if (privateMessages != undefined) {
+                for (let i = 0; i < privateMessages.length; i++) {
+                    let privateMessage = privateMessages[i];
+                    modalBodyContent += `<div><img src="${privateMessage.sender.profilePicture}" width="50px" height="50px" class="img-circle"><span>${privateMessage.content}</span></div>`
+                }
+            }
+            $('#message-modal-body').html(modalBodyContent);
+        }
+    });
+}
+
+function renderMessageSendButton(friendId, userId) {
+    let buttonContent = `<button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="sendMessage(${friendId},${userId})">Send</button>`;
+    $('#message-send-button').html(buttonContent);
+}
+
+function sendMessage(friendId, userId) {
+    let messageContent = $('#message-text-area').val();
+    if (messageContent != "") {
+        let message = {
+            sender: {
+                id: userId,
+            },
+            receiver: {
+                id: friendId,
+            },
+            content: messageContent,
+        };
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            type: "POST",
+            data: JSON.stringify(message),
+            url: "/messages",
+            success: function (sentMessage) {
+                console.log("message has been sent");
+                console.log(sentMessage)
+                renderMessageModal(friendId, userId);
+            }
+        });
+    }
+    $('#message-text-area').val("");
+}
+
+function showMessageModal(friendId) {
+    let userId = localStorage.getItem("userId");
+    renderMessageModal(friendId, userId);
+    $('#message-modal').modal('show');
+}
+
+function hideMessageModal() {
+    $('#message-modal').modal('hide');
+}
+
+//Friend List Feature
+function showFriends() {
+    $.ajax({
+        type: "GET",
+        url: "/users",
+        success: function (listUser) {
+            let content = ""
+            for (let i = 0; i < listUser.length; i++) {
+                content += getBodyModalFriends(listUser[i])
+            }
+            document.getElementById("modal-friend-body").innerHTML = content;
+        }
+    });
+    $('#modalFriends').modal('show');
+}
+
+function getBodyModalFriends(listUser) {
+    return "" +
+        `<div class="well well-sm">
+                <div class="media">
+                    <a class="thumbnail pull-left" href="#">
+                        <img class="img-circle pull-left" width="100px" height="100px" src="${listUser.profilePicture}">
+                    </a>
+                    <div class="media-body">
+                        <h4 class="media-heading">${listUser.username}</h4>
+                        <p><span class="label label-info">10 photos</span> <span class="label label-primary">89 followers</span>
+                        </p>
+                        <p>
+                            <a onclick="showMessageModal(${listUser.id})" class="btn btn-xs btn-default">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                             class="bi bi-messenger" viewBox="0 0 16 16">
+                            <path d="M0 7.76C0 3.301 3.493 0 8 0s8 3.301 8 7.76-3.493 7.76-8 7.76c-.81 0-1.586-.107-2.316-.307a.639.639 0 0 0-.427.03l-1.588.702a.64.64 0 0 1-.898-.566l-.044-1.423a.639.639 0 0 0-.215-.456C.956 12.108 0 10.092 0 7.76zm5.546-1.459-2.35 3.728c-.225.358.214.761.551.506l2.525-1.916a.48.48 0 0 1 .578-.002l1.869 1.402a1.2 1.2 0 0 0 1.735-.32l2.35-3.728c.226-.358-.214-.761-.551-.506L9.728 7.381a.48.48 0 0 1-.578.002L7.281 5.98a1.2 1.2 0 0 0-1.735.32z"/>
+                            </svg> Message</a>
+                        </p>
+                    </div>
+                </div>
+            </div>`
+}
+
+//Other functions
+function goToPersonalWall() {
+    let url = "/wall/" + localStorage.getItem("username");
+    window.location.href = url;
+}
+
 function logout() {
     localStorage.clear();
     window.location.href = "/logout";
@@ -371,6 +356,7 @@ function loadMoreBlogs() {
     showListBlog();
 }
 
+//Comment Feature
 //Create Comment
 function comment(event, blogId) {
     if (event.keyCode === 13) {
