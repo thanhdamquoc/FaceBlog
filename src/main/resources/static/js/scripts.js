@@ -378,7 +378,7 @@ function formatDateTime(dateTimeString) {
 }
 
 function loadMoreBlogs() {
-    blogLimit += 2;
+    blogLimit += 5;
     showListBlog(getWallOwnerId());
 }
 
@@ -849,4 +849,42 @@ function renderUserBlogs(detailedBlogs) {
         </div>`
     }
     $('#user-blog-div').html(userBlogContent);
+}
+
+//Search bar
+function searchAndRenderResult(inputElement) {
+    let keyword = inputElement.value;
+    if (keyword != "") {
+        let url = "/users/name/" + keyword;
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem("token"),
+            },
+            type: "GET",
+            url: url,
+            success: function (userResults) {
+                renderSearchResult(userResults);
+            },
+        });
+    } else {
+        document.getElementById("search-result-div").innerHTML = "";
+    }
+}
+
+function renderSearchResult(userResults) {
+    let searchResultContent = "";
+    for (let i = 0; i < userResults.length; i++) {
+        let userResult = userResults[i];
+        searchResultContent +=
+            `<div style="width: 500px">
+                <a href="/wall/${userResult.username}">
+                    <img src="${userResult.profilePicture}" alt="${userResult.username}" class="img-circle" width="50px" height="50px">
+                    <span style="font-weight: bold">${userResult.fullName}</span>
+                    <span>(@${userResult.username})</span>                
+                </a>
+            </div><br>`;
+    }
+    document.getElementById("search-result-div").innerHTML = searchResultContent;
 }

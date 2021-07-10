@@ -51,6 +51,12 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public Iterable<User> findAllByKeyword(String keyword) {
+        keyword = "%" + keyword + "%";
+        return userRepository.findAllByKeyword(keyword);
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> userOptional = findByUsername(username);
         if (!userOptional.isPresent()) {

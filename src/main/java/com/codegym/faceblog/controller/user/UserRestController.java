@@ -96,4 +96,13 @@ public class UserRestController {
         }
         return new ResponseEntity<>(detailedBlogs, HttpStatus.OK);
     }
+
+    @GetMapping("/name/{keyword}")
+    private ResponseEntity<Iterable<User>> findAllByUsernameContainingOrFullNameContaining(@PathVariable String keyword) {
+        Iterable<User> users = userService.findAllByKeyword(keyword);
+        if (!users.iterator().hasNext()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
 }
