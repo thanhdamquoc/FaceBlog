@@ -40,4 +40,7 @@ public interface BlogRepository extends JpaRepository<Blog, Long> {
             "join user u on b.user_id = u.id " +
             "order by popularity desc limit 5", nativeQuery = true)
     Iterable<TopBlog> findTopBlogs();
+
+    @Query(value = "select * from blog b where b.content like ?1 limit 3", nativeQuery = true)
+    Iterable<Blog> findAllByContentContains(String keyword);
 }

@@ -577,39 +577,49 @@ function getUserProfile(userId) {
 function renderUserProfile(user) {
     document.getElementById("user-profile-avatar").src = user.profilePicture;
     document.getElementById("user-profile-username").innerHTML = user.fullName;
+    document.getElementById("user-profile-description").innerHTML = user.description;
+
+    //Message button
+    let buttonGroupContent =
+        `<button onclick="showMessageModal(${getWallOwnerId()})" class="btn btn-default btn-sm tip btn-responsive">
+            <i class="fa fa-envelope-o" aria-hidden="true"></i>
+            Message
+        </button>`;
     //Only show edit button for authenticated wall owner
     if (user.id == localStorage.getItem("userId")) {
-        let editUserProfileContent =
-            `<div sec:authorize="isAuthenticated()">
-                <button onclick="showEditModal(${user.id})" class="btn btn-default btn-sm tip btn-responsive">
-                    <i class="fa fa-pencil" aria-hidden="true"></i>
-                    Edit profile
-                </button>
-            </div>`;
-        $('#user-profile-edit-btn').html(editUserProfileContent);
+        buttonGroupContent +=
+            `<button onclick="showEditModal(${user.id})" class="btn btn-default btn-sm tip btn-responsive">
+                <i class="fa fa-pencil" aria-hidden="true"></i>
+                Edit profile
+            </button>`;
+        $('#user-profile-btn-group').html(buttonGroupContent);
     }
 }
 
 function renderEditModal(user) {
     let modalBodyContent =
         `<div class="form-group">
-                <label for="new-full-name" class="col-form-label">Recipient:</label>
-                <input id="new-full-name" value="${user.fullName}" type="text" class="form-control" >
-            </div>
-            <div class="form-group">
-                <img width="200px" src="${user.profilePicture}">
-            </div>
-            <div class="form-group">
-                <input id="old-profile-pic" value="${user.profilePicture}" type="hidden" class="form-control">
-            </div>
-            <div class="custom-file">
-                <label class="custom-file-label" for="new-profile-pic">Profile pic...</label>
-                <input type="file" id="new-profile-pic" class="custom-file-input">
-            </div>
-            <div class="form-group">
-                <label for="new-password" class="col-form-label">Password:</label>
-                <input type="password" id="new-password" placeholder="Enter new password" class="form-control" >
-            </div>`
+            <label for="new-full-name" class="col-form-label">Full name:</label>
+            <input id="new-full-name" value="${user.fullName}" type="text" class="form-control" >
+        </div>
+        <div class="form-group">
+            <label for="new-description" class="col-form-label">About me:</label>
+            <input id="new-description" value="${user.description}" type="text" class="form-control" >
+        </div>
+        <div class="form-group">
+            <img width="200px" src="${user.profilePicture}">
+        </div>
+        <div class="form-group">
+            <input id="old-profile-pic" value="${user.profilePicture}" type="hidden" class="form-control">
+        </div>
+        <div class="custom-file">
+            <label class="custom-file-label" for="new-profile-pic">Profile pic...</label>
+            <input type="file" id="new-profile-pic" class="custom-file-input">
+        </div>
+        <div class="form-group">
+            <label for="new-password" class="col-form-label">Password:</label>
+            <input type="password" id="new-password" placeholder="Enter new password" class="form-control" >
+        </div>`
 
     $('#edit-profile-modal-body').html(modalBodyContent);
 }
@@ -639,6 +649,7 @@ function hideEditModal() {
 function updateUserProfile() {
     //get new info
     let newFullName = $('#new-full-name').val();
+    let newDescription = $('#new-description').val();
     let newPassword = $('#new-password').val();
     let newProfilePicture = $('#old-profile-pic').val();
     //upload image file if present
@@ -666,6 +677,7 @@ function updateUserProfile() {
     let user = {
         id: userId,
         fullName: newFullName,
+        description: newDescription,
         password: newPassword,
         profilePicture: newProfilePicture,
     };
@@ -680,7 +692,7 @@ function updateUserProfile() {
         data: JSON.stringify(user),
         url: url,
         success: function (user) {
-            console.log(user + "updated");
+            console.log(user);
             localStorage.setItem("fullName", user.fullName);
             hideEditModal();
             renderUserProfile(user);
@@ -855,7 +867,8 @@ function renderUserBlogs(detailedBlogs) {
 function searchAndRenderResult(inputElement) {
     let keyword = inputElement.value;
     if (keyword != "") {
-        let url = "/users/name/" + keyword;
+        keyword = keyword.replace(" ", "-");
+        let userUrl = "/users/name/" + keyword;
         $.ajax({
             headers: {
                 'Accept': 'application/json',
@@ -863,18 +876,32 @@ function searchAndRenderResult(inputElement) {
                 'Authorization': localStorage.getItem("token"),
             },
             type: "GET",
-            url: url,
+            url: userUrl,
             success: function (userResults) {
-                renderSearchResult(userResults);
+                renderUserSearchResult(userResults);
+            },
+        });
+        let blogUrl = "/blogs/content/" + keyword;
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem("token"),
+            },
+            type: "GET",
+            url: blogUrl,
+            success: function (blogResults) {
+                renderBlogSearchResult(blogResults);
             },
         });
     } else {
-        document.getElementById("search-result-div").innerHTML = "";
+        document.getElementById("user-search-result-div").innerHTML = "";
+        document.getElementById("blog-search-result-div").innerHTML = "";
     }
 }
 
-function renderSearchResult(userResults) {
-    let searchResultContent = "";
+function renderUserSearchResult(userResults) {
+    let searchResultContent = "<div><span style='font-weight: bold'>Users: </span></div>";
     for (let i = 0; i < userResults.length; i++) {
         let userResult = userResults[i];
         searchResultContent +=
@@ -886,5 +913,22 @@ function renderSearchResult(userResults) {
                 </a>
             </div><br>`;
     }
-    document.getElementById("search-result-div").innerHTML = searchResultContent;
+    document.getElementById("user-search-result-div").innerHTML = searchResultContent;
+}
+
+function renderBlogSearchResult(blogResults) {
+    let searchResultContent = "<div><span style='font-weight: bold'>Blogs: </span></div>";
+    for (let i = 0; i < blogResults.length; i++) {
+        let blogResult = blogResults[i];
+        searchResultContent +=
+            `<div style="width: 500px">
+                <a href="/wall/${blogResult.user.username}">
+                    <img src="${blogResult.user.profilePicture}" alt="${blogResult.user.username}" class="img-circle" width="50px" height="50px">
+                    <span style="font-weight: bold">${blogResult.user.fullName}</span>
+                    <span>(@${blogResult.user.username})</span><br>
+                    <span>"${blogResult.content}"</span>
+                </a>
+            </div><br>`;
+    }
+    document.getElementById("blog-search-result-div").innerHTML = searchResultContent;
 }

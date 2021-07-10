@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class BlogServiceImpl implements BlogService{
+public class BlogServiceImpl implements BlogService {
     @Autowired
     private BlogRepository blogRepository;
 
@@ -53,5 +53,11 @@ public class BlogServiceImpl implements BlogService{
     @Override
     public Iterable<TopBlog> findTopBlogs() {
         return blogRepository.findTopBlogs();
+    }
+
+    @Override
+    public Iterable<Blog> findAllByContentContains(String keyword) {
+        keyword = "%" + keyword + "%";
+        return blogRepository.findAllByContentContains(keyword);
     }
 }

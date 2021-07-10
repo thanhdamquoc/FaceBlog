@@ -60,6 +60,7 @@ public class UserRestController {
         }
         userOptional.get().setFullName(user.getFullName());
         userOptional.get().setProfilePicture(user.getProfilePicture());
+        userOptional.get().setDescription(user.getDescription());
         if (user.getPassword() != "") {
             userOptional.get().setPassword(user.getPassword());
         }
@@ -99,6 +100,7 @@ public class UserRestController {
 
     @GetMapping("/name/{keyword}")
     private ResponseEntity<Iterable<User>> findAllByUsernameContainingOrFullNameContaining(@PathVariable String keyword) {
+        keyword = keyword.replace("-", " ");
         Iterable<User> users = userService.findAllByKeyword(keyword);
         if (!users.iterator().hasNext()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

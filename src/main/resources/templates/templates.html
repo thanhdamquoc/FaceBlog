@@ -142,7 +142,8 @@
             <form class="navbar-form pull-left">
                 <div class="input-group" style="max-width:470px;">
                     <input onkeyup="searchAndRenderResult(this)" class="form-control" placeholder="Search" name="srch-term" id="srch-term" type="text">
-                    <div id="search-result-div" style="width: 500px;"></div>
+                    <div id="user-search-result-div" style="width: 500px;"></div>
+                    <div id="blog-search-result-div" style="width: 500px;"></div>
                 </div>
             </form>
             <div sec:authorize="isAnonymous()">
@@ -237,15 +238,12 @@
                     <span id="user-profile-username"></span>
                 </h2>
                 <div class="actions">
-                    <div class="btn-group">
-                        <div id="user-profile-edit-btn"></div>
-<!--                        <button class="btn btn-default btn-sm tip btn-responsive" title="" data-original-title="Add to friends"><span class="glyphicon glyphicon-plus glyphicon glyphicon-white"></span> Friends</button>-->
+                    <div class="btn-group" id="user-profile-btn-group">
                     </div>
                 </div>
             </div>
             <div class="info">
-                <p><i class="fa fa-globe" aria-hidden="true"></i> <span class="title">Address:</span>  St. Revutskogo, Kiev, Ukraine</p>
-                <p><i class="fa fa-gift" aria-hidden="true"></i> <span class="title">Date of birth:</span> 14.02.1989</p>
+                <p><span id="user-profile-description"></span></p>
             </div>
         </div>
     </div>

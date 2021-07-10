@@ -99,4 +99,14 @@ public class BlogRestController {
         }
         return new ResponseEntity<>(topBlogs, HttpStatus.OK);
     }
+
+    @GetMapping("/content/{keyword}")
+    public ResponseEntity<Iterable<Blog>> findAllByContentContains(@PathVariable String keyword) {
+        keyword = keyword.replace("-", " ");
+        Iterable<Blog> blogs = blogService.findAllByContentContains(keyword);
+        if (!blogs.iterator().hasNext()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(blogs, HttpStatus.OK);
+    }
 }

@@ -11,6 +11,6 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByUsername(String username);
 
-    @Query(value = "select * from user u where u.username like ?1 or u.full_name like  ?1 limit 5", nativeQuery = true)
+    @Query(value = "select * from user u where u.username like ?1 or u.full_name like  ?1 limit 3", nativeQuery = true)
     Iterable<User> findAllByKeyword(String keyword);
 }
