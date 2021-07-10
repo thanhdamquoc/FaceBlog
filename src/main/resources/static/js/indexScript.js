@@ -80,13 +80,9 @@ function getBlog(detailedBlog) {
                         </div>
                         <div id="collapse1${detailedBlog.id}" class="collapse">
                             <div class="fb-status-container fb-border fb-gray-bg">
-                                <div class="fb-time-action like-info">
-                                    <a href="#">Jhon Due,</a>
-                                    <a href="#">Danieal Kalion</a>
-                                    <span>and</span>
-                                    <a href="#">40 more</a>
-                                <span>like this</span>
-                            </div>
+                                <div id="whoLikes${detailedBlog.id}" class="fb-time-action like-info">
+                                    
+                                </div>
                             <hr>
                             <ul class="fb-comments" style='list-style-type: none;'>
                                 <span id="commentBody${detailedBlog.id}" >
@@ -149,7 +145,7 @@ function renderDetailedReactionListModal(blogId) {
             for (let i = 0; i < blogReactions.length; i++) {
                 let blogReaction = blogReactions[i];
                 modalBodyContent +=
-                    `<li>
+                    `<li style="margin-bottom: 5px">
                         <img src="${blogReaction.reaction.icon}" alt="${blogReaction.reaction.name}" width="20px">
                         <span> ${blogReaction.user.fullName}</span>
                     </li>`;
@@ -205,6 +201,7 @@ function reactToBlog(blogId, reactionId) {
             success: function (savedBlogReaction) {
                 console.log(savedBlogReaction);
                 showListBlog();
+                renderWhoLikes(blogId);
             }
         });
     } else {
@@ -423,6 +420,7 @@ function renderComment(blogId) {
                 content += getBodyComment(comments[i])
             }
             document.getElementById("commentBody" + blogId).innerHTML = content;
+            renderWhoLikes(blogId);
         }
     });
 }
@@ -460,6 +458,30 @@ function getBodyComment(comments) {
                 </div>
             </li>
         <hr>`
+}
+
+function renderWhoLikes(blogId) {
+    let url = "/blogs/" + blogId + "/blog-reactions";
+    $.ajax({
+        type: "GET",
+        url: url,
+        success: function (blogReactions){
+            let contentBlog = "";
+            let countBlogReaction = blogReactions.length - 1;
+            if (blogReactions.length <= 1){
+                for (let i = 0; i < blogReactions.length; i++) {
+                    contentBlog += `<a href="#">${blogReactions[i].user.username}</a>`
+                }
+            } else {
+                for (let i = 0; i < 1; i++) {
+                    contentBlog += `<a href="#">${blogReactions[i].user.username}</a>
+                                    <span>and</span>
+                                    <a onclick="renderDetailedReactionListModal(${blogId})">${countBlogReaction} more</a>`
+                }
+            }
+            document.getElementById("whoLikes" + blogId).innerHTML = contentBlog + "<span> like this</span>";
+        }
+    });
 }
 
 //Edit Comment

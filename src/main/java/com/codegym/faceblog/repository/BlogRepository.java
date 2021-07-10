@@ -29,4 +29,5 @@ public interface BlogRepository extends JpaRepository<Blog, Long> {
             "WHERE b.user_id = ?1 " +
             "ORDER BY b.date DESC LIMIT ?2", nativeQuery = true)
     Iterable<DetailedBlog> findAllDetailedBlogsByUserId(Long userId, int limit);
+
 }
