@@ -241,31 +241,37 @@ function renderMessageModalBody(friendId, userId) {
             if (privateMessages != undefined) {
                 for (let i = 0; i < privateMessages.length; i++) {
                     let privateMessage = privateMessages[i];
-                    if (privateMessage.receiver.id == friendId){
+                    if (privateMessage.receiver.id == friendId) {
                         modalBodyContent += modalBodyContentPersonal(privateMessage)
                     } else {
                         modalBodyContent += modalBodyContentUser(privateMessage);
                     }
                 }
             }
+            scroll();
             $('#message-modal-body').html(modalBodyContent);
         }
     });
 }
 
+function scroll() {
+    let div = $('#message-modal-body')
+    return div.animate({scrollTop: 9999999999999999999999999999999999});
+}
+
 function modalBodyContentPersonal(privateMessage) {
     return "" +
-        `<div class='${privateMessage.sender.id}' style="margin-bottom: 30px;">
-            <div>
-                <a style='float: right'>${privateMessage.content}</a>
+        `<div class='message-content${privateMessage.id}' style="margin-bottom: 30px;">
+            <div style='text-align: end'>
+                <p style='width: 100%'>${privateMessage.content}</p>
             </div>
         </div>`
 }
 
 function modalBodyContentUser(privateMessage) {
     return "" +
-        `<div class='${privateMessage.receiver.id}' style="margin-bottom: 10px">
-            <img src="${privateMessage.receiver.profilePicture}" height="45px" width="45px" class="img-circle" >
+        `<div class='message-content${privateMessage.id}' style="margin-bottom: 20px">
+            <img src="${privateMessage.receiver.profilePicture}" height="40px" width="40px" class="img-circle" >
             <span>${privateMessage.content}</span>
         </div>`
 }
@@ -423,7 +429,7 @@ function renderComment(blogId) {
 
 function getBodyComment(comments) {
     return "" +
-                `<li>
+        `<li>
                     <div class="dropdown pull-right">
                         <button class="btn p-0" type="button" id="dropdownMenuButton1" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
