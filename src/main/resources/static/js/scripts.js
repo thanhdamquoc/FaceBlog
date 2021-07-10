@@ -592,8 +592,8 @@ function renderUserProfile(user) {
                 <i class="fa fa-pencil" aria-hidden="true"></i>
                 Edit profile
             </button>`;
-        $('#user-profile-btn-group').html(buttonGroupContent);
     }
+    $('#user-profile-btn-group').html(buttonGroupContent);
 }
 
 function renderEditModal(user) {
