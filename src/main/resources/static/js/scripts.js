@@ -679,6 +679,7 @@ function showEditModal() {
         }
     });
     $('#edit-profile-modal').modal('show');
+    event.preventDefault();
 }
 
 function hideEditModal() {
