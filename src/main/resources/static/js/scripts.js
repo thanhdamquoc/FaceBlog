@@ -29,7 +29,7 @@ function showListBlog(userId) {
 function getBlog(detailedBlog) {
     let dateTimeString = detailedBlog.date.toString();
     let formattedDateTimeString = formatDateTime(dateTimeString);
-    return "" +
+    let blogHtmlContent = "" +
         `<div class="panel panel-default">
                 <div class="panel-body">
                     <img src="${detailedBlog.profilePicture}" class="img-circle pull-left">
@@ -61,20 +61,28 @@ function getBlog(detailedBlog) {
                                     </button>
                                 <div class="dropdown-menu">
                                     <div class="blog-react-modal-body">
-
                                     </div>
                                 </div>
-                            </div>
-
+                            </div id="blog-btn-group">
                                 <button type='button' onclick="renderComment(${detailedBlog.id})" class="btn btn-default" data-toggle="collapse" data-target="#collapse${detailedBlog.id}, #collapse1${detailedBlog.id}">
-                                <i class="fa fa-comments"></i>
+                                    <i class="fa fa-comments"></i>
                                     <span style='padding-left: 5px'>Bình Luận</span>
-                                </button>
-                            </div>
-                            <div id="collapse${detailedBlog.id}" class="collapse">
-                                <input id="commentBlog${detailedBlog.id}" onkeypress="comment(event, ${detailedBlog.id})"
-                                 class="form-control" placeholder="Add a comment.." type="text">
-                            </div>
+                                </button>`;
+
+    if ((localStorage.getItem("userId") == detailedBlog.userId)
+        || (localStorage.getItem("roles") == "ROLE_ADMIN")) {
+        blogHtmlContent +=
+                                `<button type='button' class="btn btn-default" onclick="deleteBlog(${detailedBlog.id})">
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                    <span style='padding-left: 5px'>Delete</span>
+                                </button>`
+    };
+    blogHtmlContent +=
+                            `</div>
+                                <div id="collapse${detailedBlog.id}" class="collapse">
+                                    <input id="commentBlog${detailedBlog.id}" onkeypress="comment(event, ${detailedBlog.id})"
+                                     class="form-control" placeholder="Add a comment.." type="text">
+                                </div>
                         </div>
                         <div id="collapse1${detailedBlog.id}" class="collapse">
                             <div class="fb-status-container fb-border fb-gray-bg">
@@ -96,7 +104,8 @@ function getBlog(detailedBlog) {
                         </div>
                     </form>
                 </div>
-            </div>`
+            </div>`;
+    return blogHtmlContent;
 }
 
 function renderLikeButton(blogId) {
@@ -774,12 +783,10 @@ function updateBlog() {
 function deleteBlog(blogId) {
     let url = "/blogs/" + blogId;
     $.ajax({
-        type: "POST",
+        type: "DELETE",
         url: url,
-        success: function () {
-            let userId = $('#user-id').val();
-            console.log("Delete blog success!")
-            getUserBlogs(userId);
+        success: function (deletedBlog) {
+            showListBlog(getWallOwnerId());
         }
     });
     event.preventDefault();

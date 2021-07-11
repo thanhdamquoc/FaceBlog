@@ -68,14 +68,14 @@ public class BlogRestController {
         return new ResponseEntity<>(blogOptional, HttpStatus.OK);
     }
 
-    @PostMapping("/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Blog> deleteById(@PathVariable Long id){
         Optional<Blog> blogOptional = blogService.findById(id);
         if (!blogOptional.isPresent()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         blogService.deleteById(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(blogOptional.get(), HttpStatus.OK);
     }
 
     @GetMapping("/{blogId}/blog-reactions")

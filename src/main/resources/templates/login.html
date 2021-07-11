@@ -102,6 +102,7 @@
                 localStorage.setItem("userId", data.id);
                 localStorage.setItem("username", data.username);
                 localStorage.setItem("fullName", data.fullName);
+                localStorage.setItem("roles", data.roles[0].authority);
                 window.location.href = "/";
             }
         });
