@@ -279,36 +279,18 @@
     </div>
 </div>
 <!--Left Side Bar Fragment-->
-<div class="panel panel-default" th:fragment="leftSideBarContent">
-    <div class="panel-heading"><a href="#" class="pull-right">View all</a>
-        <h4>
-            <span onclick="goToPersonalWall()" class="personal-wall-button"></span>
-        </h4>
-    </div>
-    <div class="panel-body">
-        <div class="list-group">
-            <a onclick="showFriends()" class="list-group-item">
-                <i class="fa fa-user" aria-hidden="true"></i>
-                Friends
-            </a>
-
-            <a href="http://usebootstrap.com/theme/google-plus" class="list-group-item">
-                <i class="fa fa-users" aria-hidden="true"></i>
-                Groups
-            </a>
-
-            <a href="http://usebootstrap.com/theme/google-plus" class="list-group-item">
-                <i class="fa fa-file-video-o" aria-hidden="true"></i>
-                Watch
-            </a>
-            <a href="http://usebootstrap.com/theme/google-plus" class="list-group-item">
-                <i class="fa fa-shopping-bag" aria-hidden="true"></i>
-                Market
-            </a>
-            <a href="http://usebootstrap.com/theme/google-plus" class="list-group-item">
-                <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-                Sự kiện
-            </a>
+<div th:fragment="leftSideBarContent">
+    <div class="panel panel-default">
+        <div class="panel-heading"><h4>Top Friends</h4></div>
+        <div class="panel-body">
+            <div class="list-group" id="top-friend-div">
+                <a href="http://usebootstrap.com/theme/google-plus" class="list-group-item active">Blog 1</a>
+                <a href="http://usebootstrap.com/theme/google-plus" class="list-group-item">Blog 2</a>
+                <a href="http://usebootstrap.com/theme/google-plus" class="list-group-item">Blog 3</a>
+                <a href="http://usebootstrap.com/theme/google-plus" class="list-group-item">Blog 4</a>
+                <a href="http://usebootstrap.com/theme/google-plus" class="list-group-item">Blog 5</a>
+                <a href="http://usebootstrap.com/theme/google-plus" class="list-group-item">Blog 6</a>
+            </div>
         </div>
     </div>
 </div>
@@ -325,17 +307,6 @@
                 <a href="http://usebootstrap.com/theme/google-plus" class="list-group-item">Blog 5</a>
                 <a href="http://usebootstrap.com/theme/google-plus" class="list-group-item">Blog 6</a>
             </div>
-        </div>
-    </div>
-
-    <div class="panel panel-default">
-        <div class="panel-heading"><a href="#" class="pull-right">View all</a> <h4>Portlet Heading</h4></div>
-        <div class="panel-body">
-            <ul class="list-group">
-                <li class="list-group-item">Modals</li>
-                <li class="list-group-item">Sliders / Carousel</li>
-                <li class="list-group-item">Thumbnails</li>
-            </ul>
         </div>
     </div>
 </div>

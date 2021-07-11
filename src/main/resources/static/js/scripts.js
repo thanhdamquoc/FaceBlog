@@ -1,6 +1,7 @@
 //Blog Feature
 function showListBlog(userId) {
     renderPersonalWallButton();
+    renderLeftSideBar();
     renderRightSideBar();
     let url;
     if (userId == null) {
@@ -173,6 +174,34 @@ function renderTopBlogs() {
     });
 }
 
+//Left Side Bar Rendering
+function renderLeftSideBar() {
+    renderTopFriends();
+}
+
+function renderTopFriends() {
+    let userId = localStorage.getItem("userId");
+    let url = "/users/" + userId + "/top-friends"
+    $.ajax({
+        type: "GET",
+        url: url,
+        success: function (topFriends) {
+            let topFriendContent = "";
+            for (let i = 0; i < topFriends.length; i++) {
+                let topFriend = topFriends[i];
+                topFriendContent +=
+                    `<a href="/wall/${topFriend.username}" class="list-group-item">
+                        <img src="${topFriend.profilePicture}" alt="${topFriend.username}" class="img-circle" width="50px" height="50px"><br>
+                        <span style="font-weight: bold">${topFriend.fullName}</span><br>
+                        <span>${topFriend.messagesExchanged}</span>
+                        <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                    </a>`;
+            }
+            $('#top-friend-div').html(topFriendContent);
+        }
+    });
+}
+
 //React Feature
 function renderDetailedReactionListModal(blogId) {
     let url = "/blogs/" + blogId + "/blog-reactions";
@@ -313,6 +342,7 @@ function sendMessage(friendId, userId) {
                 console.log("message has been sent");
                 console.log(sentMessage)
                 renderMessageModal(friendId, userId);
+                showListBlog(getWallOwnerId());
             }
         });
     }
