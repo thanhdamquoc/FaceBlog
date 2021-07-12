@@ -6,5 +6,36 @@
 </head>
 <body>
 <h1>Admin only page</h1>
+
+<input type="text" onkeyup="search(this)">
+<div id="search-result">
+
+</div>
+<script>
+    let db = ["a", "ab", "abc", "abcd", "abcde"];
+
+    function search(inputElement) {
+        let keyword = inputElement.value;
+        if (keyword != "") {
+            //search
+            let results = [];
+            for (let i = 0; i < db.length; i++) {
+                let word = db[i];
+                if (word.includes(keyword)) {
+                    results.push(word);
+                }
+            }
+            //render
+            let searchResultContent = "";
+            for (let j = 0; j < results.length; j++) {
+                let result = results[j];
+                searchResultContent += "<div>"+result+"</div>"
+            }
+            document.getElementById("search-result").innerHTML = searchResultContent;
+        } else {
+            document.getElementById("search-result").innerHTML = "";
+        }
+    }
+</script>
 </body>
 </html>

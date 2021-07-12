@@ -1,5 +1,6 @@
 package com.codegym.faceblog.security;
 
+import com.codegym.faceblog.model.User;
 import com.codegym.faceblog.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -10,8 +11,11 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 
 @Configuration
 @EnableWebSecurity
@@ -44,8 +48,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.authorizeRequests()
-                .antMatchers("/admin**").access("hasRole('ADMIN')")
                 .antMatchers("/**").permitAll();
+//        http.authorizeRequests()
+//                .antMatchers("/","/wall/**").permitAll()
+//                .antMatchers("/users/{userId}/**").access("hasRole('ADMIN') or @userSecurity.hasUserId(authentication,#userId)");
         http.cors();
     }
+
+//    public boolean hasUserId(Authentication authentication, Long userId) {
+//        User user = userService.findById(userId).get();
+//        if (((UserDetails) authentication.getDetails()).getUsername().equals(user.getUsername())) {
+//            return true;
+//        }
+//        return false;
+//    }
 }

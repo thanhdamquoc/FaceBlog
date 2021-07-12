@@ -1,6 +1,8 @@
 package com.codegym.faceblog.controller.user;
 
 import com.codegym.faceblog.model.*;
+import com.codegym.faceblog.model.dto.DetailedBlog;
+import com.codegym.faceblog.model.dto.TopFriend;
 import com.codegym.faceblog.service.blog.BlogService;
 import com.codegym.faceblog.service.blogreaction.BlogReactionService;
 import com.codegym.faceblog.service.role.RoleService;
@@ -8,7 +10,6 @@ import com.codegym.faceblog.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -60,6 +61,7 @@ public class UserRestController {
         }
         userOptional.get().setFullName(user.getFullName());
         userOptional.get().setProfilePicture(user.getProfilePicture());
+        userOptional.get().setDescription(user.getDescription());
         if (user.getPassword() != "") {
             userOptional.get().setPassword(user.getPassword());
         }
@@ -95,5 +97,24 @@ public class UserRestController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(detailedBlogs, HttpStatus.OK);
+    }
+
+    @GetMapping("/name/{keyword}")
+    private ResponseEntity<Iterable<User>> findAllByUsernameContainingOrFullNameContaining(@PathVariable String keyword) {
+        keyword = keyword.replace("-", " ");
+        Iterable<User> users = userService.findAllByKeyword(keyword);
+        if (!users.iterator().hasNext()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
+    @GetMapping("/{userId}/top-friends")
+    private ResponseEntity<Iterable<TopFriend>> findTopFriendsByUserId(@PathVariable Long userId) {
+        Iterable<TopFriend> topFriends = userService.findTopFriendsByUserId(userId);
+        if (!topFriends.iterator().hasNext()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(topFriends, HttpStatus.OK);
     }
 }

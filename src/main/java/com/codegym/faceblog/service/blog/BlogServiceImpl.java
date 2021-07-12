@@ -1,8 +1,9 @@
 package com.codegym.faceblog.service.blog;
 
 import com.codegym.faceblog.model.Blog;
-import com.codegym.faceblog.model.DetailedBlog;
+import com.codegym.faceblog.model.dto.DetailedBlog;
 import com.codegym.faceblog.model.User;
+import com.codegym.faceblog.model.dto.TopBlog;
 import com.codegym.faceblog.repository.BlogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class BlogServiceImpl implements BlogService{
+public class BlogServiceImpl implements BlogService {
     @Autowired
     private BlogRepository blogRepository;
 
@@ -47,5 +48,16 @@ public class BlogServiceImpl implements BlogService{
     @Override
     public Iterable<DetailedBlog> findAllDetailedBlogsByUserId(Long userId, int limit) {
         return blogRepository.findAllDetailedBlogsByUserId(userId, limit);
+    }
+
+    @Override
+    public Iterable<TopBlog> findTopBlogs() {
+        return blogRepository.findTopBlogs();
+    }
+
+    @Override
+    public Iterable<Blog> findAllByContentContains(String keyword) {
+        keyword = "%" + keyword + "%";
+        return blogRepository.findAllByContentContains(keyword);
     }
 }

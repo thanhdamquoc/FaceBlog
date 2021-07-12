@@ -1,6 +1,7 @@
 package com.codegym.faceblog.service.user;
 
 import com.codegym.faceblog.model.User;
+import com.codegym.faceblog.model.dto.TopFriend;
 import com.codegym.faceblog.model.security.UserDetailsImpl;
 import com.codegym.faceblog.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,17 @@ public class UserServiceImpl implements UserService{
     @Override
     public User update(User user) {
         return userRepository.save(user);
+    }
+
+    @Override
+    public Iterable<User> findAllByKeyword(String keyword) {
+        keyword = "%" + keyword + "%";
+        return userRepository.findAllByKeyword(keyword);
+    }
+
+    @Override
+    public Iterable<TopFriend> findTopFriendsByUserId(Long userId) {
+        return userRepository.findTopFriendsByUserId(userId);
     }
 
     @Override
