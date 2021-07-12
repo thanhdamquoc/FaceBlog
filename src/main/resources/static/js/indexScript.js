@@ -228,7 +228,6 @@ function checkNewReaction(blog, userIdReact) {
     if (userIdBlog == userIdReact) {
         content = notificationBody(1)
         document.getElementById("notification").innerHTML = content;
-        renderDropDownNotification(blog);
     } else {
         content = notificationBodyWithoutReact()
         document.getElementById("notification").innerHTML = content;
