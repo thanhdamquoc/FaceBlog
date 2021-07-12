@@ -190,7 +190,7 @@ function renderTopFriends() {
             for (let i = 0; i < topFriends.length; i++) {
                 let topFriend = topFriends[i];
                 topFriendContent +=
-                    `<a href="/wall/${topFriend.username}" class="list-group-item">
+                    `<a onclick="showMessageModal(${topFriend.id})" class="list-group-item" href="#">
                         <img src="${topFriend.profilePicture}" alt="${topFriend.username}" class="img-circle" width="50px" height="50px"><br>
                         <span style="font-weight: bold">${topFriend.fullName}</span><br>
                         <span>${topFriend.messagesExchanged}</span>
@@ -353,6 +353,7 @@ function showMessageModal(friendId) {
     let userId = localStorage.getItem("userId");
     renderMessageModal(friendId, userId);
     $('#message-modal').modal('show');
+    event.preventDefault();
 }
 
 function hideMessageModal() {

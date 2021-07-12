@@ -15,7 +15,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query(value = "select * from user u where u.username like ?1 or u.full_name like  ?1 limit 3", nativeQuery = true)
     Iterable<User> findAllByKeyword(String keyword);
 
-    @Query(value = "select u.username, u.full_name as fullName, u.profile_picture as profilePicture, " +
+    @Query(value = "select u.id, u.username, u.full_name as fullName, u.profile_picture as profilePicture, " +
             "(select count(*) from message m where (m.receiver_id = u.id and m.sender_id = ?1) " +
             "or (m.receiver_id = ?1 and m.sender_id = u.id)) as messagesExchanged " +
             "from user u " +
